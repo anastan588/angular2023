@@ -18,6 +18,20 @@ export interface IVideoItem {
         channelTitle: string,
         liveBroadcastContent: string,
         publishTime: string,
+        tags?: string[],
+        categoryId?: string,
+        localized?: {
+          title: string,
+          description:string,
+        },
+        defaultAudioLanguage?: string,
+      }
+      statistics?: {
+        viewCount: string,
+        likeCount: string,
+        dislikeCount: string,
+        favoriteCount: string,
+        commentCount: string
       }
 }
 
