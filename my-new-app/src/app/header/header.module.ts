@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { UserComponent } from './user/user.component';
 import { SortingComponent } from './sorting/sorting.component';
-
-
 
 @NgModule({
   declarations: [
@@ -13,7 +12,11 @@ import { SortingComponent } from './sorting/sorting.component';
     SortingComponent
   ],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    BrowserModule,
+  ],
+  exports: [ SearchInputComponent,
+    UserComponent,
+    SortingComponent]   
 })
 export class HeaderModule { }
