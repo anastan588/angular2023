@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my-new-app';
+  youtubeImage = './../assets/icons/youtube.png'
 }

@@ -8,6 +8,8 @@ import { HeaderModule } from './header/header.module';
 import { MainModule } from './main/main.module';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { MainComponent } from './main/main.component';
     BrowserModule,
     AppRoutingModule,
     HeaderModule,
-    MainModule
+    MainModule,
+    BrowserAnimationsModule,   
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
