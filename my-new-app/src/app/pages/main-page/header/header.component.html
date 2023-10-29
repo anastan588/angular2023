@@ -4,5 +4,7 @@
     <app-search-input class="search-container"></app-search-input>
     <app-user> </app-user>
   </mat-toolbar-row>
-  <mat-toolbar-row><app-sorting></app-sorting></mat-toolbar-row>
+  <mat-toolbar-row *ngIf="open"
+    ><app-sorting></app-sorting
+  ></mat-toolbar-row>
 </mat-toolbar>
