@@ -9,6 +9,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { InputComponent } from 'src/app/shared/components/input/input.component';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,8 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
   ],
   exports: [ SearchInputComponent,
     UserComponent,
-    SortingComponent]   
+    SortingComponent] , 
+  providers: [OpenFilterMenuService]
+
 })
 export class HeaderModule { }

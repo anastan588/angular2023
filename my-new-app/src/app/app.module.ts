@@ -10,6 +10,9 @@ import { HeaderComponent } from './/pages/main-page/header/header.component';
 import { MainComponent } from './pages/main-page/main/main.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { OpenFilterMenuService } from './core/services/open-filter/open-filter-menu.service';
+import { ShowResultsService } from './core/services/show-results/show-results.service';
+import { FiltersService } from './core/services/filters/filters.service';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HeaderComponent, MainComponent],
@@ -21,7 +24,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BrowserAnimationsModule,
     MatToolbarModule,
   ],
-  providers: [],
+  providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

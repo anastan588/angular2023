@@ -1,7 +1,7 @@
 <p>Sorting by:</p>
-<app-button
+<app-button (click) = "dateSort()"
   >date</app-button>
-<app-button
+<app-button (click) = "viewSort()"
   >count of views</app-button>
 <div class="sort-by-word">
     <app-input>by word or sentance</app-input>

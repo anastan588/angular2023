@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { OpenFilterMenuService } from 'src/app/core/services/open-filter-menu.service';
+import { Component} from '@angular/core';
+import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
+import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 @Component({
   selector: 'app-search-input',
   templateUrl: './search-input.component.html',
   styleUrls: ['./search-input.component.scss'],
-  providers: [OpenFilterMenuService],
 })
-export class SearchInputComponent implements OnInit {
-  openSortingMenu: boolean = false;
-  constructor(private readonly openFilterMenuService: OpenFilterMenuService) {}
-  ngOnInit(): void {
-    console.log(this.openFilterMenuService.openFilterMenu);
-    this.openSortingMenu = this.openFilterMenuService.openFilterMenu;
+export class SearchInputComponent {
+  open: boolean;
+  results: true;
+  constructor(private readonly openFilterMenuService: OpenFilterMenuService, private readonly showResultsService: ShowResultsService) {
+    this.open = true;
+    this.results = true;
   }
   toggleSorting() {
-    this.openFilterMenuService.openFilterMenu = this.openFilterMenuService.toggleSorting();
-    console.log(this.openFilterMenuService.openFilterMenu);
-    return this.openFilterMenuService.openFilterMenu;
+    console.log(this.open);
+    this.openFilterMenuService.setOpenFilterMenu(this.open);
+    this.open = !this.open;
+  }
+  showResults() {
+    console.log(this.results);
+    this.showResultsService.setShowResults(this.results);
   }
 }

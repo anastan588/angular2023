@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import information from './../../../../core/store/data/response.json';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { FiltersService } from 'src/app/core/services/filters/filters.service';
 
 console.log(information);
 console.log(information.items);
@@ -9,6 +10,16 @@ console.log(information.items);
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
 })
-export class SearchResultsComponent {
+export class SearchResultsComponent implements DoCheck{
   searchResults: IVideoItem[] = information.items;
+  isDateSort = 'none';
+  isViewSort = 'none';
+  
+  constructor(public readonly filterService: FiltersService) {
+  }
+  ngDoCheck() {
+    this.isDateSort = this.filterService.dateSort.valueOf();
+    this.isViewSort = this.filterService.viewSort.valueOf();
+    this.searchResults = this.filterService.arrayResults;
+  };
 }
