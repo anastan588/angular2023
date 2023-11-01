@@ -14,12 +14,10 @@ export class SearchInputComponent {
     this.results = true;
   }
   toggleSorting() {
-    console.log(this.open);
     this.openFilterMenuService.setOpenFilterMenu(this.open);
     this.open = !this.open;
   }
   showResults() {
-    console.log(this.results);
     this.showResultsService.setShowResults(this.results);
   }
 }

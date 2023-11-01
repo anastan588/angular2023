@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import information from './../../../core/store/data/response.json';
 import { IVideoItem } from '../../store/models/video-item';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,12 @@ export class FiltersService {
   public initialArrayResults: IVideoItem[] = JSON.parse(
     JSON.stringify(information.items)
   );
+  public keyWord$ = new Subject<string>();
   constructor() {}
+
+	public changeKeyWord(word: string) {
+    this.keyWord$.next(word); 
+ }
 
   public setDateSort() {
     if (this.dateSortCounter !== 2) {

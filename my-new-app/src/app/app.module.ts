@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OpenFilterMenuService } from './core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from './core/services/show-results/show-results.service';
 import { FiltersService } from './core/services/filters/filters.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HeaderComponent, MainComponent],
@@ -23,6 +24,7 @@ import { FiltersService } from './core/services/filters/filters.service';
     MainModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    FormsModule, ReactiveFormsModule
   ],
   providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
   bootstrap: [AppComponent],

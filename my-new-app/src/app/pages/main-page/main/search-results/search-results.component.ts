@@ -14,6 +14,7 @@ export class SearchResultsComponent implements DoCheck{
   searchResults: IVideoItem[] = information.items;
   isDateSort = 'none';
   isViewSort = 'none';
+  wordFilter = 'angular';
   
   constructor(public readonly filterService: FiltersService) {
   }
@@ -21,5 +22,9 @@ export class SearchResultsComponent implements DoCheck{
     this.isDateSort = this.filterService.dateSort.valueOf();
     this.isViewSort = this.filterService.viewSort.valueOf();
     this.searchResults = this.filterService.arrayResults;
+    this.filterService.keyWord$.subscribe((word:string) => {
+      this.wordFilter = word;
+       console.log(this.wordFilter);
+    }); 
   };
 }

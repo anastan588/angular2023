@@ -4,7 +4,7 @@
 <app-button (click) = "viewSort()"
   >count of views</app-button>
 <div class="sort-by-word">
-    <app-input>by word or sentance</app-input>
+    <app-input name="filterInput" [(ngModel)]="isWord" ngDefaultControl (input)="changeKeyWord()">by word or sentance</app-input>
 </div>
 
 
