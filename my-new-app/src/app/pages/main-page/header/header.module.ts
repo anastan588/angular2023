@@ -17,7 +17,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SearchInputComponent,
     UserComponent,
     SortingComponent,
-    InputComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    InputComponent,
   ],
   exports: [SearchInputComponent, UserComponent, SortingComponent],
   providers: [OpenFilterMenuService],

@@ -17,14 +17,19 @@ export class SearchResultsComponent implements DoCheck{
   wordFilter = 'angular';
   
   constructor(public readonly filterService: FiltersService) {
+    // this.searchResults = this.filterService.arrayResults;
+    // this.filterService.myMethod(this.searchResults);
+    // console.log(this.searchResults);
   }
   ngDoCheck() {
     this.isDateSort = this.filterService.dateSort.valueOf();
     this.isViewSort = this.filterService.viewSort.valueOf();
+    // console.log(this.searchResults[0].snippet.title);
     this.searchResults = this.filterService.arrayResults;
+    // console.log(this.filterService.arrayResults[0].snippet.title);
+    // console.log(this.searchResults[0].snippet.title);
     this.filterService.keyWord$.subscribe((word:string) => {
       this.wordFilter = word;
-       console.log(this.wordFilter);
     }); 
   };
 }

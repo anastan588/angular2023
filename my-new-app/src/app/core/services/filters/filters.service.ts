@@ -15,12 +15,33 @@ export class FiltersService {
   public initialArrayResults: IVideoItem[] = JSON.parse(
     JSON.stringify(information.items)
   );
+  myArray$: Observable<IVideoItem[]>;
+  private myArraySubject = new Subject<IVideoItem[]>();
+  
   public keyWord$ = new Subject<string>();
-  constructor() {}
+  constructor() {
+    this.myArray$ = this.myArraySubject.asObservable();
+  }
+myMethod(data:IVideoItem[]) {
+    console.log(data); 
+    this.myArraySubject.next(data);
+}
 
-	public changeKeyWord(word: string) {
-    this.keyWord$.next(word); 
- }
+onDoCheck() {
+  this.myArraySubject.subscribe((myArray:IVideoItem[]) => {
+    this.arrayResults = JSON.parse(
+      JSON.stringify(myArray)
+    );;
+    this.initialArrayResults = JSON.parse(
+      JSON.stringify(myArray)
+    );;
+     
+  });
+}
+
+  public changeKeyWord(word: string) {
+    this.keyWord$.next(word);
+  }
 
   public setDateSort() {
     if (this.dateSortCounter !== 2) {
@@ -48,7 +69,7 @@ export class FiltersService {
     console.log(this.viewSortCounter);
     if (this.viewSortCounter === 0) {
       this.viewSort = 'none';
-    } else if (this.viewSortCounter=== 1) {
+    } else if (this.viewSortCounter === 1) {
       this.viewSort = 'ascending';
     } else if (this.viewSortCounter === 2) {
       this.viewSort = 'descending';
@@ -59,6 +80,7 @@ export class FiltersService {
 
   sortArrayDateResults() {
     console.log(this.arrayResults[0].snippet.title);
+    console.log(this.dateSort);
     if (this.dateSort !== 'none') {
       this.arrayResults.sort((first: IVideoItem, second: IVideoItem) => {
         const firstDate = Date.parse(first.snippet.publishedAt);
@@ -68,6 +90,7 @@ export class FiltersService {
     } else {
       this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
     }
+    console.log(this.arrayResults);
     return this.arrayResults;
   }
 
@@ -79,7 +102,7 @@ export class FiltersService {
         return this.sortArray(firstView, secondView, this.viewSort);
       });
     } else {
-      this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
+      return this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
     }
     return this.arrayResults;
   }

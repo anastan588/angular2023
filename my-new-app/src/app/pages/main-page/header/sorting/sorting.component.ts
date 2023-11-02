@@ -10,6 +10,7 @@ export class SortingComponent {
   isDateSort: string;
   isViewSort: string;
   isWord: string;
+  
   constructor(private readonly filterService: FiltersService) {
     this.isDateSort = 'none';
     this.isViewSort = 'none';

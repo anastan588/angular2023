@@ -3,14 +3,15 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 
 @Pipe({
   name: 'filter',
+  pure: false
 })
 export class FilterPipe implements PipeTransform {
   transform(searchResults: IVideoItem[], value: string) {
-    console.log(searchResults);
-    console.log(value);
     const pureValue = value.trim().toLowerCase();''
-    let results;
-    results = searchResults.filter(video => {
+   
+    if (value !== undefined || value !== '') {
+      let results;
+      results = searchResults.filter(video => {
       let preResults = video.snippet.tags?.map(tag => {
           const resultTag = tag.includes(pureValue);
           return resultTag;
@@ -22,5 +23,7 @@ export class FilterPipe implements PipeTransform {
         }
       });  
     return results;
+    }
+    return searchResults;
   }
 }
