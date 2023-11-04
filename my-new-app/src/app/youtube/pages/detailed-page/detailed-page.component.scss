@@ -1,0 +1,110 @@
+.detailed-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 15px;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.video-image {
+  width: auto;
+  height: 100%;
+}
+.card-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+}
+mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.header-title {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: start;
+}
+.header-date {
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.description-title {
+  font-style: italic;
+}
+.description-text {
+  line-height: 150%;
+}
+.video-statistics {
+  display: flex;
+  gap: 20px;
+}
+.views {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.dislikes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.views-amount {
+  margin-bottom: 0px;
+}
+.likes-amount {
+  margin-bottom: 0px;
+}
+.dislikes-amount {
+  margin-bottom: 0px;
+}
+
+.comments-amount {
+  margin-bottom: 0px;
+}
+
+mat-card-footer {
+  height: 10px;
+  width: 100%;
+}
+
+.views-img {
+  max-height: 30px;
+}

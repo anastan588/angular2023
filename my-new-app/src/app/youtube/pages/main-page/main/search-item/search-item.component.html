@@ -37,7 +37,7 @@
   </mat-card-content>
   <mat-card-header>{{ video.snippet.title }}</mat-card-header>
   <mat-card-actions>
-    <app-button>more...</app-button>
+    <app-button (click)="navigateToDetailedPage()">more...</app-button>
   </mat-card-actions>
   <mat-card-footer [ngStyle]="setColorOfFooter()"></mat-card-footer>
 </mat-card>

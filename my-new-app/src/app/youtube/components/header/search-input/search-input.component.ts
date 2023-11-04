@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { Router } from '@angular/router';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 @Component({
@@ -9,7 +10,7 @@ import { ShowResultsService } from 'src/app/core/services/show-results/show-resu
 export class SearchInputComponent {
   open: boolean;
   results: true;
-  constructor(private readonly openFilterMenuService: OpenFilterMenuService, private readonly showResultsService: ShowResultsService) {
+  constructor(private readonly openFilterMenuService: OpenFilterMenuService, private readonly showResultsService: ShowResultsService, private router: Router) {
     this.open = true;
     this.results = true;
   }
@@ -18,6 +19,7 @@ export class SearchInputComponent {
     this.open = !this.open;
   }
   showResults() {
+    this.router.navigate(['main']);
     this.showResultsService.setShowResults(this.results);
   }
 }

@@ -6,6 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'my-new-app';
-  youtubeImage = './../assets/icons/youtube.png'
+
 }
