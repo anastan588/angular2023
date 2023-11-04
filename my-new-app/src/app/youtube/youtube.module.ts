@@ -15,10 +15,11 @@ import { ButtonModule } from '../shared/components/button/button.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DetailedPageComponent } from './pages/detailed-page/detailed-page.component';
 import { MatCardModule } from '@angular/material/card';
+import { NotFoundPageComponent } from './pages/not-found/not-found-page/not-found-page.component';
 
 
 @NgModule({
-  declarations: [YoutubeComponent, FooterComponent, DetailedPageComponent],
+  declarations: [YoutubeComponent, FooterComponent, DetailedPageComponent, NotFoundPageComponent],
   imports: [
     CommonModule,
     BrowserAnimationsModule,
