@@ -19,7 +19,10 @@ export class LoginPageComponent {
     Validators.pattern(/[a-z]/),
     Validators.pattern(/\d/),
   ]);
-
+  setLoginToken() {
+    console.log(this.password.value);
+    console.log(this.email.value);
+  }
   getErrorMessageForEmail() {
     if (this.email.hasError('required')) {
       return 'Please enter a login email';
@@ -29,26 +32,26 @@ export class LoginPageComponent {
   }
 
   getErrorMessageForPassword() {
-      const error = this.password.errors as ValidationErrors;
+    const error = this.password.errors as ValidationErrors;
     if (this.password.hasError('required')) {
       return 'Please enter a password';
     }
     console.log(error['pattern']['requiredPattern']);
-    if (error['pattern']['requiredPattern'] === '/\S$/') {
+    if (error['pattern']['requiredPattern'] === '/S$/') {
       return `Password must not contain trailing whitespace`;
-    } else  if (error['pattern']['requiredPattern'] === '/^\S/') {
+    } else if (error['pattern']['requiredPattern'] === '/^S/') {
       return `Password must not contain leading whitespace`;
-    } else  if (error['pattern']['requiredPattern'] === '/.{8}/') {
+    } else if (error['pattern']['requiredPattern'] === '/.{8}/') {
       return `Password must be at least 8 characters long`;
-    } else  if (error['pattern']['requiredPattern'] === '/[A-Z]/') {
+    } else if (error['pattern']['requiredPattern'] === '/[A-Z]/') {
       console.log('popke');
       return `Password must contain at least one uppercase letter (A-Z)`;
-    } else  if (error['pattern']['requiredPattern'] === '/[a-z]/') {
+    } else if (error['pattern']['requiredPattern'] === '/[a-z]/') {
       return `Password must contain at least one lowercase letter (a-z)`;
-    } else  if (error['pattern']['requiredPattern'] === '/\d/') {
+    } else if (error['pattern']['requiredPattern'] === '/d/') {
       console.log('popke');
       return `Password must contain at least one digit (0-9)`;
-    } 
+    }
     return;
   }
 }

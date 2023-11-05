@@ -35,7 +35,7 @@ onDoCheck() {
     this.initialArrayResults = JSON.parse(
       JSON.stringify(myArray)
     );;
-     
+
   });
 }
 

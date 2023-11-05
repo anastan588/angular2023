@@ -9,16 +9,18 @@ import { FiltersService } from './core/services/filters/filters.service';
 import { RouterModule } from '@angular/router';
 import { YoutubeModule } from './youtube/youtube.module';
 import { AuthModule } from './auth/auth.module';
+import { HeaderModule } from './youtube/components/header.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     RouterModule,
     AuthModule,
-    YoutubeModule,
   ],
   providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
   bootstrap: [AppComponent],

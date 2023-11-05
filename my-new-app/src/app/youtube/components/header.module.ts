@@ -17,10 +17,10 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     SearchInputComponent,
     UserComponent,
     SortingComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +33,7 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
     InputComponent,
     MatToolbarModule,
     ButtonModule,
+    InputComponent,
   ],
   exports: [
     SearchInputComponent,

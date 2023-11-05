@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DetailedPageComponent } from './detailed-page.component';
 import { MatCardModule } from '@angular/material/card';
-
+import { HeaderComponent } from '../../components/header/header.component';
 
 
 @NgModule({
-  declarations: [DetailedPageComponent],
+  declarations: [],
   imports: [
     CommonModule,
-    MatCardModule
+    MatCardModule, 
   ]
 })
 export class DetailedPageModule { }
