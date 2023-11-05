@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InputComponent } from 'src/app/shared/components/input/input.component';
 import { FormControl, ValidationErrors, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-login-page',
@@ -19,9 +20,13 @@ export class LoginPageComponent {
     Validators.pattern(/[a-z]/),
     Validators.pattern(/\d/),
   ]);
+  constructor(private readonly authService: AuthService) {
+
+  }
   setLoginToken() {
     console.log(this.password.value);
     console.log(this.email.value);
+    this.authService.setLoginAndPassword(this.email.value as string, this.password.value as string);
   }
   getErrorMessageForEmail() {
     if (this.email.hasError('required')) {
