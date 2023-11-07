@@ -22,24 +22,8 @@ export class SearchItemComponent {
     this.colorOfFooter = {};
   }
 
-  setColorOfFooter() {
-    this.dataPublication = new Date(this.video.snippet.publishedAt);
-    this.timePublication =
-      this.todayDate.getTime() - this.dataPublication.getTime();
-    const days = this.timePublication / (1000 * 60 * 60 * 24);
-    if (days > 180) {
-      return { 'background-color': '#cf222e' };
-    } else if (days <= 180 && days > 30) {
-      return { 'background-color': '#d4a72c' };
-    } else if (days <= 30 && days >= 7) {
-      return { 'background-color': '#2da44e' };
-    } else if (days <= 7 && days >= 0) {
-      return { 'background-color': '#218bff' };
-    }
-    return { 'background-color': '#cf222e' };
-  }
  navigateToDetailedPage() {
   this.detailedService.setCurrentVideo(this.video);
-  this.router.navigate(['detailed', this.video.id]);
+  this.router.navigate(['detailed', this.video.id, ]);
  }
 }

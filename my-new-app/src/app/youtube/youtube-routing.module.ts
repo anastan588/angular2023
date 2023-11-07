@@ -10,6 +10,7 @@ const routesYoutube: Routes = [
     children: [
       {
         path: 'login',
+        canActivate: [loginGuard],
         loadChildren: () =>
           import('./pages/login-page/login-page.module').then(
             m => m.LoginPageModule
@@ -17,7 +18,6 @@ const routesYoutube: Routes = [
       },
       {
         path: 'main',
-        canActivate: [loginGuard],
         loadChildren: () =>
           import('./pages/main-page/main.module').then(m => m.MainModule),
       },

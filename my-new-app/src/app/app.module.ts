@@ -15,11 +15,10 @@ import { CommonModule } from '@angular/common';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { DetailedPageModule } from './youtube/pages/detailed-page/detailed-page.module';
 import { NotFoundPageModule } from './youtube/pages/not-found/not-found-page.module';
-import { BordersItemsDirective } from './shared/borders-items.directive';
-
+import { BordersItemsDirective } from './shared/directives/borders-items.directive';
 
 @NgModule({
-  declarations: [AppComponent, BordersItemsDirective],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

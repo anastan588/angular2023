@@ -10,12 +10,13 @@ import { NotFoundPageComponent } from './not-found-page.component';
 
 
 @NgModule({
-  declarations: [FooterComponent, NotFoundPageComponent],
+  declarations: [NotFoundPageComponent],
   imports: [
     CommonModule,
     RouterModule,
     NotFoundRoutingModule,
     HeaderModule,
+    FooterComponent
   ]
 })
 export class NotFoundPageModule { }

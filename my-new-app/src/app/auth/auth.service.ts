@@ -23,6 +23,6 @@ export class AuthService {
     this.loginToken.password = this.password;
     localStorage.setItem('login', JSON.stringify(this.loginToken));
     console.log(localStorage.getItem('login'));
-    this.router.navigate(['main']);
+    this.router.navigate(['']);
   }
 }

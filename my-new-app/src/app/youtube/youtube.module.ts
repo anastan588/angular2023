@@ -16,11 +16,12 @@ import { ButtonModule } from '../shared/components/button/button.module';
 import { YoutubeRoutingModule } from './youtube-routing.module';
 import { DetailedPageModule } from './pages/detailed-page/detailed-page.module';
 import { MainModule } from './pages/main-page/main.module';
+import { BordersItemsDirective } from '../shared/directives/borders-items.directive';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
     YoutubeComponent,
-    FooterComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +34,8 @@ import { MainModule } from './pages/main-page/main.module';
     ButtonModule,
     HeaderModule,
     YoutubeRoutingModule,
+    FooterComponent,
+    BordersItemsDirective
   ],
   exports: [RouterModule],
 })

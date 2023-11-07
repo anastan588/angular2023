@@ -11,6 +11,9 @@ import { SearchItemComponent } from './search-item/search-item.component';
 import { MainComponent } from './main.component';
 import { MainRoutingModule } from './main-routing.module';
 import { RouterModule } from '@angular/router';
+import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.directive';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,7 @@ import { RouterModule } from '@angular/router';
     FilterPipe,
     SearchResultsComponent,
     MainComponent,
+    SortingPipe
   ],
   imports: [
     CommonModule,
@@ -26,6 +30,7 @@ import { RouterModule } from '@angular/router';
     ButtonModule,
     MainRoutingModule,
     RouterModule,
+    BordersItemsDirective,
   ],
   exports: [SearchItemComponent],
 })
