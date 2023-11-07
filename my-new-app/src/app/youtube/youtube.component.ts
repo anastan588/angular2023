@@ -8,6 +8,6 @@ import { Component } from '@angular/core';
 })
 export class YoutubeComponent {
   constructor() {
-    console.log('tube component');
+    console.log('youtube component');
   }
 }

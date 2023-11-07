@@ -11,14 +11,15 @@ import { LoginPageModule } from './youtube/pages/login-page/login-page.module';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./youtube/youtube.module').then(m => m.YoutubeModule),
-  },
-  {
-    path: '',
     redirectTo: '',
     pathMatch: 'full',
   },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./youtube/youtube.module').then(m => m.YoutubeModule),
+  },
+
   {
     path: '**',
     loadChildren: () =>

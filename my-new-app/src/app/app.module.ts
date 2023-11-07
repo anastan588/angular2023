@@ -15,16 +15,16 @@ import { CommonModule } from '@angular/common';
 import { YoutubeComponent } from './youtube/youtube.component';
 import { DetailedPageModule } from './youtube/pages/detailed-page/detailed-page.module';
 import { NotFoundPageModule } from './youtube/pages/not-found/not-found-page.module';
+import { BordersItemsDirective } from './shared/borders-items.directive';
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, BordersItemsDirective],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     RouterModule,
-    AuthModule,
   ],
   providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
   bootstrap: [AppComponent],

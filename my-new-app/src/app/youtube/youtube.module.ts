@@ -21,8 +21,6 @@ import { MainModule } from './pages/main-page/main.module';
   declarations: [
     YoutubeComponent,
     FooterComponent,
-    DetailedPageComponent,
-    NotFoundPageComponent,
   ],
   imports: [
     CommonModule,
@@ -31,18 +29,15 @@ import { MainModule } from './pages/main-page/main.module';
     AuthModule,
     RouterModule,
     MatButtonModule,
-    LoginPageModule,
-    DetailedPageModule,
     MatCardModule,
     ButtonModule,
     HeaderModule,
     YoutubeRoutingModule,
-    MainModule
   ],
   exports: [RouterModule],
 })
 export class YoutubeModule {
   constructor() {
-    console.log('youtube');
+    console.log('youtube module');
   }
 }

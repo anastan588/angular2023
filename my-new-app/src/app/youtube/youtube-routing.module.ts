@@ -7,25 +7,28 @@ const routesYoutube: Routes = [
   {
     path: '',
     component: YoutubeComponent,
-  },
-  {
-    path: 'login',
-    loadChildren: () =>
-      import('./pages/login-page/login-page.module').then(
-        m => m.LoginPageModule
-      ),
-  },
-  {
-    path: 'main',
-    loadChildren: () =>
-      import('./pages/main-page/main.module').then(m => m.MainModule),
-  },
-  {
-    path: 'detailed/:id',
-    loadChildren: () =>
-      import('./pages/detailed-page/detailed-page.module').then(
-        m => m.DetailedPageModule
-      ),
+    children: [
+      {
+        path: 'login',
+        loadChildren: () =>
+          import('./pages/login-page/login-page.module').then(
+            m => m.LoginPageModule
+          ),
+      },
+      {
+        path: 'main',
+        canActivate: [loginGuard],
+        loadChildren: () =>
+          import('./pages/main-page/main.module').then(m => m.MainModule),
+      },
+      {
+        path: 'detailed/:id',
+        loadChildren: () =>
+          import('./pages/detailed-page/detailed-page.module').then(
+            m => m.DetailedPageModule
+          ),
+      },
+    ],
   },
 ];
 

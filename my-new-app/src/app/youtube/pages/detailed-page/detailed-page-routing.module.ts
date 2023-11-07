@@ -5,7 +5,7 @@ import { DetailedPageComponent } from './detailed-page.component';
 
 const routesDetailed: Routes = [
   {
-    path: 'detailed/:id',
+    path: '',
     component: DetailedPageComponent,
   },
 

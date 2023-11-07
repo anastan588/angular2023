@@ -10,6 +10,7 @@ import { ShowResultsService } from 'src/app/core/services/show-results/show-resu
 export class SearchInputComponent {
   open: boolean;
   results: true;
+  event!: Event;
   constructor(private readonly openFilterMenuService: OpenFilterMenuService, private readonly showResultsService: ShowResultsService, private router: Router) {
     this.open = true;
     this.results = true;
