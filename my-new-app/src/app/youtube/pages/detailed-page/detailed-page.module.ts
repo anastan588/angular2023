@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { HeaderComponent } from '../../components/header/header.component';
+import { RouterModule } from '@angular/router';
+import { DetailedRoutingModule } from './detailed-page-routing.module';
 
 
 @NgModule({
@@ -9,6 +10,8 @@ import { HeaderComponent } from '../../components/header/header.component';
   imports: [
     CommonModule,
     MatCardModule, 
+    RouterModule,
+    DetailedRoutingModule
   ]
 })
 export class DetailedPageModule { }

@@ -7,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./youtube.component.scss']
 })
 export class YoutubeComponent {
-  
+  constructor() {
+    console.log('tube component');
+  }
 }

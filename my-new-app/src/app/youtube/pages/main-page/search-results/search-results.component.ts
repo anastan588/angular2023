@@ -1,5 +1,5 @@
 import { Component, DoCheck } from '@angular/core';
-import information from './../../../../../core/store/data/response.json';
+import information from './../../../../core/store/data/response.json';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
 

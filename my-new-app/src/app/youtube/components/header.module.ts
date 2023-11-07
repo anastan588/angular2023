@@ -21,10 +21,10 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
     UserComponent,
     SortingComponent,
     HeaderComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
-    BrowserModule,
     MatInputModule,
     MatIconModule,
     MatButtonModule,

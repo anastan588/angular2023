@@ -9,16 +9,28 @@ import { FormsModule } from '@angular/forms';
 import { LoginPageComponent } from 'src/app/youtube/pages/login-page/login-page.component';
 import { SearchItemComponent } from './search-item/search-item.component';
 import { MainComponent } from './main.component';
+import { MainRoutingModule } from './main-routing.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [MainComponent, SearchItemComponent, FilterPipe, SearchResultsComponent],
+  declarations: [
+    SearchItemComponent,
+    FilterPipe,
+    SearchResultsComponent,
+    MainComponent,
+  ],
   imports: [
-    BrowserModule,
     CommonModule,
     FormsModule,
     MatCardModule,
     ButtonModule,
+    MainRoutingModule,
+    RouterModule,
   ],
   exports: [SearchItemComponent],
 })
-export class MainModule {}
+export class MainModule {
+  constructor() {
+    console.log('main');
+  }
+}

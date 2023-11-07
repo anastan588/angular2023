@@ -27,7 +27,8 @@ app-search-input {
 
 app-user {
   display: flex;
-  gap: 15px
+  gap: 15px;
+  cursor: pointer;
 }
 
 app-sorting {

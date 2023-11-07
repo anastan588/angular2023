@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { RouterModule } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from 'src/app/auth/auth.module';
-import { MainModule } from './pages/main-page/main/main.module';
 import { YoutubeComponent } from './youtube.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderModule } from './components/header.module';
@@ -14,8 +12,10 @@ import { LoginPageModule } from './pages/login-page/login-page.module';
 import { DetailedPageComponent } from './pages/detailed-page/detailed-page.component';
 import { MatCardModule } from '@angular/material/card';
 import { NotFoundPageComponent } from './pages/not-found/not-found-page.component';
-import { HeaderComponent } from './components/header/header.component';
 import { ButtonModule } from '../shared/components/button/button.module';
+import { YoutubeRoutingModule } from './youtube-routing.module';
+import { DetailedPageModule } from './pages/detailed-page/detailed-page.module';
+import { MainModule } from './pages/main-page/main.module';
 
 @NgModule({
   declarations: [
@@ -26,18 +26,23 @@ import { ButtonModule } from '../shared/components/button/button.module';
   ],
   imports: [
     CommonModule,
-    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     AuthModule,
     RouterModule,
-    MainModule,
     MatButtonModule,
     LoginPageModule,
+    DetailedPageModule,
     MatCardModule,
+    ButtonModule,
     HeaderModule,
-    ButtonModule
+    YoutubeRoutingModule,
+    MainModule
   ],
   exports: [RouterModule],
 })
-export class YoutubeModule {}
+export class YoutubeModule {
+  constructor() {
+    console.log('youtube');
+  }
+}

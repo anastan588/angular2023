@@ -9,9 +9,27 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { LoginRoutingModule } from './login-page-routing';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [LoginPageComponent],
-  imports: [CommonModule, MatCardModule, InputComponent, ButtonModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatIconModule, MatButtonModule]
+  imports: [
+    CommonModule,
+    MatCardModule,
+    InputComponent,
+    ButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatButtonModule,
+    LoginRoutingModule,
+    RouterModule,
+  ],
 })
-export class LoginPageModule {}
+export class LoginPageModule {
+  constructor() {
+    console.log('login');
+  }
+}
