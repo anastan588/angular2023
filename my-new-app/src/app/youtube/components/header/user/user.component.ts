@@ -14,7 +14,7 @@ export class UserComponent {
   if(!localStorage.getItem('login')) {
     this.router.navigate(['./login']);
   } else {
-    this.router.navigate([''])
+    // this.router.navigate([''])
   }
  }
 }

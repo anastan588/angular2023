@@ -8,8 +8,7 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 export class SortingPipe implements PipeTransform {
 
   transform(searchResults: IVideoItem[], isDateSort: string, isViewSort: string, initialArrayResults: IVideoItem): unknown {
-
-    
+   
   if (isDateSort !== 'none') {
       searchResults.sort((first: IVideoItem, second: IVideoItem) => {
         const firstDate = Date.parse(first.snippet.publishedAt);
