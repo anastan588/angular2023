@@ -9,11 +9,13 @@ export class AuthService {
   login!: string;
   password!: string;
   loginToken: ILoginAuth;
+  loginName: string;
   constructor(private router: Router) {
     this.loginToken = {
       login: '',
       password: '',
     };
+    this.loginName = "Login"
   }
 
   setLoginAndPassword(loginValue: string, passwordValue: string) {
@@ -23,6 +25,7 @@ export class AuthService {
     this.loginToken.password = this.password;
     localStorage.setItem('login', JSON.stringify(this.loginToken));
     console.log(localStorage.getItem('login'));
+    this.loginName = 'LogOut';
     this.router.navigate(['']);
   }
 }

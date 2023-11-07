@@ -1,20 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
 })
 export class UserComponent {
- constructor(private router: Router) {
-
- }
- navigateToLogin () {
-  if(!localStorage.getItem('login')) {
-    this.router.navigate(['./login']);
-  } else {
-    // this.router.navigate([''])
+  userName: string;
+  constructor(
+    private router: Router,
+    private readonly authService: AuthService
+  ) {
+    if (!localStorage.getItem('login')) {
+      this.userName = 'Login';
+    } else {
+      this.userName = 'Logout';
+    }
   }
- }
+  navigateToLogin() {
+    if (!localStorage.getItem('login')) {
+      this.router.navigate(['./login']);
+    } else {
+      this.userName = 'Login';
+      this.authService.loginName = 'Login';
+      localStorage.removeItem('login');
+      this.router.navigate([''])
+    }
+  }
+  ngDoCheck(): void {
+    console.log('checkLogin');
+    this.userName = this.authService.loginName.valueOf();
+    console.log(this.userName);
+  }
 }
