@@ -30,7 +30,8 @@ import { HeaderComponent } from '../shared/components/header/header.component';
     RouterModule,
     YoutubeRoutingModule,
     FooterComponent,
-    HeaderModule
+    HeaderModule,
+    SharedModule
   ],
   exports: [RouterModule],
   providers: [],
