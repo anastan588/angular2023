@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { NotFoundRoutingModule } from './not-found-routing.module';
-import { FooterComponent } from '../../components/footer/footer.component';
-import { HeaderModule } from '../../components/header.module';
 import { NotFoundPageComponent } from './not-found-page.component';
-
-
+import { MatCardModule } from '@angular/material/card';
+import { HeaderComponent } from 'src/app/shared/components/header/header.component';
+import { HeaderModule } from 'src/app/shared/components/header.module';
+import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [NotFoundPageComponent],
@@ -15,8 +14,7 @@ import { NotFoundPageComponent } from './not-found-page.component';
     CommonModule,
     RouterModule,
     NotFoundRoutingModule,
-    HeaderModule,
-    FooterComponent
+    HeaderModule,FooterComponent
   ]
 })
 export class NotFoundPageModule { }

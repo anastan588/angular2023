@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthModule } from 'src/app/auth/auth.module';
 import { YoutubeComponent } from './youtube.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { HeaderModule } from './components/header.module';
 import { MatButtonModule } from '@angular/material/button';
 import { LoginPageModule } from './pages/login-page/login-page.module';
 import { DetailedPageComponent } from './pages/detailed-page/detailed-page.component';
@@ -18,26 +16,24 @@ import { DetailedPageModule } from './pages/detailed-page/detailed-page.module';
 import { MainModule } from './pages/main-page/main.module';
 import { BordersItemsDirective } from '../shared/directives/borders-items.directive';
 import { SharedModule } from '../shared/shared.module';
+import { HeaderModule } from '../shared/components/header.module';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { FiltersService } from '../core/services/filters/filters.service';
+import { HeaderComponent } from '../shared/components/header/header.component';
 
 @NgModule({
-  declarations: [
-    YoutubeComponent,
-  ],
+  declarations: [YoutubeComponent],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AuthModule,
     RouterModule,
-    MatButtonModule,
-    MatCardModule,
-    ButtonModule,
-    HeaderModule,
     YoutubeRoutingModule,
     FooterComponent,
-    BordersItemsDirective
+    HeaderModule
   ],
   exports: [RouterModule],
+  providers: [],
 })
 export class YoutubeModule {
   constructor() {

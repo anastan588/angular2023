@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { SearchInputComponent } from './header/search-input/search-input.component';
 import { UserComponent } from './header/user/user.component';
@@ -13,14 +12,13 @@ import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-fi
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+
 
 @NgModule({
   declarations: [
     SearchInputComponent,
     UserComponent,
     SortingComponent,
-    HeaderComponent,
     HeaderComponent,
   ],
   imports: [
@@ -39,7 +37,7 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
     SearchInputComponent,
     UserComponent,
     SortingComponent,
-    HeaderComponent,
+    HeaderComponent
   ],
   providers: [OpenFilterMenuService],
 })
