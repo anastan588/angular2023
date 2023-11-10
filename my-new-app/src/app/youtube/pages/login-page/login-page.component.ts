@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
-import { InputComponent } from 'src/app/shared/components/input/input.component';
-import { FormControl, ValidationErrors, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -9,54 +14,102 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent {
+  @Output()
+public clickEmitter = new EventEmitter();
   hide = true;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/\S$/),
-    Validators.pattern(/^\S/),
-    Validators.pattern(/.{8}/),
-    Validators.pattern(/[A-Z]/),
-    Validators.pattern(/[a-z]/),
-    Validators.pattern(/\d/),
-  ]);
-  constructor(private readonly authService: AuthService) {
+  loginForm = this.fb.group({
+    email: ['', { validators: [Validators.required, Validators.email] }],
+    password: [
+      '',
+      {
+        validators: [
+          Validators.required,
+          Validators.pattern(/\S$/),
+          Validators.pattern(/^\S/),
+          Validators.pattern(/.{8}/),
+          Validators.pattern(/[A-Z]/),
+          Validators.pattern(/[a-z]/),
+          Validators.pattern(/\d/),
+        ],
+      },
+    ],
+  });
+  constructor(
+    private readonly authService: AuthService,
+    private fb: FormBuilder
+  ) {}
+  get _email() {
+    return this.loginForm.get('email');
+  }
 
+  get _password() {
+    return this.loginForm.get('password');
   }
+
   setLoginToken() {
-    console.log(this.password.value);
-    console.log(this.email.value);
-    this.authService.setLoginAndPassword(this.email.value as string, this.password.value as string);
+    console.log('clicklogin')
+    const email = this.loginForm.get('email')!.value;
+    const password = this.loginForm.get('password')!.value;
+    this.authService.setLoginAndPassword(email!, password!);
   }
+
   getErrorMessageForEmail() {
-    if (this.email.hasError('required')) {
+    console.log(this.loginForm.get('email')!.value);
+    if (this.loginForm.get('email')!.hasError('required')) {
       return 'Please enter a login email';
     }
-
-    return this.email.hasError('email') ? 'The login email is invalid' : '';
+    return this.loginForm.get('email')!.hasError('email')
+      ? 'The login email is invalid'
+      : '';
   }
 
   getErrorMessageForPassword() {
-    const error = this.password.errors as ValidationErrors;
-    if (this.password.hasError('required')) {
+    if (this.loginForm.get('password')!.hasError('required')) {
       return 'Please enter a password';
     }
-    console.log(error['pattern']['requiredPattern']);
-    if (error['pattern']['requiredPattern'] === '/S$/') {
-      return `Password must not contain trailing whitespace`;
-    } else if (error['pattern']['requiredPattern'] === '/^S/') {
-      return `Password must not contain leading whitespace`;
-    } else if (error['pattern']['requiredPattern'] === '/.{8}/') {
-      return `Password must be at least 8 characters long`;
-    } else if (error['pattern']['requiredPattern'] === '/[A-Z]/') {
-      console.log('popke');
-      return `Password must contain at least one uppercase letter (A-Z)`;
-    } else if (error['pattern']['requiredPattern'] === '/[a-z]/') {
-      return `Password must contain at least one lowercase letter (a-z)`;
-    } else if (error['pattern']['requiredPattern'] === '/d/') {
-      console.log('popke');
-      return `Password must contain at least one digit (0-9)`;
+
+    if (this.loginForm.get('password')!.getError('pattern')) {
+      console.log(
+        this.loginForm.get('password')!.getError('pattern').requiredPattern
+      );
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
+        '/S$/'
+      ) {
+        return `Password must not contain trailing whitespace`;
+      } 
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
+        '/^S/'
+      ) {
+        return `Password must not contain leading whitespace`;
+      } 
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
+        '/.{8}/'
+      ) {
+        return `Password must be at least 8 characters long`;
+      } 
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
+        '/[A-Z]/'
+      ) {
+        return `Password must contain at least one uppercase letter (A-Z)`;
+      } 
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
+        '/[a-z]/'
+      ) {
+        return `Password must contain at least one lowercase letter (a-z)`;
+      } 
+      if (
+        this.loginForm.get('password')!.getError('pattern').requiredPattern
+          .value == '/d/'
+      ) {
+        return `Password must contain at least one digit (0-9)`;
+      }
     }
+
     return;
   }
 }

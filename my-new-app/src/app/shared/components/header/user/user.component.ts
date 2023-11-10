@@ -21,12 +21,14 @@ export class UserComponent {
   }
   navigateToLogin() {
     if (!localStorage.getItem('login')) {
+      console.log('login default');
       this.router.navigate(['./login']);
     } else {
       this.userName = 'Login';
+      console.log('logot default');
       this.authService.loginName = 'Login';
       localStorage.removeItem('login');
-      this.router.navigate([''])
+      this.router.navigate(['']);
     }
   }
   ngDoCheck(): void {
