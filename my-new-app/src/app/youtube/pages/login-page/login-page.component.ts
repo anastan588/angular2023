@@ -14,8 +14,6 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent {
-  @Output()
-public clickEmitter = new EventEmitter();
   hide = true;
   loginForm = this.fb.group({
     email: ['', { validators: [Validators.required, Validators.email] }],
@@ -47,14 +45,12 @@ public clickEmitter = new EventEmitter();
   }
 
   setLoginToken() {
-    console.log('clicklogin')
     const email = this.loginForm.get('email')!.value;
     const password = this.loginForm.get('password')!.value;
     this.authService.setLoginAndPassword(email!, password!);
   }
 
   getErrorMessageForEmail() {
-    console.log(this.loginForm.get('email')!.value);
     if (this.loginForm.get('email')!.hasError('required')) {
       return 'Please enter a login email';
     }

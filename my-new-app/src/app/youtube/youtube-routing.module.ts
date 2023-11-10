@@ -23,6 +23,12 @@ const routesYoutube: Routes = [
           import('./pages/main-page/main.module').then(m => m.MainModule),
       },
       {
+        path: 'admin',
+        canActivate: [loginGuard],
+        loadChildren: () =>
+          import('./pages/admin-page/admin-page.module').then(m => m.AdminPageModule),
+      },
+      {
         path: 'detailed/:id',
         loadChildren: () =>
           import('./pages/detailed-page/detailed-page.module').then(

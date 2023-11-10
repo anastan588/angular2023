@@ -31,6 +31,5 @@ import { RouterModule } from '@angular/router';
 })
 export class LoginPageModule {
   constructor() {
-    console.log('login');
   }
 }

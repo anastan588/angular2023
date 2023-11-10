@@ -10,8 +10,8 @@ export class ButtonComponent {
   @Input() disabled!: boolean;
   public proxyClick(event: MouseEvent): void {
     if (this.disabled) {
-        event.stopImmediatePropagation();
-        event.stopPropagation();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
     }
-}
+  }
 }
