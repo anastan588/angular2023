@@ -22,6 +22,11 @@ const routes: Routes = [
         m => m.NotFoundPageModule
       ),
   },
+  {
+    path: '',
+    redirectTo: 'main',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
