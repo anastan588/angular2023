@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DetailedService } from 'src/app/core/services/detailed/detailed.service';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.directive';
 
 @Component({
   selector: 'app-detailed-page',
