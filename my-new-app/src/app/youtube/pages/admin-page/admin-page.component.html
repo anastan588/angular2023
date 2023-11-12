@@ -54,7 +54,7 @@
           getErrorMessageForDate()
         }}</mat-error>
       </mat-form-field>
-      <div formArrayName="tags">
+      <div class="tags" formArrayName="tags">
         <mat-card-header>Tags</mat-card-header>
         <div *ngFor="let tag of getFormsTags()['controls']; let i = index">
           <mat-form-field>
@@ -65,6 +65,9 @@
               formControlName="{{i}}"
               required />
           </mat-form-field>
+          <mat-error *ngIf="isInvalidTag(i) && isTouchedTag(i)">{{
+            getErrorMessageForTag(i)
+          }}</mat-error>
         </div>
       </div>
       <app-button>Reset</app-button>

@@ -42,7 +42,7 @@ export class AdminPageComponent {
         validators: [Validators.required],
       },
     ],
-    tags: new FormArray([new FormControl('',Validators.required )]),
+    tags: new FormArray([new FormControl('', Validators.required)]),
   });
 
   minDate: Date;
@@ -73,8 +73,8 @@ export class AdminPageComponent {
     return this.adminForm.get('date');
   }
 
-  get _i() {
-    return this.adminForm.controls['tags'];
+  get _tags() {
+    return this.adminForm.controls['tags'].get('tag');
   }
 
   getErrorMessageForTitle() {
@@ -111,8 +111,8 @@ export class AdminPageComponent {
     return;
   }
 
-  getErrorMessageForTag() {
-    if (this.adminForm.controls['tags'].get('tag')!.hasError('required')) {
+  getErrorMessageForTag(i: number) {
+    if (this.adminForm.controls['tags'].controls[i].hasError('required')) {
       return 'Please enter a tag';
     }
     return;
@@ -126,11 +126,22 @@ export class AdminPageComponent {
   }
 
   addTagField() {
-    (<FormArray>this.adminForm.controls['tags']).push(
-      new FormControl('', Validators.required)
-    );
+    if (this.adminForm.controls['tags'].length < 5) {
+      (<FormArray>this.adminForm.controls['tags']).push(
+        new FormControl('', Validators.required)
+      );
+    }
   }
   getFormsTags(): FormArray {
     return this.adminForm.controls['tags'] as FormArray;
+  }
+
+  isInvalidTag(i: number): boolean {
+    console.log(this.adminForm.controls['tags'].controls[i]);
+    return this.adminForm.controls['tags'].controls[i].hasError('required');
+  }
+
+  isTouchedTag(i: number): boolean {
+    return this.adminForm.controls['tags'].controls[i].touched;
   }
 }
