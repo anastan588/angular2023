@@ -70,10 +70,11 @@
           }}</mat-error>
         </div>
       </div>
-      <app-button>Reset</app-button>
+      
     </mat-card-content>
     <mat-card-actions>
       <app-button (click)="addTagField()">Add tag</app-button>
+      <app-button (click)="resetAdminForm()">Reset</app-button>
       <app-button
         (click)="setAdminNewVideoToken()"
         [disabled]="adminForm.invalid"

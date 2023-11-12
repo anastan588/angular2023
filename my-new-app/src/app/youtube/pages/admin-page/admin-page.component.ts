@@ -144,4 +144,11 @@ export class AdminPageComponent {
   isTouchedTag(i: number): boolean {
     return this.adminForm.controls['tags'].controls[i].touched;
   }
+
+  resetAdminForm() {
+    while (this.adminForm.controls['tags'].length !== 1) {
+      this.adminForm.controls['tags'].removeAt(0);
+    }
+    return this.adminForm.reset();
+  }
 }
