@@ -15,7 +15,12 @@ export class AuthService {
       login: '',
       password: '',
     };
-    this.loginName = "Login"
+    this.loginName = ""
+
+    this.loginName = 'Login';
+    if (localStorage.getItem('login')) {
+      this.loginName = 'Logout';
+    } 
   }
 
   setLoginAndPassword(loginValue: string, passwordValue: string) {

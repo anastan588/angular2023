@@ -8,7 +8,13 @@ const routesMain: Routes = [
     path: '',
     component: MainComponent,
   },
-
+  {
+    path: 'detailed/:id',
+    loadChildren: () =>
+      import('./../detailed-page/detailed-page.module').then(
+        m => m.DetailedPageModule
+      ),
+  },
 ];
 
 @NgModule({

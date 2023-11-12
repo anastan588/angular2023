@@ -26,15 +26,17 @@ const routesYoutube: Routes = [
         path: 'admin',
         canActivate: [loginGuard],
         loadChildren: () =>
-          import('./pages/admin-page/admin-page.module').then(m => m.AdminPageModule),
-      },
-      {
-        path: 'detailed/:id',
-        loadChildren: () =>
-          import('./pages/detailed-page/detailed-page.module').then(
-            m => m.DetailedPageModule
+          import('./pages/admin-page/admin-page.module').then(
+            m => m.AdminPageModule
           ),
       },
+      // {
+      //   path: 'detailed/:id',
+      //   loadChildren: () =>
+      //     import('./pages/detailed-page/detailed-page.module').then(
+      //       m => m.DetailedPageModule
+      //     ),
+      // },
     ],
   },
 ];

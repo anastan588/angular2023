@@ -13,11 +13,7 @@ export class UserComponent {
     private router: Router,
     private readonly authService: AuthService
   ) {
-    if (!localStorage.getItem('login')) {
-      this.userName = 'Login';
-    } else {
-      this.userName = 'Logout';
-    }
+    this.userName = '';
   }
   navigateToLogin() {
     if (!localStorage.getItem('login')) {
@@ -25,15 +21,15 @@ export class UserComponent {
       this.router.navigate(['./login']);
     } else {
       this.userName = 'Login';
-      console.log('logot default');
+      console.log('logout default');
       this.authService.loginName = 'Login';
       localStorage.removeItem('login');
       this.router.navigate(['']);
     }
   }
   ngDoCheck(): void {
-    console.log('checkLogin');
+    // console.log('checkLogin');
     this.userName = this.authService.loginName.valueOf();
-    console.log(this.userName);
+    // console.log(this.userName);
   }
 }

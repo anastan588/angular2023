@@ -21,6 +21,6 @@ export class SearchInputComponent {
   }
   showResults() {
     this.router.navigate(['main']);
-    this.showResultsService.setShowResults(this.results);
+    // this.showResultsService.setShowResults(this.results);
   }
 }
