@@ -12,13 +12,14 @@ import { RouterModule } from '@angular/router';
 import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.directive';
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 import { HeaderModule } from 'src/app/shared/components/header.module';
+import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
 
 @NgModule({
   declarations: [
     SearchItemComponent,
     SearchResultsComponent,
     MainComponent,
-    FilterPipe,
+    FilterPipe
   ],
   imports: [
     CommonModule,

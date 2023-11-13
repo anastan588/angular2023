@@ -18,7 +18,6 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
     YoutubeRoutingModule,
     FooterComponent,
     HeaderModule,
-    SharedModule
   ],
   exports: [RouterModule],
   providers: [],

@@ -9,6 +9,8 @@ import { RouterModule } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +21,7 @@ import { CoreModule } from './core/core.module';
     RouterModule,
     CoreModule,
     AuthModule,
+    HttpClientModule
   ],
   providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
   bootstrap: [AppComponent],

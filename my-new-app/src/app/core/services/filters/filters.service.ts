@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import information from './../../../core/store/data/response.json';
 import { IVideoItem } from '../../store/models/video-item';
 import { Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,33 +12,41 @@ export class FiltersService {
   public dateSortCounter: number = 0;
   public viewSort: string = 'none';
   public viewSortCounter: number = 0;
+
+  private ApiKey = 'AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY';
+  public url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY`;
+
   public arrayResults: IVideoItem[] = information.items;
+
   public initialArrayResults: IVideoItem[] = JSON.parse(
     JSON.stringify(information.items)
   );
+
+  public itemsArray = new Subject<IVideoItem[]>();
+
   myArray$: Observable<IVideoItem[]>;
   private myArraySubject = new Subject<IVideoItem[]>();
-  
+
   public keyWord$ = new Subject<string>();
-  constructor() {
+
+  constructor(private http: HttpClient) {
     this.myArray$ = this.myArraySubject.asObservable();
+
+    http.get(this.url).subscribe(data => {
+      console.log(data);
+    });
   }
-myMethod(data:IVideoItem[]) {
-    console.log(data); 
+  myMethod(data: IVideoItem[]) {
+    console.log(data);
     this.myArraySubject.next(data);
-}
+  }
 
-onDoCheck() {
-  this.myArraySubject.subscribe((myArray:IVideoItem[]) => {
-    this.arrayResults = JSON.parse(
-      JSON.stringify(myArray)
-    );;
-    this.initialArrayResults = JSON.parse(
-      JSON.stringify(myArray)
-    );;
-
-  });
-}
+  onDoCheck() {
+    this.myArraySubject.subscribe((myArray: IVideoItem[]) => {
+      this.arrayResults = JSON.parse(JSON.stringify(myArray));
+      this.initialArrayResults = JSON.parse(JSON.stringify(myArray));
+    });
+  }
 
   public changeKeyWord(word: string) {
     this.keyWord$.next(word);
@@ -102,7 +111,9 @@ onDoCheck() {
         return this.sortArray(firstView, secondView, this.viewSort);
       });
     } else {
-      return this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
+      return (this.arrayResults = JSON.parse(
+        JSON.stringify(this.initialArrayResults)
+      ));
     }
     return this.arrayResults;
   }

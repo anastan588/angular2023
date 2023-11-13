@@ -30,13 +30,6 @@ const routesYoutube: Routes = [
             m => m.AdminPageModule
           ),
       },
-      // {
-      //   path: 'detailed/:id',
-      //   loadChildren: () =>
-      //     import('./pages/detailed-page/detailed-page.module').then(
-      //       m => m.DetailedPageModule
-      //     ),
-      // },
     ],
   },
 ];
