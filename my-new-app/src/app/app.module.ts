@@ -10,7 +10,9 @@ import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ApiService } from './core/services/api/api.service';
+import { ApiInterceptor } from './core/interceptors/api.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,9 +23,15 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule,
     CoreModule,
     AuthModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [OpenFilterMenuService, ShowResultsService, FiltersService],
+  providers: [
+    OpenFilterMenuService,
+    ShowResultsService,
+    FiltersService,
+    ApiService,
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

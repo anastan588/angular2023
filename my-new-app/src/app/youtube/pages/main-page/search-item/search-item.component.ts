@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { Router } from '@angular/router';
-import { DetailedService } from 'src/app/core/services/detailed/detailed.service';
+import { ApiService } from 'src/app/core/services/api/api.service';
 
 @Component({
   selector: 'app-search-item',
@@ -15,15 +15,19 @@ export class SearchItemComponent {
   timePublication!: number;
   todayDate: Date;
   colorOfFooter: Record<string, string> = {};
-  constructor(private router: Router, private readonly detailedService: DetailedService) {
+  constructor(
+    private router: Router,
+    private readonly apiService: ApiService
+  ) {
     this.dataPublication;
     this.timePublication;
     this.todayDate = new Date();
     this.colorOfFooter = {};
   }
 
- navigateToDetailedPage() {
-  this.detailedService.setCurrentVideo(this.video);
-  // this.router.navigate(['detailed', this.video.id]);
- }
+  navigateToDetailedPage() {
+    // this.detailedService.setCurrentVideo(this.video);
+    this.apiService.getVideoDetailsFromYouTubeApi(this.video.id);
+    // this.router.navigate(['detailed', this.video.id]);
+  }
 }

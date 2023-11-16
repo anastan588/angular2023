@@ -1,5 +1,6 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/core/services/api/api.service';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 @Component({
@@ -11,9 +12,17 @@ export class SearchInputComponent {
   open: boolean;
   results: true;
   event!: Event;
-  constructor(private readonly openFilterMenuService: OpenFilterMenuService, private readonly showResultsService: ShowResultsService, private router: Router) {
+  isSearchWord: string;
+
+  constructor(
+    private readonly openFilterMenuService: OpenFilterMenuService,
+    private readonly showResultsService: ShowResultsService,
+    private readonly apiService: ApiService,
+    private router: Router
+  ) {
     this.open = true;
     this.results = true;
+    this.isSearchWord = '';
   }
   toggleSorting() {
     this.openFilterMenuService.setOpenFilterMenu(this.open);
@@ -21,6 +30,10 @@ export class SearchInputComponent {
   }
   showResults() {
     this.router.navigate(['main']);
-    // this.showResultsService.setShowResults(this.results);
+    this.apiService.getVideosFromYouTubeApi();
+  }
+  changeSearchWord() {
+    console.log(this.isSearchWord);
+    this.apiService.changeSearchWord(this.isSearchWord);
   }
 }

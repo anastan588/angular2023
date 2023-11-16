@@ -1,4 +1,4 @@
-<app-input>What are are you want to find out?</app-input>
+<app-input [(ngModel)]="isSearchWord" ngDefaultControl (input)="changeSearchWord()">What are you want to find out?</app-input>
 <app-button (click)="showResults()">Search</app-button>
 <img (click)="toggleSorting()"
   class="settings-button"

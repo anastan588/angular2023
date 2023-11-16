@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import information from './../../../core/store/data/response.json';
 import { IVideoItem } from '../../store/models/video-item';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,39 +14,39 @@ export class FiltersService {
   public viewSort: string = 'none';
   public viewSortCounter: number = 0;
 
-  private ApiKey = 'AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY';
-  public url = `https://www.googleapis.com/youtube/v3/search?key=AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY`;
+  public arrayResults$ = new Subject<IVideoItem[]>();
 
-  public arrayResults: IVideoItem[] = information.items;
+  // public initialArrayResults: IVideoItem[] = JSON.parse(
+  //   JSON.stringify(information.items)
+  // );
 
-  public initialArrayResults: IVideoItem[] = JSON.parse(
-    JSON.stringify(information.items)
-  );
-
-  public itemsArray = new Subject<IVideoItem[]>();
+  public itemsArray = new Observable<IVideoItem[]>();
 
   myArray$: Observable<IVideoItem[]>;
-  private myArraySubject = new Subject<IVideoItem[]>();
+  private myArraySubject = new BehaviorSubject<IVideoItem[]>([]);
 
   public keyWord$ = new Subject<string>();
 
-  constructor(private http: HttpClient) {
+  constructor(public readonly api: ApiService) {
     this.myArray$ = this.myArraySubject.asObservable();
-
-    http.get(this.url).subscribe(data => {
-      console.log(data);
-    });
+    this.arrayResults$.asObservable();
   }
   myMethod(data: IVideoItem[]) {
     console.log(data);
     this.myArraySubject.next(data);
   }
 
-  onDoCheck() {
-    this.myArraySubject.subscribe((myArray: IVideoItem[]) => {
-      this.arrayResults = JSON.parse(JSON.stringify(myArray));
-      this.initialArrayResults = JSON.parse(JSON.stringify(myArray));
+  ngOnInit() {
+    return this.api.resultForCustomers$.subscribe(data => {
+      console.log(data);
+      this.myArraySubject.next(JSON.parse(JSON.stringify(data)).items);
+      console.log(this.arrayResults$);
     });
+    
+    // this.myArraySubject.subscribe((myArray: IVideoItem[]) => {
+    //   this.arrayResults = JSON.parse(JSON.stringify(myArray));
+    //   this.initialArrayResults = JSON.parse(JSON.stringify(myArray));
+    // });
   }
 
   public changeKeyWord(word: string) {
@@ -88,34 +89,34 @@ export class FiltersService {
   }
 
   sortArrayDateResults() {
-    console.log(this.arrayResults[0].snippet.title);
-    console.log(this.dateSort);
-    if (this.dateSort !== 'none') {
-      this.arrayResults.sort((first: IVideoItem, second: IVideoItem) => {
-        const firstDate = Date.parse(first.snippet.publishedAt);
-        const secondDate = Date.parse(second.snippet.publishedAt);
-        return this.sortArray(firstDate, secondDate, this.dateSort);
-      });
-    } else {
-      this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
-    }
-    console.log(this.arrayResults);
-    return this.arrayResults;
+    // console.log(this.arrayResults[0].snippet.title);
+    // console.log(this.dateSort);
+    // if (this.dateSort !== 'none') {
+    //   this.arrayResults!.sort((first: IVideoItem, second: IVideoItem) => {
+    //     const firstDate = Date.parse(first.snippet.publishedAt);
+    //     const secondDate = Date.parse(second.snippet.publishedAt);
+    //     return this.sortArray(firstDate, secondDate, this.dateSort);
+    //   });
+    // } else {
+    //   this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
+    // }
+    // console.log(this.arrayResults);
+    // return this.arrayResults;
   }
 
   sortArrayViewsResults() {
-    if (this.viewSort !== 'none') {
-      this.arrayResults.sort((first: IVideoItem, second: IVideoItem) => {
-        const firstView = Number(first.statistics.viewCount);
-        const secondView = Number(second.statistics.viewCount);
-        return this.sortArray(firstView, secondView, this.viewSort);
-      });
-    } else {
-      return (this.arrayResults = JSON.parse(
-        JSON.stringify(this.initialArrayResults)
-      ));
-    }
-    return this.arrayResults;
+    // if (this.viewSort !== 'none') {
+    //   this.arrayResults!.sort((first: IVideoItem, second: IVideoItem) => {
+    //     const firstView = Number(first.statistics.viewCount);
+    //     const secondView = Number(second.statistics.viewCount);
+    //     return this.sortArray(firstView, secondView, this.viewSort);
+    //   });
+    // } else {
+    //   return (this.arrayResults = JSON.parse(
+    //     JSON.stringify(this.initialArrayResults)
+    //   ));
+    // }
+    // return this.arrayResults;
   }
 
   sortArray(a: number, b: number, state: string) {
