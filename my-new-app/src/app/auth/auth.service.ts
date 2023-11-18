@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ILoginAuth } from '../core/store/models/login-auth';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { IVideoItem } from '../core/store/models/video-item';
 
 @Injectable({
   providedIn: 'root',
@@ -9,18 +11,22 @@ export class AuthService {
   login!: string;
   password!: string;
   loginToken: ILoginAuth;
-  loginName: string;
+  loginNameObject = new BehaviorSubject<string>('LogIn');
+  loginName!: string;
+  
   constructor(private router: Router) {
     this.loginToken = {
       login: '',
       password: '',
     };
-    this.loginName = ""
+   
+  }
 
-    this.loginName = 'Login';
+  ngOnInit() { 
     if (localStorage.getItem('login')) {
-      this.loginName = 'Logout';
+      this.loginNameObject.next('LogOut');
     } 
+   
   }
 
   setLoginAndPassword(loginValue: string, passwordValue: string) {
@@ -29,8 +35,7 @@ export class AuthService {
     this.loginToken.login = this.login;
     this.loginToken.password = this.password;
     localStorage.setItem('login', JSON.stringify(this.loginToken));
-    console.log(localStorage.getItem('login'));
-    this.loginName = 'LogOut';
+    this.loginNameObject.next('LogOut');
     this.router.navigate(['']);
   }
 }

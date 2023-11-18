@@ -1,7 +1,7 @@
 export interface IVideoItem {
   kind: string;
   etag: string;
-  id: string;
+  id: IID;
   snippet: {
     publishedAt: string;
     channelId: string;
@@ -37,4 +37,9 @@ interface IVideoWindowSize {
   url: string;
   width: number;
   height: number;
+}
+
+export interface IID {
+  kind: string;
+  videoId: string;
 }

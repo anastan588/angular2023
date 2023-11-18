@@ -27,9 +27,12 @@ export class UserComponent {
       this.router.navigate(['']);
     }
   }
-  ngDoCheck(): void {
+  ngOnInit(): void {
     // console.log('checkLogin');
-    this.userName = this.authService.loginName.valueOf();
+    this.authService.loginNameObject.subscribe(data => {
+      this.userName = data;
+    });
+    // this.userName = this.authService.loginName.valueOf();
     // console.log(this.userName);
   }
 }

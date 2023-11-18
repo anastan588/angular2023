@@ -37,7 +37,7 @@ export class SearchResultsComponent implements OnInit {
 
     // console.log(this.searchResults[0].snippet.title);
     // this.searchResults = this.filterService.arrayResults;
-    console.log(this.searchResults);
+    // console.log(this.searchResults);
     // console.log(this.searchResults[0].snippet.title);
     this.filterService.keyWord$.subscribe((word: string) => {
       this.wordFilter = word;

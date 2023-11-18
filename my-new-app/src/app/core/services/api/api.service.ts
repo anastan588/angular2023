@@ -10,7 +10,7 @@ import {
 import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
-import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +27,7 @@ export class ApiService {
   public searchWord$ = new Subject<string>();
   searchString: string;
 
-  constructor(
-    public http: HttpClient
-  ) {
+  constructor(public http: HttpClient) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.videoId = '';
     this.searchString = '';
@@ -58,21 +56,20 @@ export class ApiService {
       .get<ISearchResponse>(this.urlForVideoList)
       .pipe(
         switchMap((response: ISearchResponse) => {
-          console.log(response);
+          console.log(response.items);
           this.videoId = response.items
-            .map((item: any) => item.id.videoId)
+            .map((item: IVideoItem) => {
+              console.log(item.id.videoId);
+              return item.id.videoId;
+            })
             .join(',');
-          console.log(this.videoId);
           this.urlForVideoItem = this.receiveUtlForVideoItem();
-          console.log(this.urlForVideoItem);
           return this.http.get(this.urlForVideoItem);
         })
       )
       .subscribe(response => {
-        console.log(response);
         const myRequestResultArray = JSON.parse(JSON.stringify(response))
           .items as IVideoItem[];
-        console.log(myRequestResultArray);
         this.myRequestResultObject.next(myRequestResultArray);
         console.log(this.resultForCustomers$);
       });
@@ -86,6 +83,6 @@ export class ApiService {
       console.log(response.items[0]);
       return response.items[0];
     });
-   return this.currentVideo$;
+    return this.currentVideo$;
   }
 }
