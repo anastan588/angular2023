@@ -16,10 +16,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class ApiService {
-  [x: string]: any;
   myRequestResultArray: IVideoItem[] | undefined;
   resultForCustomers$: Observable<IVideoItem[]>;
-  ApiKey: string;
   urlForVideoList: string;
   urlForVideoItem: string;
   videoId: string;
@@ -30,11 +28,9 @@ export class ApiService {
   searchString: string;
 
   constructor(
-    public http: HttpClient,
-    private router: Router
+    public http: HttpClient
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
-    this.ApiKey = 'AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY';
     this.videoId = '';
     this.searchString = '';
     this.urlForVideoList = ``;

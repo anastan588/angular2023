@@ -17,7 +17,6 @@ export class SearchItemComponent {
   colorOfFooter: Record<string, string> = {};
   constructor(
     private router: Router,
-    private readonly apiService: ApiService
   ) {
     this.dataPublication;
     this.timePublication;
@@ -26,8 +25,6 @@ export class SearchItemComponent {
   }
 
   navigateToDetailedPage() {
-    // this.detailedService.setCurrentVideo(this.video);
-    // this.apiService.getVideoDetailsFromYouTubeApi(this.video.id);
     this.router.navigate(['main/detailed', this.video.id]);
   }
 }

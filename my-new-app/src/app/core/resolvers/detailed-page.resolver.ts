@@ -10,15 +10,3 @@ export const detailedPageResolver: ResolveFn<IVideoItem> = (route, state) => {
     route.paramMap.get('id')!
   );
 };
-
-// bootstrapApplication(DetailedPageComponent, {
-//   providers: [
-//     provideRouter([
-//       {
-//         path: 'detailed/:id',
-//         component: DetailedPageComponent,
-//         resolve: { video: detailedPageResolver },
-//       },
-//     ]),
-//   ],
-// });

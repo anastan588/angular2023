@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject, debounceTime, filter, map } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
@@ -13,6 +14,8 @@ export class SearchInputComponent {
   results: true;
   event!: Event;
   isSearchWord: string;
+  private searchSubject = new Subject<string>();
+  private readonly debounceTimeMs = 500;
 
   constructor(
     private readonly openFilterMenuService: OpenFilterMenuService,
@@ -27,6 +30,17 @@ export class SearchInputComponent {
   toggleSorting() {
     this.openFilterMenuService.setOpenFilterMenu(this.open);
     this.open = !this.open;
+  }
+  ngOnInit() {
+    this.searchSubject.pipe(
+    map((value:string) => value.trim()),
+    filter((value:string) => value.length >= 3), debounceTime(this.debounceTimeMs)).subscribe(() => {
+      this.changeSearchWord();
+      this.showResults();
+    });
+  }
+  onSearch() {
+    this.searchSubject.next(this.isSearchWord);
   }
   showResults() {
     this.router.navigate(['main']);
