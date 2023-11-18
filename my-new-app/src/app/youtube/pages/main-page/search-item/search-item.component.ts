@@ -27,7 +27,7 @@ export class SearchItemComponent {
 
   navigateToDetailedPage() {
     // this.detailedService.setCurrentVideo(this.video);
-    this.apiService.getVideoDetailsFromYouTubeApi(this.video.id);
-    // this.router.navigate(['detailed', this.video.id]);
+    // this.apiService.getVideoDetailsFromYouTubeApi(this.video.id);
+    this.router.navigate(['main/detailed', this.video.id]);
   }
 }

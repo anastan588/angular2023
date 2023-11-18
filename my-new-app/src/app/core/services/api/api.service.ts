@@ -31,7 +31,7 @@ export class ApiService {
 
   constructor(
     public http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.ApiKey = 'AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY';
@@ -83,16 +83,13 @@ export class ApiService {
   }
 
   getVideoDetailsFromYouTubeApi(id: string) {
-    console.log(this.searchWord$);
     this.videoId = id;
     this.urlForVideoItem = this.receiveUtlForVideoItem();
-    console.log(this.urlForVideoList);
-    return this.http
-      .get<ISearchResponse>(this.urlForVideoItem)
-      .subscribe(response => {
-        console.log(response);
-        this.currentVideo$.next(response.items[0]);
-        console.log(response.items[0]);
-      });
+    this.http.get<ISearchResponse>(this.urlForVideoItem).subscribe(response => {
+      this.currentVideo$.next(response.items[0]);
+      console.log(response.items[0]);
+      return response.items[0];
+    });
+   return this.currentVideo$;
   }
 }

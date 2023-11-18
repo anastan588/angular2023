@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
+import { ISearchResponse } from 'src/app/core/store/models/search-response';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.directive';
 
@@ -14,14 +15,17 @@ export class DetailedPageComponent {
   videoId: string = '';
   videoForShow!: IVideoItem;
   constructor(
-    private readonly apiService: ApiService
+    private readonly apiService: ApiService,
+    private _routes: ActivatedRoute
   ) {
     this.videoId = String(this.route.snapshot.params['id']);
   }
 
   ngOnInit(): void {
-    this.apiService.currentVideo$.subscribe(data => {
-      this.videoForShow = data;
-    });
+    this._routes.data.subscribe(({video}) => {
+      console.log(video);
+      this.videoForShow = video;
+      console.log(this.videoForShow);
+    })
   }
 }
