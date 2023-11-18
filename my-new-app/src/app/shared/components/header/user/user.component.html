@@ -1,6 +1,8 @@
-<p class="user-name" [textContent]="userName"></p>
-<img
+<!-- <p class="user-name" [textContent]="userName"></p> -->
+
+<app-button class="user-name" (click)="navigateToLogin()">{{userName}}</app-button>
+<!-- <img
   (click)="navigateToLogin()"
   class="user-image"
   src="./../../../../../assets/icons/user.png"
-  alt="user" />
+  alt="user" /> -->
