@@ -49,9 +49,7 @@ export class ApiService {
   }
 
   getVideosFromYouTubeApi() {
-    console.log(this.searchWord$);
     this.urlForVideoList = this.receiveUtlForVideoList();
-    console.log(this.urlForVideoList);
     return this.http
       .get<ISearchResponse>(this.urlForVideoList)
       .pipe(
@@ -59,7 +57,6 @@ export class ApiService {
           console.log(response.items);
           this.videoId = response.items
             .map((item: IVideoItem) => {
-              console.log(item.id.videoId);
               return item.id.videoId;
             })
             .join(',');
@@ -71,7 +68,6 @@ export class ApiService {
         const myRequestResultArray = JSON.parse(JSON.stringify(response))
           .items as IVideoItem[];
         this.myRequestResultObject.next(myRequestResultArray);
-        console.log(this.resultForCustomers$);
       });
   }
 
@@ -80,7 +76,6 @@ export class ApiService {
     this.urlForVideoItem = this.receiveUtlForVideoItem();
     this.http.get<ISearchResponse>(this.urlForVideoItem).subscribe(response => {
       this.currentVideo$.next(response.items[0]);
-      console.log(response.items[0]);
       return response.items[0];
     });
     return this.currentVideo$;

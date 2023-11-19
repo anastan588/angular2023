@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import information from './../../../core/store/data/response.json';
-import { IVideoItem } from '../../store/models/video-item';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../api/api.service';
 
 @Injectable({
@@ -14,32 +11,9 @@ export class FiltersService {
   public viewSort$ = new BehaviorSubject<string>('none');
   public viewSortCounter: number = 0;
 
-  public arrayResults$ = new Subject<IVideoItem[]>();
-
-
-  public itemsArray = new Observable<IVideoItem[]>();
-
-
-  public initialArrayResults$ = new BehaviorSubject<IVideoItem[]>([]);
-
   public keyWord$ = new Subject<string>();
 
-  constructor(public readonly api: ApiService) {
-    this.arrayResults$.asObservable();
-  }
-
-  myMethod(data: IVideoItem[]) {
-    console.log(data);
-  }
-
-  ngOnInit() {
-    return this.api.resultForCustomers$.subscribe(data => {
-      console.log(data);
-      this.initialArrayResults$.next(JSON.parse(JSON.stringify(data)).items);
-      console.log(this.arrayResults$);
-      console.log(this.initialArrayResults$);
-    });
-  }
+  constructor(public readonly api: ApiService) {}
 
   public changeKeyWord(word: string) {
     this.keyWord$.next(word);
@@ -72,12 +46,11 @@ export class FiltersService {
     if (this.viewSortCounter === 0) {
       this.viewSort$.next('none');
     } else if (this.viewSortCounter === 1) {
-      this.viewSort$.next( 'ascending');
+      this.viewSort$.next('ascending');
     } else if (this.viewSortCounter === 2) {
       this.viewSort$.next('descending');
     }
     console.log(this.viewSort$);
     return this.viewSort$;
   }
-
- }
+}

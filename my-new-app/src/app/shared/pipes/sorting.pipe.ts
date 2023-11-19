@@ -3,30 +3,33 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 
 @Pipe({
   name: 'sorting',
-  pure: false
+  pure: false,
 })
 export class SortingPipe implements PipeTransform {
-
-  transform(searchResults$: IVideoItem[], isDateSort?: string, isViewSort?: string, initialArrayResults?: IVideoItem[]):IVideoItem[] {
-   console.log(isDateSort);
-   console.log(isViewSort);
-  if (isDateSort !== 'none') {
+  transform(
+    searchResults$: IVideoItem[],
+    isDateSort?: string,
+    isViewSort?: string,
+    initialArrayResults?: IVideoItem[]
+  ): IVideoItem[] {
+    console.log(isDateSort);
+    console.log(isViewSort);
+    console.log(initialArrayResults);
+    if (isDateSort !== 'none') {
       searchResults$.sort((first: IVideoItem, second: IVideoItem) => {
         const firstDate = Date.parse(first.snippet.publishedAt);
         const secondDate = Date.parse(second.snippet.publishedAt);
         return this.sortArray(firstDate, secondDate, isDateSort!);
       });
-    } else {
-      searchResults$ = initialArrayResults!;
     }
-
     if (isViewSort !== 'none') {
       searchResults$.sort((first: IVideoItem, second: IVideoItem) => {
         const firstView = Number(first.statistics.viewCount);
         const secondView = Number(second.statistics.viewCount);
         return this.sortArray(firstView, secondView, isViewSort!);
       });
-    } else {
+    }
+    if (isViewSort === 'none' && isDateSort === 'none') {
       searchResults$ = initialArrayResults!;
     }
     console.log(searchResults$);
@@ -40,5 +43,4 @@ export class SortingPipe implements PipeTransform {
       return b - a;
     }
   }
-
 }
