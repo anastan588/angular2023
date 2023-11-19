@@ -32,7 +32,6 @@ export class FiltersService {
     } else if (this.dateSortCounter === 2) {
       this.dateSort$.next('descending');
     }
-    console.log(this.dateSort$);
     return this.dateSort$;
   }
 
@@ -42,7 +41,6 @@ export class FiltersService {
     } else {
       this.viewSortCounter = 0;
     }
-    console.log(this.viewSortCounter);
     if (this.viewSortCounter === 0) {
       this.viewSort$.next('none');
     } else if (this.viewSortCounter === 1) {
@@ -50,7 +48,6 @@ export class FiltersService {
     } else if (this.viewSortCounter === 2) {
       this.viewSort$.next('descending');
     }
-    console.log(this.viewSort$);
     return this.viewSort$;
   }
 }

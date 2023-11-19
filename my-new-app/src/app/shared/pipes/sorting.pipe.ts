@@ -12,9 +12,6 @@ export class SortingPipe implements PipeTransform {
     isViewSort?: string,
     initialArrayResults?: IVideoItem[]
   ): IVideoItem[] {
-    console.log(isDateSort);
-    console.log(isViewSort);
-    console.log(initialArrayResults);
     if (isDateSort !== 'none') {
       searchResults$.sort((first: IVideoItem, second: IVideoItem) => {
         const firstDate = Date.parse(first.snippet.publishedAt);
@@ -32,7 +29,6 @@ export class SortingPipe implements PipeTransform {
     if (isViewSort === 'none' && isDateSort === 'none') {
       searchResults$ = initialArrayResults!;
     }
-    console.log(searchResults$);
     return searchResults$;
   }
 
@@ -43,4 +39,4 @@ export class SortingPipe implements PipeTransform {
       return b - a;
     }
   }
-}//popka puk
+}

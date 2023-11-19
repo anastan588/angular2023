@@ -7,8 +7,6 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 })
 export class FilterPipe implements PipeTransform {
   transform(searchResults$: IVideoItem[], value: string): IVideoItem[] {
-    console.log(searchResults$);
-    console.log(value);
     const pureValue = value.trim().toLowerCase();
     if (value !== undefined && value !== '') {
       let results;
@@ -25,7 +23,6 @@ export class FilterPipe implements PipeTransform {
       });
       searchResults$ = results;
     }
-    console.log(searchResults$)
     return searchResults$;
   }
 }
