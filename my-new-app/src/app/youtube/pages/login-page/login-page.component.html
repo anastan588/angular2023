@@ -9,9 +9,16 @@
           placeholder="ivanov@example.com"
           formControlName="email"
           required />
-        <mat-error *ngIf="_email!.invalid || _email!.touched">{{
-          getErrorMessageForEmail()
-        }}</mat-error>
+        <mat-error
+          *ngIf="
+            loginForm.get('email')!.hasError('email') &&
+            !loginForm.get('email')!.hasError('required')
+          ">
+          Please enter a valid email
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('email')!.hasError('required')">
+          Please enter a login email
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Enter your password</mat-label>
@@ -28,9 +35,12 @@
           [attr.aria-pressed]="hide">
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        <mat-error *ngIf="_password!.invalid || _password!.touched">{{
-          getErrorMessageForPassword()
-        }}</mat-error>
+        <mat-error *ngIf="loginForm.get('password')!.hasError('password')">
+          Please enter a valid password
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('password')!.hasError('required')">
+          Please enter a password
+        </mat-error>
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>

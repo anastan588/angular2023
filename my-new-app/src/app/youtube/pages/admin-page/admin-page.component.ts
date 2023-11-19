@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from 'src/app/auth/auth.service';
+import { IAdmin } from 'src/app/core/store/models/admin';
 
 @Component({
   selector: 'app-admin-page',
@@ -56,6 +57,19 @@ export class AdminPageComponent {
     this.minDate = new Date(1923, 0, 1, 0, 0, 0, 0);
     this.maxDate = new Date(currentDate);
   }
+
+  admin(): IAdmin {
+    const admin: IAdmin = {
+      title: this.adminForm.value.title!,
+      description:  this.adminForm.value.description!,
+      link:  this.adminForm.value.link!,
+      date: this.adminForm.value.date!,
+      tags: this.adminForm.value.tags!,
+    };
+    console.log(admin);
+    return admin;
+  }
+
 
   get _title() {
     return this.adminForm.get('title');
@@ -118,11 +132,8 @@ export class AdminPageComponent {
     return;
   }
   setAdminNewVideoToken() {
-    const title = this.adminForm.get('title')!.value;
-    const description = this.adminForm.get('description')!.value;
-    const link = this.adminForm.get('link')!.value;
-    const date = this.adminForm.get('date')!.value;
-    this.authService.setLoginAndPassword(title!, description!);
+    const admin = this.admin();
+    this.authService.setAdminToken(admin);
   }
 
   addTagField() {

@@ -3,22 +3,24 @@ import { ILoginAuth } from '../core/store/models/login-auth';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IVideoItem } from '../core/store/models/video-item';
+import { IUser } from '../core/store/models/user';
+import { IAdmin } from '../core/store/models/admin';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  login!: string;
-  password!: string;
-  loginToken: ILoginAuth;
+  // login!: string;
+  // password!: string;
+  // loginToken: ILoginAuth;
   loginNameObject = new BehaviorSubject<string>('LogIn');
   loginName!: string;
   
   constructor(private router: Router) {
-    this.loginToken = {
-      login: '',
-      password: '',
-    };
+    // this.loginToken = {
+    //   login: '',
+    //   password: '',
+    // };
    
   }
 
@@ -29,13 +31,17 @@ export class AuthService {
    
   }
 
-  setLoginAndPassword(loginValue: string, passwordValue: string) {
-    this.login = loginValue;
-    this.password = passwordValue;
-    this.loginToken.login = this.login;
-    this.loginToken.password = this.password;
-    localStorage.setItem('login', JSON.stringify(this.loginToken));
+  setLoginAndPassword(user: IUser) {
+    // this.login = loginValue;
+    // this.password = passwordValue;
+    // this.loginToken.login = this.login;
+    // this.loginToken.password = this.password;
+    localStorage.setItem('login', JSON.stringify(user));
     this.loginNameObject.next('LogOut');
     this.router.navigate(['']);
+  }
+
+  setAdminToken(admin: IAdmin) {
+    localStorage.setItem('admin', JSON.stringify(admin));
   }
 }
