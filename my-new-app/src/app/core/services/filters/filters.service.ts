@@ -9,44 +9,36 @@ import { ApiService } from '../api/api.service';
   providedIn: 'root',
 })
 export class FiltersService {
-  public dateSort: string = 'none';
+  public dateSort$ = new BehaviorSubject<string>('none');
   public dateSortCounter: number = 0;
-  public viewSort: string = 'none';
+  public viewSort$ = new BehaviorSubject<string>('none');
   public viewSortCounter: number = 0;
 
   public arrayResults$ = new Subject<IVideoItem[]>();
 
-  // public initialArrayResults: IVideoItem[] = JSON.parse(
-  //   JSON.stringify(information.items)
-  // );
 
   public itemsArray = new Observable<IVideoItem[]>();
 
-  myArray$: Observable<IVideoItem[]>;
-  private myArraySubject = new BehaviorSubject<IVideoItem[]>([]);
+
+  public initialArrayResults$ = new BehaviorSubject<IVideoItem[]>([]);
 
   public keyWord$ = new Subject<string>();
 
   constructor(public readonly api: ApiService) {
-    this.myArray$ = this.myArraySubject.asObservable();
     this.arrayResults$.asObservable();
   }
+
   myMethod(data: IVideoItem[]) {
     console.log(data);
-    this.myArraySubject.next(data);
   }
 
   ngOnInit() {
     return this.api.resultForCustomers$.subscribe(data => {
       console.log(data);
-      this.myArraySubject.next(JSON.parse(JSON.stringify(data)).items);
+      this.initialArrayResults$.next(JSON.parse(JSON.stringify(data)).items);
       console.log(this.arrayResults$);
+      console.log(this.initialArrayResults$);
     });
-    
-    // this.myArraySubject.subscribe((myArray: IVideoItem[]) => {
-    //   this.arrayResults = JSON.parse(JSON.stringify(myArray));
-    //   this.initialArrayResults = JSON.parse(JSON.stringify(myArray));
-    // });
   }
 
   public changeKeyWord(word: string) {
@@ -60,14 +52,14 @@ export class FiltersService {
       this.dateSortCounter = 0;
     }
     if (this.dateSortCounter === 0) {
-      this.dateSort = 'none';
+      this.dateSort$.next('none');
     } else if (this.dateSortCounter === 1) {
-      this.dateSort = 'ascending';
+      this.dateSort$.next('ascending');
     } else if (this.dateSortCounter === 2) {
-      this.dateSort = 'descending';
+      this.dateSort$.next('descending');
     }
-    this.sortArrayDateResults();
-    return this.dateSort;
+    console.log(this.dateSort$);
+    return this.dateSort$;
   }
 
   public setViewSort() {
@@ -78,52 +70,14 @@ export class FiltersService {
     }
     console.log(this.viewSortCounter);
     if (this.viewSortCounter === 0) {
-      this.viewSort = 'none';
+      this.viewSort$.next('none');
     } else if (this.viewSortCounter === 1) {
-      this.viewSort = 'ascending';
+      this.viewSort$.next( 'ascending');
     } else if (this.viewSortCounter === 2) {
-      this.viewSort = 'descending';
+      this.viewSort$.next('descending');
     }
-    this.sortArrayViewsResults();
-    return this.viewSort;
+    console.log(this.viewSort$);
+    return this.viewSort$;
   }
 
-  sortArrayDateResults() {
-    // console.log(this.arrayResults[0].snippet.title);
-    // console.log(this.dateSort);
-    // if (this.dateSort !== 'none') {
-    //   this.arrayResults!.sort((first: IVideoItem, second: IVideoItem) => {
-    //     const firstDate = Date.parse(first.snippet.publishedAt);
-    //     const secondDate = Date.parse(second.snippet.publishedAt);
-    //     return this.sortArray(firstDate, secondDate, this.dateSort);
-    //   });
-    // } else {
-    //   this.arrayResults = JSON.parse(JSON.stringify(this.initialArrayResults));
-    // }
-    // console.log(this.arrayResults);
-    // return this.arrayResults;
-  }
-
-  sortArrayViewsResults() {
-    // if (this.viewSort !== 'none') {
-    //   this.arrayResults!.sort((first: IVideoItem, second: IVideoItem) => {
-    //     const firstView = Number(first.statistics.viewCount);
-    //     const secondView = Number(second.statistics.viewCount);
-    //     return this.sortArray(firstView, secondView, this.viewSort);
-    //   });
-    // } else {
-    //   return (this.arrayResults = JSON.parse(
-    //     JSON.stringify(this.initialArrayResults)
-    //   ));
-    // }
-    // return this.arrayResults;
-  }
-
-  sortArray(a: number, b: number, state: string) {
-    if (state === 'ascending') {
-      return a - b;
-    } else {
-      return b - a;
-    }
-  }
-}
+ }

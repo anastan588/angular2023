@@ -12,7 +12,7 @@ export class ApiInterceptor implements HttpInterceptor {
   ApiKey: string;
   url: string;
   constructor() {
-    this.ApiKey = 'AIzaSyA4PJwjup1zT2IWO050KtcYwvvcxPqF3kY';
+    this.ApiKey = 'AIzaSyDCeRlxhSyqBoQPxEw407g5nzTKI7jJ1N4';
     this.url = 'https://www.googleapis.com/youtube/v3/';
   }
 

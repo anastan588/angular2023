@@ -22,9 +22,9 @@ export class SortingComponent {
   }
   
   dateSort() {
-    this.isDateSort = this.filterService.setDateSort();
+    this.filterService.setDateSort();
   }
   viewSort() {
-    this.isViewSort = this.filterService.setViewSort();
+    this.filterService.setViewSort();
   }
 }

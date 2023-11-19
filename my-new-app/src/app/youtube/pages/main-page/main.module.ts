@@ -19,7 +19,8 @@ import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
     SearchItemComponent,
     SearchResultsComponent,
     MainComponent,
-    FilterPipe
+    FilterPipe,
+    SortingPipe
   ],
   imports: [
     CommonModule,

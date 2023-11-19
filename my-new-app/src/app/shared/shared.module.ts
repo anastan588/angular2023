@@ -9,7 +9,7 @@ import { HeaderModule } from './components/header.module';
 import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
-  declarations: [SortingPipe],
+  declarations: [],
   imports: [
     CommonModule,
     BordersItemsDirective,
@@ -21,7 +21,6 @@ import { FooterComponent } from './components/footer/footer.component';
     BordersItemsDirective,
     InputComponent,
     ButtonModule,
-    SortingPipe,
     HeaderModule,
   ],
 })
