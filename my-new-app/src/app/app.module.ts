@@ -15,6 +15,7 @@ import { ApiService } from './core/services/api/api.service';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { DetailedPageComponent } from './youtube/pages/detailed-page/detailed-page.component';
 import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
     CoreModule,
     AuthModule,
     HttpClientModule,
+    StoreModule.forRoot({}, {}),
   ],
   providers: [
     OpenFilterMenuService,
