@@ -10,10 +10,22 @@
           formControlName="title"
           maxlength="20"
           required />
-        <mat-error *ngIf="_title!.invalid || _title!.touched">{{
-          getErrorMessageForTitle()
-        }}</mat-error>
-        <mat-hint align="end">{{ _title?.value?.length }}/20</mat-hint>
+        <mat-error *ngIf="adminForm.get('title')!.hasError('minlength')">
+          The title length must be at least 3 characters
+        </mat-error>
+        <mat-error
+          *ngIf="
+            adminForm.get('title')!.hasError('maxlength') &&
+            !adminForm.get('title')!.hasError('required')
+          ">
+          The title length must be max 20 characters
+        </mat-error>
+        <mat-error *ngIf="adminForm.get('title')!.hasError('required')">
+          Please enter a title
+        </mat-error>
+        <mat-hint align="end"
+          >{{ adminForm.get('title')!.value?.length }}/20</mat-hint
+        >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Description</mat-label>
@@ -22,10 +34,16 @@
           placeholder="Please enter a description"
           formControlName="description"
           maxlength="255"></textarea>
-        <mat-error *ngIf="_description!.invalid || _description!.touched">{{
-          getErrorMessageForDescription()
-        }}</mat-error>
-        <mat-hint align="end">{{ _description?.value?.length }}/255</mat-hint>
+        <mat-error
+          *ngIf="
+            adminForm.get('description')!.hasError('maxlength') &&
+            !adminForm.get('description')!.hasError('required')
+          ">
+          The description length must be max 255 characters
+        </mat-error>
+        <mat-hint align="end"
+          >{{ adminForm.get('description')!.value?.length }}/255</mat-hint
+        >
       </mat-form-field>
       <mat-form-field>
         <mat-label>Link to the image cover</mat-label>
@@ -34,9 +52,9 @@
           placeholder="Please enter a link to the image"
           formControlName="link"
           required />
-        <mat-error *ngIf="_link!.invalid || _link!.touched">{{
-          getErrorMessageForLink()
-        }}</mat-error>
+        <mat-error *ngIf="adminForm.get('link')!.hasError('required')">
+          Please enter a link to the image
+        </mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Сreation date</mat-label>
@@ -50,9 +68,9 @@
           required />
         <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
         <mat-datepicker #date></mat-datepicker>
-        <mat-error *ngIf="_date!.invalid || _date!.touched">{{
-          getErrorMessageForDate()
-        }}</mat-error>
+        <mat-error *ngIf="adminForm.get('date')!.hasError('required')">
+          Please enter a creation date
+        </mat-error>
       </mat-form-field>
       <div class="tags" formArrayName="tags">
         <mat-card-header>Tags</mat-card-header>
@@ -62,15 +80,18 @@
             <input
               matInput
               placeholder="Please enter a tag"
-              formControlName="{{i}}"
+              formControlName="{{ i }}"
               required />
           </mat-form-field>
-          <mat-error *ngIf="isInvalidTag(i) && isTouchedTag(i)">{{
-            getErrorMessageForTag(i)
-          }}</mat-error>
+          <mat-error
+            *ngIf="
+              adminForm.controls['tags'].controls[i].hasError('required') &&
+              adminForm.controls['tags'].controls[i].touched
+            ">
+            Please enter a tag
+          </mat-error>
         </div>
       </div>
-      
     </mat-card-content>
     <mat-card-actions>
       <app-button (click)="addTagField()">Add tag</app-button>

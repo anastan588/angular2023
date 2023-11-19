@@ -32,10 +32,6 @@ export class AuthService {
   }
 
   setLoginAndPassword(user: IUser) {
-    // this.login = loginValue;
-    // this.password = passwordValue;
-    // this.loginToken.login = this.login;
-    // this.loginToken.password = this.password;
     localStorage.setItem('login', JSON.stringify(user));
     this.loginNameObject.next('LogOut');
     this.router.navigate(['']);

@@ -61,8 +61,8 @@ export class AdminPageComponent {
   admin(): IAdmin {
     const admin: IAdmin = {
       title: this.adminForm.value.title!,
-      description:  this.adminForm.value.description!,
-      link:  this.adminForm.value.link!,
+      description: this.adminForm.value.description!,
+      link: this.adminForm.value.link!,
       date: this.adminForm.value.date!,
       tags: this.adminForm.value.tags!,
     };
@@ -70,67 +70,6 @@ export class AdminPageComponent {
     return admin;
   }
 
-
-  get _title() {
-    return this.adminForm.get('title');
-  }
-
-  get _description() {
-    return this.adminForm.get('description');
-  }
-
-  get _link() {
-    return this.adminForm.get('link');
-  }
-
-  get _date() {
-    return this.adminForm.get('date');
-  }
-
-  get _tags() {
-    return this.adminForm.controls['tags'].get('tag');
-  }
-
-  getErrorMessageForTitle() {
-    if (this.adminForm.get('title')!.hasError('required')) {
-      return 'Please enter a title';
-    }
-    if (this.adminForm.get('title')!.hasError('minLength')) {
-      return 'The title length must be at least 3 characters';
-    }
-    if (this.adminForm.get('title')!.hasError('maxLength')) {
-      return 'The title length must be max 20 characters';
-    }
-    return;
-  }
-
-  getErrorMessageForDescription() {
-    if (this.adminForm.get('description')!.hasError('maxLength')) {
-      return 'The description length must be max 255 characters';
-    }
-    return;
-  }
-
-  getErrorMessageForLink() {
-    if (this.adminForm.get('link')!.hasError('required')) {
-      return 'Please enter a link to the image';
-    }
-    return;
-  }
-
-  getErrorMessageForDate() {
-    if (this.adminForm.get('date')!.hasError('required')) {
-      return 'Please enter a creation date';
-    }
-    return;
-  }
-
-  getErrorMessageForTag(i: number) {
-    if (this.adminForm.controls['tags'].controls[i].hasError('required')) {
-      return 'Please enter a tag';
-    }
-    return;
-  }
   setAdminNewVideoToken() {
     const admin = this.admin();
     this.authService.setAdminToken(admin);
@@ -145,15 +84,6 @@ export class AdminPageComponent {
   }
   getFormsTags(): FormArray {
     return this.adminForm.controls['tags'] as FormArray;
-  }
-
-  isInvalidTag(i: number): boolean {
-    console.log(this.adminForm.controls['tags'].controls[i]);
-    return this.adminForm.controls['tags'].controls[i].hasError('required');
-  }
-
-  isTouchedTag(i: number): boolean {
-    return this.adminForm.controls['tags'].controls[i].touched;
   }
 
   resetAdminForm() {
