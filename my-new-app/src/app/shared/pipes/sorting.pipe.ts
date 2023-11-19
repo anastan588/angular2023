@@ -43,4 +43,4 @@ export class SortingPipe implements PipeTransform {
       return b - a;
     }
   }
-}
+}//popka puk
