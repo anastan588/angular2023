@@ -1,9 +1,9 @@
-import { Component} from '@angular/core';
-import {
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { setLoginToken } from 'src/app/core/store/actions/actions';
 import { IUser } from 'src/app/core/store/models/user';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
 
@@ -19,17 +19,19 @@ export class LoginPageComponent {
     password: [
       '',
       {
-        validators: [
-          Validators.required,
-          createPasswordValidator()
-        ],
+        validators: [Validators.required, createPasswordValidator()],
       },
     ],
   });
+
+  user$: Observable<IUser>;
   constructor(
     private readonly authService: AuthService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private store: Store<{ user: IUser }>
+  ) {
+    this.user$ = store.select('user');
+  }
 
   loginUser(): IUser {
     const user: IUser = {
@@ -41,7 +43,8 @@ export class LoginPageComponent {
 
   setLoginToken() {
     const user = this.loginUser();
+    console.log(user)
+    this.store.dispatch(setLoginToken({user}));
     this.authService.setLoginAndPassword(user);
   }
-
 }

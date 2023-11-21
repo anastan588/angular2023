@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +16,9 @@ import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { DetailedPageComponent } from './youtube/pages/detailed-page/detailed-page.component';
 import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
 import { StoreModule } from '@ngrx/store';
+import { loginReducer } from './core/store/reducers/reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +30,8 @@ import { StoreModule } from '@ngrx/store';
     CoreModule,
     AuthModule,
     HttpClientModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({user: loginReducer}, {}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
     OpenFilterMenuService,
