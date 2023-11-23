@@ -3,10 +3,14 @@ import { IVideoItem } from '../models/video-item';
 import { IUser } from '../models/user';
 import { IAdmin } from '../models/admin';
 
-export const InitialVideoItems: IVideoItem[] = [];
+export const InitialVideoItems: ReadonlyArray<IVideoItem> = [];
+export const InitialFavouriteVideoItemsId: ReadonlyArray<string>= [];
+
+export const InitialFavouriteVideos:  ReadonlyArray<IVideoItem> = [];
 
 export const InitialUser: IUser = {
     email: '',
     password: ''
 };
+
 

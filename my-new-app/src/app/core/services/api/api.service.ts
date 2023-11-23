@@ -10,7 +10,8 @@ import {
 import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
-
+import { Store } from '@ngrx/store';
+import { VideosReceiveFromApiActions} from '../../store/actions/actions';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,12 @@ export class ApiService {
   public searchWord$ = new Subject<string>();
   searchString: string;
 
-  constructor(public http: HttpClient) {
+  videos$: Observable<IVideoItem[]>;
+
+  constructor(
+    public http: HttpClient,
+    private store: Store<{ videos: IVideoItem[] }>
+  ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.videoId = '';
     this.searchString = '';
@@ -36,6 +42,7 @@ export class ApiService {
     this.searchWord$.subscribe(data => {
       this.searchString = data;
     });
+    this.videos$ = store.select('videos');
   }
 
   public changeSearchWord(word: string) {
@@ -67,6 +74,7 @@ export class ApiService {
       .subscribe(response => {
         const myRequestResultArray = JSON.parse(JSON.stringify(response))
           .items as IVideoItem[];
+        this.store.dispatch((VideosReceiveFromApiActions.receiveVideosList({videos: myRequestResultArray})));
         this.myRequestResultObject.next(myRequestResultArray);
       });
   }

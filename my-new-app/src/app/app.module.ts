@@ -16,27 +16,36 @@ import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { DetailedPageComponent } from './youtube/pages/detailed-page/detailed-page.component';
 import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
 import { StoreModule } from '@ngrx/store';
-import { loginReducer } from './core/store/reducers/reducers';
+import {
+  favouriteVideosReducer,
+  loginReducer,
+  videosReducer,
+} from './core/store/reducers/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatIconModule,
     AppRoutingModule,
     RouterModule,
     CoreModule,
     AuthModule,
     HttpClientModule,
-    StoreModule.forRoot({user: loginReducer}, {}),
+    StoreModule.forRoot({
+      videos: videosReducer,
+      videoId: favouriteVideosReducer,
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
     OpenFilterMenuService,
     ShowResultsService,
     FiltersService,
+    MatIconRegistry,
     ApiService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],

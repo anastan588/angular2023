@@ -13,6 +13,8 @@ import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.d
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 import { HeaderModule } from 'src/app/shared/components/header.module';
 import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
     FormsModule,
     MatCardModule,
     ButtonModule,
+    MatButtonModule,
+    MatIconModule,
     MainRoutingModule,
     RouterModule,
     BordersItemsDirective,

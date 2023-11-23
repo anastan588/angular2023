@@ -36,8 +36,22 @@
     </div>
   </mat-card-content>
   <mat-card-header>{{ video.snippet.title }}</mat-card-header>
+  <button
+    mat-icon-button
+    id="{{ video.id.videoId }}"
+    #favButtonNotSelected
+    color="warn"
+    aria-label="favorite"
+    (click)="toggleSelected()">
+    <mat-icon *ngIf="!selected" color="primary">favorite</mat-icon>
+    <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
+  </button>
   <mat-card-actions>
-    <app-button [routerLink]="['detailed', video.id]" (click)="navigateToDetailedPage()">more...</app-button>
+    <app-button
+      [routerLink]="['detailed', video.id]"
+      (click)="navigateToDetailedPage()"
+      >more...</app-button
+    >
   </mat-card-actions>
   <mat-card-footer [video]="video" appBordersItems></mat-card-footer>
 </mat-card>

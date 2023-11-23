@@ -1,7 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatButton, MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-search-item',
@@ -9,15 +11,15 @@ import { ApiService } from 'src/app/core/services/api/api.service';
   styleUrls: ['./search-item.component.scss'],
 })
 export class SearchItemComponent {
+  @Input() selected!: boolean;
+  @Output() selectedChange = new EventEmitter<boolean>();
   @Input()
   video!: IVideoItem;
   dataPublication!: Date;
   timePublication!: number;
   todayDate: Date;
   colorOfFooter: Record<string, string> = {};
-  constructor(
-    private router: Router,
-  ) {
+  constructor(private router: Router) {
     this.dataPublication;
     this.timePublication;
     this.todayDate = new Date();
@@ -26,5 +28,15 @@ export class SearchItemComponent {
 
   navigateToDetailedPage() {
     this.router.navigate(['main/detailed', this.video.id]);
+  }
+
+  addtoFavourite() {
+
+  }
+
+  public toggleSelected() {
+    this.selected = !this.selected;
+    console.log(this.selected);
+    this.selectedChange.emit(this.selected);
   }
 }
