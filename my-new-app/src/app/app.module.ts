@@ -25,7 +25,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

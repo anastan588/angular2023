@@ -18,10 +18,21 @@ export const loginReducer = createReducer(
 // );
 
 
-export const videosReducer = createReducer(
+export const videosCollectionReducer = createReducer(
   InitialVideoItems,
-  on(VideosReceiveFromApiActions.receiveVideosList, (_state, { videos }) => videos)
+  on(VideosReceiveFromApiActions.receiveVideosList, (_state, { videos }) => videos);
+   on(VideosReceiveFromApiActions.removeVideo, (state, { videoId }) =>
+    state.filter((id) => id !== videoId)
+  ),
 );
+
+export const VideosCollectionReducer = createReducer(
+  InitialVideoItems,
+ 
+  on(FavouriteVideosActions.addFavourite, (state, { videoId }) => {
+    if (state.indexOf(videoId) > -1) return state;
+    return [...state, videoId];
+  }));
 
 
 export const favouriteVideosReducer = createReducer(

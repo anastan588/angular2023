@@ -42,13 +42,13 @@
     #favButtonNotSelected
     color="warn"
     aria-label="favorite"
-    (click)="toggleSelected()">
-    <mat-icon *ngIf="!selected" color="primary">favorite</mat-icon>
+    (click)="toggleSelected(video.id.videoId)">
+    <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
     <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
   </button>
   <mat-card-actions>
     <app-button
-      [routerLink]="['detailed', video.id]"
+      [routerLink]="['detailed', video.id.videoId]"
       (click)="navigateToDetailedPage()"
       >more...</app-button
     >

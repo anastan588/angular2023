@@ -3,6 +3,8 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { searchCollection } from 'src/app/core/selectors/selectors';
 
 
 @Component({
@@ -19,12 +21,14 @@ export class SearchResultsComponent implements OnInit {
 
   constructor(
     public readonly filterService: FiltersService,
-    public readonly api: ApiService
+    public readonly api: ApiService,
+    public store: Store
   ) {
    
   }
   ngOnInit() {
-    this.searchResults$ = this.api.resultForCustomers$;
+    // this.searchResults$ = this.api.resultForCustomers$;
+    this.searchResults$ = this.store.select(searchCollection);
     this.filterService.keyWord$.subscribe((word: string) => {
       this.wordFilter = word;
     });

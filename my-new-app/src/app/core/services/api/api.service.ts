@@ -75,7 +75,7 @@ export class ApiService {
         const myRequestResultArray = JSON.parse(JSON.stringify(response))
           .items as IVideoItem[];
         this.store.dispatch((VideosReceiveFromApiActions.receiveVideosList({videos: myRequestResultArray})));
-        this.myRequestResultObject.next(myRequestResultArray);
+        // this.myRequestResultObject.next(myRequestResultArray);
       });
   }
 

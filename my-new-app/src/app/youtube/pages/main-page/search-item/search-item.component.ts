@@ -1,9 +1,15 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { Store } from '@ngrx/store';
+import { FavouriteVideosActions } from 'src/app/core/store/actions/actions';
 
 @Component({
   selector: 'app-search-item',
@@ -19,24 +25,34 @@ export class SearchItemComponent {
   timePublication!: number;
   todayDate: Date;
   colorOfFooter: Record<string, string> = {};
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    private apiServise: ApiService,
+    private store: Store
+  ) {
     this.dataPublication;
     this.timePublication;
     this.todayDate = new Date();
     this.colorOfFooter = {};
+    this.selected = true;
   }
 
   navigateToDetailedPage() {
     this.router.navigate(['main/detailed', this.video.id]);
   }
 
-  addtoFavourite() {
+  addtoFavourite() {}
 
-  }
-
-  public toggleSelected() {
+  public toggleSelected(videoId: string) {
     this.selected = !this.selected;
     console.log(this.selected);
     this.selectedChange.emit(this.selected);
+    if (this.selected === true) {
+      this.store.dispatch(FavouriteVideosActions.addFavourite({ videoId }));
+    } else {
+      this.store.dispatch(FavouriteVideosActions.removeFavourite({ videoId }));
+    }
+    
   }
-}
+  }
+    

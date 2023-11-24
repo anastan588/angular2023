@@ -30,6 +30,18 @@ const routesYoutube: Routes = [
             m => m.AdminPageModule
           ),
       },
+      {
+        path: 'main',
+        canActivate: [loginGuard],
+        loadChildren: () =>
+          import('./pages/main-page/main.module').then(m => m.MainModule),
+      },
+      {
+        path: 'favorite',
+        canActivate: [loginGuard],
+        loadChildren: () =>
+          import('./pages/favorite-page/favorite-page.module').then(m => m.FavoritePageModule),
+      },
     ],
   },
 ];

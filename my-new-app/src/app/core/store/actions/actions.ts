@@ -16,15 +16,27 @@ export const setLoginToken = createAction(
 
 
 
+
+
 export const VideosReceiveFromApiActions = createActionGroup({
   source: 'Video API',
   events: {
     'Receive Videos List': props<{ videos: ReadonlyArray<IVideoItem> }>(),
+    'Remove Video': props<{ videoId: string }>(),
+    'Add Video': props<{ videoId: string }>(),
+  },
+});
+
+export const VideosSearchApiActions = createActionGroup({
+  source: 'Videos',
+  events: {
+    'Remove Video': props<{ videoId: string }>(),
+    'Add Video': props<{ videoId: string }>(),
   },
 });
 
 export const FavouriteVideosActions = createActionGroup({
-  source: 'Videos',
+  source: 'Videos Favourite',
   events: {
     'Add Favourite': props<{ videoId: string }>(),
     'Remove Favourite': props<{ videoId: string }>(),

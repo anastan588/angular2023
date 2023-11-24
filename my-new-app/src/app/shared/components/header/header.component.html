@@ -2,6 +2,9 @@
   <mat-toolbar-row>
     <img src="./../../../../../assets/icons/youtube.png" alt="youtube" />
     <app-search-input class="search-container"></app-search-input>
+    <button (click)="showFavoritePage()" mat-fab aria-label="Example icon button with a heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
     <app-button (click)="showAdminPage()">Admin page</app-button>
     <app-user></app-user>
   </mat-toolbar-row>
