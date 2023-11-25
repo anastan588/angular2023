@@ -42,7 +42,7 @@
     #favButtonNotSelected
     color="warn"
     aria-label="favorite"
-    (click)="toggleSelected(video.id.videoId)">
+    (click)="toggleSelected()">
     <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
     <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
   </button>

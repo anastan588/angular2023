@@ -4,8 +4,8 @@ import { IUser } from '../models/user';
 import { IAdmin } from '../models/admin';
 
 export const InitialVideoItems: ReadonlyArray<IVideoItem> = [];
+export const InitialVideoItemsId: ReadonlyArray<string> = [];
 export const InitialFavouriteVideoItemsId: ReadonlyArray<string>= [];
-
 export const InitialFavouriteVideos:  ReadonlyArray<IVideoItem> = [];
 
 export const InitialUser: IUser = {

@@ -34,25 +34,28 @@ export class SearchItemComponent {
     this.timePublication;
     this.todayDate = new Date();
     this.colorOfFooter = {};
-    this.selected = true;
+    this.selected = false;
   }
 
   navigateToDetailedPage() {
     this.router.navigate(['main/detailed', this.video.id]);
   }
 
-  addtoFavourite() {}
 
-  public toggleSelected(videoId: string) {
+  public toggleSelected() {
     this.selected = !this.selected;
     console.log(this.selected);
     this.selectedChange.emit(this.selected);
+    console.log(this.video.id);
+    const ID = this.video.id;
     if (this.selected === true) {
-      this.store.dispatch(FavouriteVideosActions.addFavourite({ videoId }));
+      this.store.dispatch(FavouriteVideosActions.addFavourite({ videoId: `${ID}` }));
     } else {
-      this.store.dispatch(FavouriteVideosActions.removeFavourite({ videoId }));
+      this.store.dispatch(
+        FavouriteVideosActions.removeFavourite({
+          videoId:  `${ID}`
+        })
+      );
     }
-    
   }
-  }
-    
+}

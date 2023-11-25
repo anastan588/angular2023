@@ -19,13 +19,16 @@ import { StoreModule } from '@ngrx/store';
 import {
   favouriteVideosReducer,
   loginReducer,
-  videosReducer,
+  videosFromApiActionsReducer,
+  videosFromApiCollectionReducer,
 } from './core/store/reducers/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { EffectsModule } from '@ngrx/effects';
+import { VideoEffects } from './core/store/effects/effect';
 
 @NgModule({
-  declarations: [AppComponent,],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,10 +39,12 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
     AuthModule,
     HttpClientModule,
     StoreModule.forRoot({
-      videos: videosReducer,
-      videoId: favouriteVideosReducer,
+      videos: videosFromApiCollectionReducer,
+      videoId: videosFromApiActionsReducer,
+      favoiriteCollection: favouriteVideosReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot([VideoEffects]),
   ],
   providers: [
     OpenFilterMenuService,

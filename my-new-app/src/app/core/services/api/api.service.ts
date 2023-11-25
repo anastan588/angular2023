@@ -11,7 +11,9 @@ import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
 import { Store } from '@ngrx/store';
-import { VideosReceiveFromApiActions} from '../../store/actions/actions';
+import { VideosReceiveFromApiActions } from '../../store/actions/actions';
+import { searchCollection } from '../../store/selectors/selectors';
+import { Actions } from '@ngrx/store-devtools/src/reducer';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +37,9 @@ export class ApiService {
     private store: Store<{ videos: IVideoItem[] }>
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
+    this.store.select(searchCollection).subscribe(videos => {
+      this.myRequestResultObject.next(videos);
+    });
     this.videoId = '';
     this.searchString = '';
     this.urlForVideoList = ``;
@@ -55,29 +60,49 @@ export class ApiService {
     return `videos?&part=snippet,statistics&id=${this.videoId}`;
   }
 
-  getVideosFromYouTubeApi() {
+  getVideos() {
     this.urlForVideoList = this.receiveUtlForVideoList();
-    return this.http
-      .get<ISearchResponse>(this.urlForVideoList)
-      .pipe(
-        switchMap((response: ISearchResponse) => {
-          console.log(response.items);
-          this.videoId = response.items
-            .map((item: IVideoItem) => {
-              return item.id.videoId;
-            })
-            .join(',');
-          this.urlForVideoItem = this.receiveUtlForVideoItem();
-          return this.http.get(this.urlForVideoItem);
-        })
-      )
-      .subscribe(response => {
-        const myRequestResultArray = JSON.parse(JSON.stringify(response))
-          .items as IVideoItem[];
-        this.store.dispatch((VideosReceiveFromApiActions.receiveVideosList({videos: myRequestResultArray})));
-        // this.myRequestResultObject.next(myRequestResultArray);
-      });
+    return this.http.get<ISearchResponse>(this.urlForVideoList).pipe(
+      switchMap((response: ISearchResponse) => {
+        console.log(response.items);
+        this.videoId = response.items
+          .map((item: IVideoItem) => {
+            return item.id.videoId;
+          })
+          .join(',');
+        this.urlForVideoItem = this.receiveUtlForVideoItem();
+        return this.http.get(this.urlForVideoItem);
+      })
+    );
   }
+
+  // getVideosFromYouTubeApi() {
+  //   this.urlForVideoList = this.receiveUtlForVideoList();
+  //   return this.http
+  //     .get<ISearchResponse>(this.urlForVideoList)
+  //     .pipe(
+  //       switchMap((response: ISearchResponse) => {
+  //         console.log(response.items);
+  //         this.videoId = response.items
+  //           .map((item: IVideoItem) => {
+  //             return item.id.videoId;
+  //           })
+  //           .join(',');
+  //         this.urlForVideoItem = this.receiveUtlForVideoItem();
+  //         return this.http.get(this.urlForVideoItem);
+  //       })
+  //     )
+  //     .subscribe(response => {
+  //       const myRequestResultArray = JSON.parse(JSON.stringify(response))
+  //         .items as IVideoItem[];
+  //       this.store.dispatch(
+  //         VideosReceiveFromApiActions.receiveVideosList({
+  //           videos: myRequestResultArray,
+  //         })
+  //       );
+  //       // this.myRequestResultObject.next(myRequestResultArray);
+  //     });
+  // }
 
   getVideoDetailsFromYouTubeApi(id: string) {
     this.videoId = id;

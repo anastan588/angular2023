@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Subject, debounceTime, filter, map } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
+import { VideosReceiveFromApiActions, loadvideos } from 'src/app/core/store/actions/actions';
+import { IVideoItem } from 'src/app/core/store/models/video-item';
+
 @Component({
   selector: 'app-search-input',
   templateUrl: './search-input.component.html',
@@ -21,7 +25,8 @@ export class SearchInputComponent {
     private readonly openFilterMenuService: OpenFilterMenuService,
     private readonly showResultsService: ShowResultsService,
     private readonly apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private store: Store<{ videos: IVideoItem[] }>,
   ) {
     this.open = true;
     this.results = true;
@@ -44,7 +49,8 @@ export class SearchInputComponent {
   }
   showResults() {
     this.router.navigate(['main']);
-    this.apiService.getVideosFromYouTubeApi();
+    this.store.dispatch(loadvideos());
+    // this.apiService.getVideos();
   }
   changeSearchWord() {
     console.log(this.isSearchWord);

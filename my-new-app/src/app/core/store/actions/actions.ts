@@ -14,24 +14,32 @@ export const setLoginToken = createAction(
 //   props<{ videos: IVideoItem[] }>()
 // );
 
+export const LOAD_VIDEOS = '[Main Page] Videos Loads';
+export const LOAD_VIDEOS_SUCCESS = '[Main Page] Videos Loaded Success';
 
-
-
+export const loadvideos = createAction(LOAD_VIDEOS);
+export const loadvideossuccess = createAction(LOAD_VIDEOS_SUCCESS, props<{videos: IVideoItem[]}>);
 
 export const VideosReceiveFromApiActions = createActionGroup({
   source: 'Video API',
   events: {
-    'Receive Videos List': props<{ videos: ReadonlyArray<IVideoItem> }>(),
+    'Receive Videos List': props<{ videos: Array<IVideoItem> }>(),
+  },
+});
+
+export const VideosSearchActions = createActionGroup({
+  source: 'Videos',
+  events: {
     'Remove Video': props<{ videoId: string }>(),
     'Add Video': props<{ videoId: string }>(),
   },
 });
 
-export const VideosSearchApiActions = createActionGroup({
-  source: 'Videos',
+
+export const FavouriteReceiveVideosActions = createActionGroup({
+  source: 'Favourite Receive',
   events: {
-    'Remove Video': props<{ videoId: string }>(),
-    'Add Video': props<{ videoId: string }>(),
+    'Receive Favorite': props<{ videos: ReadonlyArray<IVideoItem> }>(),
   },
 });
 

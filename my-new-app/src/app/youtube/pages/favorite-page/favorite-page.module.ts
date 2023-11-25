@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { FavoriteRoutingModule } from './favorite-page-routing';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
 
 @NgModule({
   declarations: [FavoritePageComponent],
@@ -13,6 +14,7 @@ import { FavoriteRoutingModule } from './favorite-page-routing';
     CommonModule,
     RouterModule,
     MatButtonModule,
+    ButtonModule,
     MatCardModule,
     MatIconModule,
     FavoriteRoutingModule

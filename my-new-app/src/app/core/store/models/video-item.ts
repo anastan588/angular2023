@@ -33,6 +33,7 @@ export interface IVideoItem {
   };
 }
 
+
 interface IVideoWindowSize {
   url: string;
   width: number;
