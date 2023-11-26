@@ -7,7 +7,9 @@ export const InitialVideoItems: ReadonlyArray<IVideoItem> = [];
 export const InitialVideoItemsId: ReadonlyArray<string> = [];
 export const InitialFavouriteVideoItemsId: ReadonlyArray<string>= [];
 export const InitialFavouriteVideos:  ReadonlyArray<IVideoItem> = [];
-export const initialPageNumber = 1;
+export const initialnextPageNumber = '';
+export const initialprevPageNumber = '';
+
 
 
 export const InitialUser: IUser = {

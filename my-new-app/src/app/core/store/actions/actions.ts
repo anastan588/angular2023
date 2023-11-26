@@ -2,8 +2,6 @@ import { createAction, createActionGroup, props } from '@ngrx/store';
 import { IUser } from '../models/user';
 import { IVideoItem } from '../models/video-item';
 
-
-
 export const setLoginToken = createAction(
   '[LoginPage Component] setLoginToken',
   props<{ user: IUser }>()
@@ -18,7 +16,10 @@ export const LOAD_VIDEOS = '[Main Page] Videos Loads';
 export const LOAD_VIDEOS_SUCCESS = '[Main Page] Videos Loaded Success';
 
 export const loadvideos = createAction(LOAD_VIDEOS);
-export const loadvideossuccess = createAction(LOAD_VIDEOS_SUCCESS, props<{videos: IVideoItem[]}>);
+export const loadvideossuccess = createAction(
+  LOAD_VIDEOS_SUCCESS,
+  props<{ videos: IVideoItem[] }>
+);
 
 export const VideosReceiveFromApiActions = createActionGroup({
   source: 'Video API',
@@ -35,7 +36,6 @@ export const VideosSearchActions = createActionGroup({
   },
 });
 
-
 export const FavouriteReceiveVideosActions = createActionGroup({
   source: 'Favourite Receive',
   events: {
@@ -51,13 +51,10 @@ export const FavouriteVideosActions = createActionGroup({
   },
 });
 
-export const nextPage = createAction('Next Page');
-export const previousPage = createAction('Previous Page');
-
-// export const PageNumberActions = createActionGroup({
-//   source: 'page Number',
-//   events: {
-//     'Next Page': (page: number) => ({ payload: { page } }),
-//     'Prevous Page':(page: number) => ({ payload: { page } }),
-//   },
-// });
+export const PageNumberActions = createActionGroup({
+  source: 'page Number',
+  events: {
+    'Next Page': props<{ pageToken: string }>(),
+    'Prevous Page': props<{ pageToken: string }>(),
+  },
+});

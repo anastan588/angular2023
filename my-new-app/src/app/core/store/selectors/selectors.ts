@@ -33,10 +33,17 @@ export const selectfavouriteCollection = createSelector(
 );
 
 
-export const PageNumber =
-createFeatureSelector<Number>('page');
+export const PageNumberNext =
+createFeatureSelector<String>('pageNext');
+export const PageNumberPrevious =
+createFeatureSelector<String>('pagePrevious');
 
-export const PageNumberCollection =
-createSelector(PageNumber, page => {
+export const PageNumberNextCollection =
+createSelector(PageNumberNext, page => {
+  return page;
+});
+
+export const PageNumberPrevoiusCollection =
+createSelector(PageNumberPrevious, page => {
   return page;
 });

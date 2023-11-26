@@ -9,17 +9,14 @@ import { RouterModule, provideRouter } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ApiService } from './core/services/api/api.service';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
-import { DetailedPageComponent } from './youtube/pages/detailed-page/detailed-page.component';
-import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
 import { StoreModule } from '@ngrx/store';
 import {
-  PageCounterReducer,
+  PageNextReducer,
+  PagePreviousReducer,
   favouriteVideosReducer,
-  loginReducer,
   videosFromApiActionsReducer,
   videosFromApiCollectionReducer,
 } from './core/store/reducers/reducers';
@@ -43,7 +40,8 @@ import { VideoEffects } from './core/store/effects/effect';
       videos: videosFromApiCollectionReducer,
       videoId: videosFromApiActionsReducer,
       favoiriteCollection: favouriteVideosReducer,
-      page: PageCounterReducer,
+      pageNext: PageNextReducer,
+      pagePrevious: PagePreviousReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),

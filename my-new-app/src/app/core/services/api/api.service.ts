@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-  AsyncSubject,
-  BehaviorSubject,
-  Observable,
-  Subject,
-  map,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject, switchMap } from 'rxjs';
 import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
 import { Store } from '@ngrx/store';
-import { VideosReceiveFromApiActions } from '../../store/actions/actions';
-import { searchCollection } from '../../store/selectors/selectors';
+import { PageNumberActions } from '../../store/actions/actions';
+import {
+  PageNumberNextCollection,
+  PageNumberPrevoiusCollection,
+  searchCollection,
+} from '../../store/selectors/selectors';
 import { Actions } from '@ngrx/store-devtools/src/reducer';
 
 @Injectable({
@@ -32,12 +29,16 @@ export class ApiService {
 
   videos$: Observable<IVideoItem[]>;
 
-  pageNumber$: Observable<number>;
+  pageNumberNext$: string = '';
+  pageNumberPrevious$: string = '';
+  nextOrPreviosIndentifier = new BehaviorSubject<string>('');
+  nextOrPrevous: string = '';
+  page!: string;
 
   constructor(
     public http: HttpClient,
     private store: Store<{ videos: IVideoItem[] }>,
-    private storePageNumber: Store<{ page: number }>
+    private storePageNumber: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.store.select(searchCollection).subscribe(videos => {
@@ -50,25 +51,61 @@ export class ApiService {
     this.searchWord$.subscribe(data => {
       this.searchString = data;
     });
+
     this.videos$ = store.select('videos');
-    this.pageNumber$ = storePageNumber.select('page');
+    storePageNumber.select(PageNumberNextCollection).subscribe(page => {
+      this.pageNumberNext$ = page.valueOf();
+    });
+    storePageNumber.select(PageNumberPrevoiusCollection).subscribe(page => {
+      this.pageNumberPrevious$ = page.valueOf();
+    });
+    this.nextOrPreviosIndentifier.subscribe(
+      identifier => (this.nextOrPrevous = identifier)
+    );
   }
 
   public changeSearchWord(word: string) {
     return this.searchWord$.next(word);
   }
   receiveUtlForVideoList() {
-    return `search?&type=video&pageToken=${this.pageNumber$}&maxResults=12&q=${this.searchString}`;
+    console.log(this.pageNumberNext$);
+    console.log(this.pageNumberPrevious$);
+    console.log(this.nextOrPrevous);
+    if (this.nextOrPrevous === 'next') {
+      this.page = this.pageNumberNext$;
+    } else if (this.nextOrPrevous === 'prev') {
+      this.page = this.pageNumberPrevious$;
+    }
+    if (this.page !== undefined) {
+      console.log(this.page);
+      return `search?pageToken=${this.page}&type=video&maxResults=20&q=${this.searchString}`;
+    }
+    return `search?&type=video&maxResults=20&q=${this.searchString}`;
   }
   receiveUtlForVideoItem() {
     return `videos?&part=snippet,statistics&id=${this.videoId}`;
   }
 
   getVideos() {
+    console.log(this.page);
     this.urlForVideoList = this.receiveUtlForVideoList();
     return this.http.get<ISearchResponse>(this.urlForVideoList).pipe(
       switchMap((response: ISearchResponse) => {
-        console.log(response.items);
+        console.log(response);
+        console.log(response.nextPageToken);
+        console.log(response.prevPageToken);
+        if (response.nextPageToken !== undefined) {
+          this.storePageNumber.dispatch(
+            PageNumberActions.nextPage({ pageToken: response.nextPageToken })
+          );
+        }
+        if (response.prevPageToken !== undefined) {
+          this.storePageNumber.dispatch(
+            PageNumberActions.prevousPage({
+              pageToken: response.prevPageToken,
+            })
+          );
+        }
         this.videoId = response.items
           .map((item: IVideoItem) => {
             return item.id.videoId;

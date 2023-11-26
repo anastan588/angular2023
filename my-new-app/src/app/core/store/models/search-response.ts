@@ -6,6 +6,7 @@ export interface ISearchResponse {
     totalResults: number,
     resultsPerPage: number
   },
+  prevPageToken?: string,
   nextPageToken?: string,
   regionCode?: string,
   items: IVideoItem[],

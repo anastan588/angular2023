@@ -2,21 +2,20 @@ import { createReducer, on } from '@ngrx/store';
 import {
   FavouriteReceiveVideosActions,
   FavouriteVideosActions,
+  PageNumberActions,
   VideosReceiveFromApiActions,
   VideosSearchActions,
-  nextPage,
-  previousPage,
   setLoginToken,
 } from '../actions/actions';
 import {
   InitialFavouriteVideoItemsId,
-  InitialFavouriteVideos,
   InitialUser,
   InitialVideoItems,
   InitialVideoItemsId,
-  initialPageNumber,
+  initialnextPageNumber,
+  initialprevPageNumber,
 } from '../state/state';
-import { IVideoItem } from '../models/video-item';
+
 
 export const loginReducer = createReducer(
   InitialUser,
@@ -71,13 +70,11 @@ export const favouriteVideosReducer = createReducer(
   })
 );
 
-export const PageCounterReducer = createReducer(
-  initialPageNumber,
-  on(nextPage, state => state + 1),
-  on(previousPage, state => {
-    if (state !== 1) {
-      return state - 1;
-    }
-    return state;
-  })
+export const PageNextReducer = createReducer(
+  initialnextPageNumber,
+  on(PageNumberActions.nextPage, (_state, { pageToken }) => pageToken),
+);
+export const PagePreviousReducer = createReducer(
+  initialprevPageNumber,
+  on(PageNumberActions.prevousPage, (_state, { pageToken }) => pageToken),
 );
