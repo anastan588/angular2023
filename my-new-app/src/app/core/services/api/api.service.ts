@@ -78,9 +78,9 @@ export class ApiService {
     }
     if (this.page !== undefined) {
       console.log(this.page);
-      return `search?pageToken=${this.page}&type=video&maxResults=20&q=${this.searchString}`;
+      return `search?pageToken=${this.page}&type=video&maxResults=3&q=${this.searchString}`;
     }
-    return `search?&type=video&maxResults=20&q=${this.searchString}`;
+    return `search?&type=video&maxResults=3&q=${this.searchString}`;
   }
   receiveUtlForVideoItem() {
     return `videos?&part=snippet,statistics&id=${this.videoId}`;

@@ -24,6 +24,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { EffectsModule } from '@ngrx/effects';
 import { VideoEffects } from './core/store/effects/effect';
+import { FilterPipe } from './shared/pipes/filter.pipe';
 
 @NgModule({
   declarations: [AppComponent],
@@ -50,6 +51,7 @@ import { VideoEffects } from './core/store/effects/effect';
     OpenFilterMenuService,
     ShowResultsService,
     FiltersService,
+    FilterPipe,
     MatIconRegistry,
     ApiService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },

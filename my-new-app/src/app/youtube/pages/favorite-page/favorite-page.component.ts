@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem} from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { selectfavouriteCollection } from 'src/app/core/store/selectors/selectors';
 
 @Component({
@@ -12,17 +12,10 @@ import { selectfavouriteCollection } from 'src/app/core/store/selectors/selector
   templateUrl: './favorite-page.component.html',
   styleUrls: ['./favorite-page.component.scss'],
 })
-export class FavoritePageComponent {
-  @Input() selected!: boolean;
-  @Output() selectedChange = new EventEmitter<boolean>();
-  @Input() 
-  video!: IVideoItem;
-  dataPublication!: Date;
-  timePublication!: number;
-  todayDate: Date;
-  colorOfFooter: Record<string, string> = {};
-  searchResults$:Observable<IVideoItem[]> = this.store.select(selectfavouriteCollection);
-  ;
+export class FavoritePageComponent implements OnInit {
+  searchResults$ = new BehaviorSubject<IVideoItem[]>([]);
+  results$!: Observable<IVideoItem[]>;
+  results!: Observable<IVideoItem[]>;
   initialArray!: IVideoItem[];
   constructor(
     public router: Router,
@@ -30,28 +23,17 @@ export class FavoritePageComponent {
     public readonly api: ApiService,
     private store: Store
   ) {
-    this.dataPublication;
-    this.timePublication;
-    this.todayDate = new Date();
-    this.colorOfFooter = {};
-    this.selected = true;
-  }
-
-  navigateToDetailedPage() {
-    console.log(this.video.id);
-    this.router.navigate(['main/detailed', this.video.id]);
-  }
-
-  addtoFavourite() {}
-
-  public toggleSelected() {
-    this.selected = !this.selected;
-    console.log(this.selected);
-    this.selectedChange.emit(this.selected);
+    this.searchResults$.asObservable();
   }
 
   ngOnInit() {
+    this.store.select(selectfavouriteCollection).subscribe(data => {
+      this.searchResults$.next(data);
+    });
     console.log(this.searchResults$);
+    this.results$ = this.searchResults$;
+    this.results = this.results$;
+    console.log(this.results);
     // this.searchResults$ = this.api.resultForCustomers$;
     // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
     //   this.initialArray = JSON.parse(JSON.stringify(data));

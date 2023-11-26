@@ -4,12 +4,8 @@ import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 import {
-  PageNumberActions,
   loadvideos,
 } from 'src/app/core/store/actions/actions';
-import {
-  PageNextReducer,
-} from 'src/app/core/store/reducers/reducers';
 
 @Component({
   selector: 'app-main',
