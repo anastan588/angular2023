@@ -26,7 +26,7 @@ export const VideosReceiveFromApiActions = createActionGroup({
   source: 'Video API',
   events: {
     'Receive Videos List': props<{ videos: Array<IVideoItem> }>(),
-    'Remove Video': props<{ video:IVideoItem }>(),
+    'Remove Video': props<{ video: IVideoItem }>(),
     'Add Video': props<{ video: IAdmin }>(),
   },
 });

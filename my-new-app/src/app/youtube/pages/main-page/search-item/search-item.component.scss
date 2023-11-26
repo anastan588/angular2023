@@ -104,3 +104,9 @@ mat-icon-button {
   font-style: normal;
   font-size: 24px;
 }
+
+mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

@@ -1,5 +1,5 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IVideoItem} from '../models/video-item';
+import { IVideoItem } from '../models/video-item';
 
 export const searchVideos = createFeatureSelector<Array<IVideoItem>>('videos');
 
@@ -7,6 +7,27 @@ export const searchCollection = createSelector(searchVideos, videos => {
   return videos;
 });
 
+export const selectDetailledVideoState =
+  createFeatureSelector<IVideoItem>('detailedVideo');
+
+export const selectCurrentVideo = createSelector(
+  searchVideos,
+  selectDetailledVideoState,
+  (videos, detailedVideo) => {
+    console.log(videos);
+    console.log(detailedVideo);
+    const det = videos.filter(video => {
+      const videoSelect = String(video.id);
+      console.log(detailedVideo);
+      const detailedSelect = String(detailedVideo.id);
+      console.log(videoSelect);
+      console.log(detailedSelect);
+      return videoSelect === detailedSelect;
+    });
+    console.log(det);
+    return det[0];
+  }
+);
 
 export const selectfavouriteCollectionState = createFeatureSelector<
   ReadonlyArray<string>
@@ -23,7 +44,6 @@ export const selectfavouriteCollection = createSelector(
         videos.find(video => {
           const videoSelect = video.id;
           console.log(videoSelect);
-          console.log(videoSelect);
           return videoSelect.toString() === id;
         })!
     );
@@ -32,18 +52,16 @@ export const selectfavouriteCollection = createSelector(
   }
 );
 
+export const PageNumberNext = createFeatureSelector<String>('pageNext');
+export const PageNumberPrevious = createFeatureSelector<String>('pagePrevious');
 
-export const PageNumberNext =
-createFeatureSelector<String>('pageNext');
-export const PageNumberPrevious =
-createFeatureSelector<String>('pagePrevious');
-
-export const PageNumberNextCollection =
-createSelector(PageNumberNext, page => {
+export const PageNumberNextCollection = createSelector(PageNumberNext, page => {
   return page;
 });
 
-export const PageNumberPrevoiusCollection =
-createSelector(PageNumberPrevious, page => {
-  return page;
-});
+export const PageNumberPrevoiusCollection = createSelector(
+  PageNumberPrevious,
+  page => {
+    return page;
+  }
+);

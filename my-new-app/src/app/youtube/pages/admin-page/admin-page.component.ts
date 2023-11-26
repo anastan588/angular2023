@@ -66,18 +66,25 @@ export class AdminPageComponent {
     const admin: IAdmin = {
       id: String(Math.floor(Math.random() * 10)),
       snippet: {
+        publishedAt: this.adminForm.value.date!,
         title: this.adminForm.value.title!,
         description: this.adminForm.value.description!,
-        publishedAt: this.adminForm.value.date!,
+       
         tags: this.adminForm.value.tags!,
         thumbnails: {
-          high: this.adminForm.value.link!,
+          high: {
+            url: this.adminForm.value.link!,
         },
+        standard: {
+          url: this.adminForm.value.link!,
       },
-    };
+      },
+    },
+  };
     console.log(admin);
     return admin;
   }
+  
 
   setAdminNewVideoToken() {
     const admin = this.admin();

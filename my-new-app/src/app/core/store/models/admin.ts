@@ -5,7 +5,12 @@ export interface IAdmin {
     title: string;
     description?: string;
     thumbnails: {
-      high: string;
+      high: {
+        url: string;
+      };
+      standard: {
+        url: string;
+      };
     };
     tags: (string | null)[];
   };

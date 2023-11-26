@@ -43,6 +43,7 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
       favoiriteCollection: favouriteVideosReducer,
       pageNext: PageNextReducer,
       pagePrevious: PagePreviousReducer,
+      detailedVideo: videosFromApiCollectionReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),
