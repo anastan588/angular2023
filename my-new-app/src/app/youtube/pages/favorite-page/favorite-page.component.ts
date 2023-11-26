@@ -34,9 +34,11 @@ export class FavoritePageComponent {
     this.timePublication;
     this.todayDate = new Date();
     this.colorOfFooter = {};
+    this.selected = true;
   }
 
   navigateToDetailedPage() {
+    console.log(this.video.id);
     this.router.navigate(['main/detailed', this.video.id]);
   }
 

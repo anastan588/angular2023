@@ -7,8 +7,6 @@ export const searchCollection = createSelector(searchVideos, videos => {
   return videos;
 });
 
-// export const favouritetVideos =
-//   createFeatureSelector<ReadonlyArray<IVideoItem>>('favourite');
 
 export const selectfavouriteCollectionState = createFeatureSelector<
   ReadonlyArray<string>
@@ -33,3 +31,12 @@ export const selectfavouriteCollection = createSelector(
     return fav;
   }
 );
+
+
+export const PageNumber =
+createFeatureSelector<Number>('page');
+
+export const PageNumberCollection =
+createSelector(PageNumber, page => {
+  return page;
+});

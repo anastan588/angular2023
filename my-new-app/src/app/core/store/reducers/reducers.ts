@@ -4,6 +4,8 @@ import {
   FavouriteVideosActions,
   VideosReceiveFromApiActions,
   VideosSearchActions,
+  nextPage,
+  previousPage,
   setLoginToken,
 } from '../actions/actions';
 import {
@@ -12,6 +14,7 @@ import {
   InitialUser,
   InitialVideoItems,
   InitialVideoItemsId,
+  initialPageNumber,
 } from '../state/state';
 import { IVideoItem } from '../models/video-item';
 
@@ -65,5 +68,16 @@ export const favouriteVideosReducer = createReducer(
     console.log(videoId);
     if (state.indexOf(videoId) > -1) return state;
     return [...state, videoId];
+  })
+);
+
+export const PageCounterReducer = createReducer(
+  initialPageNumber,
+  on(nextPage, state => state + 1),
+  on(previousPage, state => {
+    if (state !== 1) {
+      return state - 1;
+    }
+    return state;
   })
 );

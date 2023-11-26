@@ -32,9 +32,12 @@ export class ApiService {
 
   videos$: Observable<IVideoItem[]>;
 
+  pageNumber$: Observable<number>;
+
   constructor(
     public http: HttpClient,
-    private store: Store<{ videos: IVideoItem[] }>
+    private store: Store<{ videos: IVideoItem[] }>,
+    private storePageNumber: Store<{ page: number }>
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.store.select(searchCollection).subscribe(videos => {
@@ -48,13 +51,14 @@ export class ApiService {
       this.searchString = data;
     });
     this.videos$ = store.select('videos');
+    this.pageNumber$ = storePageNumber.select('page');
   }
 
   public changeSearchWord(word: string) {
     return this.searchWord$.next(word);
   }
   receiveUtlForVideoList() {
-    return `search?&type=video&maxResults=12&q=${this.searchString}`;
+    return `search?&type=video&pageToken=${this.pageNumber$}&maxResults=12&q=${this.searchString}`;
   }
   receiveUtlForVideoItem() {
     return `videos?&part=snippet,statistics&id=${this.videoId}`;

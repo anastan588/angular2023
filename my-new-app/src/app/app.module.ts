@@ -17,6 +17,7 @@ import { DetailedPageComponent } from './youtube/pages/detailed-page/detailed-pa
 import { detailedPageResolver } from './core/resolvers/detailed-page.resolver';
 import { StoreModule } from '@ngrx/store';
 import {
+  PageCounterReducer,
   favouriteVideosReducer,
   loginReducer,
   videosFromApiActionsReducer,
@@ -42,6 +43,7 @@ import { VideoEffects } from './core/store/effects/effect';
       videos: videosFromApiCollectionReducer,
       videoId: videosFromApiActionsReducer,
       favoiriteCollection: favouriteVideosReducer,
+      page: PageCounterReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),

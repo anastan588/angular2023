@@ -50,3 +50,14 @@ export const FavouriteVideosActions = createActionGroup({
     'Remove Favourite': props<{ videoId: string }>(),
   },
 });
+
+export const nextPage = createAction('Next Page');
+export const previousPage = createAction('Previous Page');
+
+// export const PageNumberActions = createActionGroup({
+//   source: 'page Number',
+//   events: {
+//     'Next Page': (page: number) => ({ payload: { page } }),
+//     'Prevous Page':(page: number) => ({ payload: { page } }),
+//   },
+// });
