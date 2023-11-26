@@ -30,13 +30,17 @@ export const loginReducer = createReducer(
 export const videosFromApiCollectionReducer = createReducer(
   InitialVideoItems,
   on(VideosReceiveFromApiActions.receiveVideosList, (state, { videos }) => {
-    return state.concat(videos);
+    if (state.length < 20) {
+      return state.concat(videos.slice(0, 20 - state.length));
+    }
+    const newState = state.slice(0, state.length - videos.length);
+    return newState.concat(videos);
   }),
   on(VideosReceiveFromApiActions.removeVideo, (state, { video }) =>
     state.filter(item => item!.id !== video.id)
   ),
   on(VideosReceiveFromApiActions.addVideo, (state, { video }) => {
-    return [ video,...state];
+    return [video, ...state];
   })
 );
 
