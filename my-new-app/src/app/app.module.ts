@@ -17,7 +17,6 @@ import {
   PageNextReducer,
   PagePreviousReducer,
   favouriteVideosReducer,
-  videosFromApiActionsReducer,
   videosFromApiCollectionReducer,
 } from './core/store/reducers/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -41,7 +40,6 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
     HttpClientModule,
     StoreModule.forRoot({
       videos: videosFromApiCollectionReducer,
-      videoId: videosFromApiActionsReducer,
       favoiriteCollection: favouriteVideosReducer,
       pageNext: PageNextReducer,
       pagePrevious: PagePreviousReducer,

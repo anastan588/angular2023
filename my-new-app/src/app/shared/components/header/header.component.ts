@@ -32,9 +32,12 @@ export class HeaderComponent implements DoCheck {
   showAdminPage() {
     this.router.navigate(['admin']);
   }
+  showMainPage() {
+    this.router.navigate(['main']);
+  }
   showFavoritePage() {
     this.store.select(selectfavouriteCollection).subscribe(() => {
-        this.router.navigate(['favorite']);
+      this.router.navigate(['favorite']);
     });
   }
 }

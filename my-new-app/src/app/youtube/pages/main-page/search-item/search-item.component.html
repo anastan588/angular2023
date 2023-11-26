@@ -3,40 +3,49 @@
     <img
       class="video-image"
       mat-card-image
-      [src]="video.snippet.thumbnails.high.url" />
+      [src]="video.snippet!.thumbnails.high.url" />
   </div>
-  <mat-card-content>
+  <mat-card-content *ngIf="video.statistics !== undefined">
     <div class="views">
       <img
         src="./../../../../../assets/icons/eye.png"
         alt="views"
         class="views-img" />
-      <p class="views-amount">{{ video.statistics.viewCount }}</p>
+      <p class="views-amount">
+        {{ video.statistics.viewCount }}
+      </p>
     </div>
     <div class="likes">
       <img
         src="./../../../../../assets/icons/like.png"
         alt="likes"
         class="views-img" />
-      <p class="likes-amount">{{ video.statistics.likeCount }}</p>
+      <p class="likes-amount">
+        {{ video.statistics.likeCount }}
+      </p>
     </div>
     <div class="dislikes">
       <img
         src="./../../../../../assets/icons/dislike.png"
         alt="dislikes"
         class="views-img" />
-      <p class="dislikes-amount">{{ video.statistics.dislikeCount }}</p>
+      <p class="dislikes-amount">
+        {{ video.statistics.dislikeCount }}
+      </p>
     </div>
     <div class="comments">
       <img
         src="./../../../../../assets/icons/comment.png"
         alt="comments"
         class="views-img" />
-      <p class="comments-amount">{{ video.statistics.commentCount }}</p>
+      <p class="comments-amount">
+        {{ video.statistics.commentCount }}
+      </p>
     </div>
   </mat-card-content>
   <mat-card-header>{{ video.snippet.title }}</mat-card-header>
   <button
+    *ngIf="video.statistics !== undefined"
     mat-icon-button
     id="{{ video.id.videoId }}"
     #favButtonNotSelected
@@ -48,9 +57,15 @@
   </button>
   <mat-card-actions>
     <app-button
+      *ngIf="video.statistics !== undefined"
       [routerLink]="['detailed', video.id.videoId]"
       (click)="navigateToDetailedPage()"
       >more...</app-button
+    >
+    <app-button
+      *ngIf="video.statistics === undefined"
+      (click)="deleteCustomCard()"
+      >Delete</app-button
     >
   </mat-card-actions>
   <mat-card-footer [video]="video" appBordersItems></mat-card-footer>

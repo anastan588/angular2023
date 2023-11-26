@@ -1,7 +1,12 @@
 export interface IAdmin {
+  id: string;
+  snippet: {
+    publishedAt: string;
     title: string;
-    description: string;
-    link: string;
-    date: string;
-    tags: (string| null)[];
-  }
+    description?: string;
+    thumbnails: {
+      high: string;
+    };
+    tags: (string | null)[];
+  };
+}

@@ -1,21 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  FavouriteReceiveVideosActions,
   FavouriteVideosActions,
   PageNumberActions,
   VideosReceiveFromApiActions,
-  VideosSearchActions,
   setLoginToken,
 } from '../actions/actions';
 import {
   InitialFavouriteVideoItemsId,
   InitialUser,
   InitialVideoItems,
-  InitialVideoItemsId,
   initialnextPageNumber,
   initialprevPageNumber,
 } from '../state/state';
-
 
 export const loginReducer = createReducer(
   InitialUser,
@@ -33,22 +29,19 @@ export const loginReducer = createReducer(
 
 export const videosFromApiCollectionReducer = createReducer(
   InitialVideoItems,
-  on(
-    VideosReceiveFromApiActions.receiveVideosList,
-    (_state, { videos }) => videos
-  )
-);
-
-export const videosFromApiActionsReducer = createReducer(
-  InitialVideoItemsId,
-  on(VideosSearchActions.removeVideo, (state, { videoId }) =>
-    state.filter(id => id !== videoId)
+  on(VideosReceiveFromApiActions.receiveVideosList, (state, { videos }) => {
+    return state.concat(videos);
+  }),
+  on(VideosReceiveFromApiActions.removeVideo, (state, { video }) =>
+    state.filter(item => item!.id !== video.id)
   ),
-  on(VideosSearchActions.addVideo, (state, { videoId }) => {
-    if (state.indexOf(videoId) > -1) return state;
-    return [...state, videoId];
+  on(VideosReceiveFromApiActions.addVideo, (state, { video }) => {
+    return [ video,...state];
   })
 );
+
+// export const videosFromApiActionsReducer = createReducer(
+//   InitialVideoItems,
 
 // export const favouriteVideosArrayAReducer = createReducer(
 //   InitialFavouriteVideos,
@@ -68,16 +61,16 @@ export const favouriteVideosReducer = createReducer(
     if (state.indexOf(videoId) > -1) return state;
     return [...state, videoId];
   }),
-  on(FavouriteVideosActions.resetFavourite, (state) => {
+  on(FavouriteVideosActions.resetFavourite, state => {
     return [];
   })
 );
 
 export const PageNextReducer = createReducer(
   initialnextPageNumber,
-  on(PageNumberActions.nextPage, (_state, { pageToken }) => pageToken),
+  on(PageNumberActions.nextPage, (_state, { pageToken }) => pageToken)
 );
 export const PagePreviousReducer = createReducer(
   initialprevPageNumber,
-  on(PageNumberActions.prevousPage, (_state, { pageToken }) => pageToken),
+  on(PageNumberActions.prevousPage, (_state, { pageToken }) => pageToken)
 );

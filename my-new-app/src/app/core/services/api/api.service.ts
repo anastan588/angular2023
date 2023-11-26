@@ -4,7 +4,7 @@ import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
 import { Store } from '@ngrx/store';
-import { FavouriteReceiveVideosActions, FavouriteVideosActions, PageNumberActions } from '../../store/actions/actions';
+import { FavouriteVideosActions, PageNumberActions } from '../../store/actions/actions';
 import {
   PageNumberNextCollection,
   PageNumberPrevoiusCollection,

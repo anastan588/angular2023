@@ -9,7 +9,10 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { Store } from '@ngrx/store';
-import { FavouriteVideosActions } from 'src/app/core/store/actions/actions';
+import {
+  FavouriteVideosActions,
+  VideosReceiveFromApiActions,
+} from 'src/app/core/store/actions/actions';
 
 @Component({
   selector: 'app-search-item',
@@ -40,7 +43,11 @@ export class SearchItemComponent {
   navigateToDetailedPage() {
     this.router.navigate(['main/detailed', this.video.id]);
   }
-
+  deleteCustomCard() {
+    this.store.dispatch(
+      VideosReceiveFromApiActions.removeVideo({ video: this.video })
+    );
+  }
 
   public toggleSelected() {
     this.selected = !this.selected;
@@ -49,11 +56,13 @@ export class SearchItemComponent {
     console.log(this.video.id);
     const ID = this.video.id;
     if (this.selected === true) {
-      this.store.dispatch(FavouriteVideosActions.addFavourite({ videoId: `${ID}` }));
+      this.store.dispatch(
+        FavouriteVideosActions.addFavourite({ videoId: `${ID}` })
+      );
     } else {
       this.store.dispatch(
         FavouriteVideosActions.removeFavourite({
-          videoId:  `${ID}`
+          videoId: `${ID}`,
         })
       );
     }

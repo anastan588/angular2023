@@ -5,8 +5,11 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/auth/auth.service';
+import { VideosReceiveFromApiActions } from 'src/app/core/store/actions/actions';
 import { IAdmin } from 'src/app/core/store/models/admin';
+import { videosFromApiCollectionReducer } from 'src/app/core/store/reducers/reducers';
 
 @Component({
   selector: 'app-admin-page',
@@ -51,7 +54,8 @@ export class AdminPageComponent {
 
   constructor(
     private readonly authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store
   ) {
     const currentDate = new Date();
     this.minDate = new Date(1923, 0, 1, 0, 0, 0, 0);
@@ -60,11 +64,16 @@ export class AdminPageComponent {
 
   admin(): IAdmin {
     const admin: IAdmin = {
-      title: this.adminForm.value.title!,
-      description: this.adminForm.value.description!,
-      link: this.adminForm.value.link!,
-      date: this.adminForm.value.date!,
-      tags: this.adminForm.value.tags!,
+      id: String(Math.floor(Math.random() * 10)),
+      snippet: {
+        title: this.adminForm.value.title!,
+        description: this.adminForm.value.description!,
+        publishedAt: this.adminForm.value.date!,
+        tags: this.adminForm.value.tags!,
+        thumbnails: {
+          high: this.adminForm.value.link!,
+        },
+      },
     };
     console.log(admin);
     return admin;
@@ -72,6 +81,7 @@ export class AdminPageComponent {
 
   setAdminNewVideoToken() {
     const admin = this.admin();
+    this.store.dispatch(VideosReceiveFromApiActions.addVideo({ video: admin }));
     this.authService.setAdminToken(admin);
   }
 
