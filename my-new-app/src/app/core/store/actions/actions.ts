@@ -1,4 +1,4 @@
-import { createAction, createActionGroup, props } from '@ngrx/store';
+import { createAction, createActionGroup, emptyProps, props } from '@ngrx/store';
 import { IUser } from '../models/user';
 import { IVideoItem } from '../models/video-item';
 
@@ -48,6 +48,7 @@ export const FavouriteVideosActions = createActionGroup({
   events: {
     'Add Favourite': props<{ videoId: string }>(),
     'Remove Favourite': props<{ videoId: string }>(),
+    'Reset Favourite': emptyProps(),
   },
 });
 

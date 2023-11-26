@@ -67,6 +67,9 @@ export const favouriteVideosReducer = createReducer(
     console.log(videoId);
     if (state.indexOf(videoId) > -1) return state;
     return [...state, videoId];
+  }),
+  on(FavouriteVideosActions.resetFavourite, (state) => {
+    return [];
   })
 );
 

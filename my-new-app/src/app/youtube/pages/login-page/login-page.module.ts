@@ -24,10 +24,10 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
-    
+    LoginRoutingModule,
+    RouterModule,
   ],
 })
 export class LoginPageModule {
-  constructor() {
-  }
+  constructor() {}
 }

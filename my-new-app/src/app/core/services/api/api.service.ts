@@ -4,7 +4,7 @@ import { IVideoItem } from '../../store/models/video-item';
 import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../store/models/search-response';
 import { Store } from '@ngrx/store';
-import { PageNumberActions } from '../../store/actions/actions';
+import { FavouriteReceiveVideosActions, FavouriteVideosActions, PageNumberActions } from '../../store/actions/actions';
 import {
   PageNumberNextCollection,
   PageNumberPrevoiusCollection,
@@ -112,6 +112,7 @@ export class ApiService {
             })
           );
         }
+        this.storePageNumber.dispatch(FavouriteVideosActions.resetFavourite())
         this.videoId = response.items
           .map((item: IVideoItem) => {
             return item.id.videoId;
