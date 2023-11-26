@@ -9,6 +9,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { SearchInputComponent } from './search-input/search-input.component';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectfavouriteCollection } from 'src/app/core/store/selectors/selectors';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +22,8 @@ export class HeaderComponent implements DoCheck {
 
   constructor(
     public readonly openFilterMenuService: OpenFilterMenuService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
   ngDoCheck() {
     this.isMenuOpen = this.openFilterMenuService.openFilterMenu.valueOf();
@@ -30,6 +33,8 @@ export class HeaderComponent implements DoCheck {
     this.router.navigate(['admin']);
   }
   showFavoritePage() {
-    this.router.navigate(['favorite']);
+    this.store.select(selectfavouriteCollection).subscribe(() => {
+        this.router.navigate(['favorite']);
+    });
   }
 }

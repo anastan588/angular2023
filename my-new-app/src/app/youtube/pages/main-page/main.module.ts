@@ -15,14 +15,16 @@ import { HeaderModule } from 'src/app/shared/components/header.module';
 import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { FavoritePageComponent } from '../favorite-page/favorite-page.component';
+import { FavoriteItemComponent } from '../favorite-page/favorite-item/favorite-item.component';
+import { FavoritePageModule } from '../favorite-page/favorite-page.module';
 
 @NgModule({
   declarations: [
     SearchItemComponent,
     SearchResultsComponent,
     MainComponent,
-    FilterPipe,
-    SortingPipe
   ],
   imports: [
     CommonModule,
@@ -35,6 +37,7 @@ import { MatButtonModule } from '@angular/material/button';
     RouterModule,
     BordersItemsDirective,
     HeaderModule,
+    SharedModule,
   ],
   exports: [SearchItemComponent],
 })

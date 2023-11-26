@@ -10,7 +10,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { NotFoundPageModule } from './pages/not-found/not-found-page.module';
 
 @NgModule({
-  declarations: [],
+  declarations: [FilterPipe, SortingPipe],
   imports: [
     CommonModule,
     BordersItemsDirective,
@@ -23,7 +23,9 @@ import { NotFoundPageModule } from './pages/not-found/not-found-page.module';
     InputComponent,
     ButtonModule,
     HeaderModule,
-    NotFoundPageModule
+    NotFoundPageModule,
+    FilterPipe,
+    SortingPipe,
   ],
 })
 export class SharedModule {}

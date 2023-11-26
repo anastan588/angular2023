@@ -25,6 +25,8 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { EffectsModule } from '@ngrx/effects';
 import { VideoEffects } from './core/store/effects/effect';
 import { FilterPipe } from './shared/pipes/filter.pipe';
+import { SharedModule } from './shared/shared.module';
+import { SortingPipe } from './shared/pipes/sorting.pipe';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,16 +44,18 @@ import { FilterPipe } from './shared/pipes/filter.pipe';
       videoId: videosFromApiActionsReducer,
       favoiriteCollection: favouriteVideosReducer,
       pageNext: PageNextReducer,
-      pagePrevious: PagePreviousReducer
+      pagePrevious: PagePreviousReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),
   ],
+  exports: [],
   providers: [
     OpenFilterMenuService,
     ShowResultsService,
     FiltersService,
     FilterPipe,
+    SortingPipe,
     MatIconRegistry,
     ApiService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },

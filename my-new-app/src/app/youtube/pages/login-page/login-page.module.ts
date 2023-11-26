@@ -24,8 +24,6 @@ import { RouterModule } from '@angular/router';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
-    LoginRoutingModule,
-    RouterModule,
     
   ],
 })

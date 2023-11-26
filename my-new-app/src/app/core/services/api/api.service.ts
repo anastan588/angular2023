@@ -9,6 +9,7 @@ import {
   PageNumberNextCollection,
   PageNumberPrevoiusCollection,
   searchCollection,
+  selectfavouriteCollection,
 } from '../../store/selectors/selectors';
 import { Actions } from '@ngrx/store-devtools/src/reducer';
 
@@ -28,6 +29,8 @@ export class ApiService {
   searchString: string;
 
   videos$: Observable<IVideoItem[]>;
+  videosFavourite$: Observable<IVideoItem[]>;
+  videosFavouriteSubject$ = new BehaviorSubject<IVideoItem[]>([]);
 
   pageNumberNext$: string = '';
   pageNumberPrevious$: string = '';
@@ -51,8 +54,11 @@ export class ApiService {
     this.searchWord$.subscribe(data => {
       this.searchString = data;
     });
-
+    this.videosFavourite$ = this.videosFavouriteSubject$.asObservable();
     this.videos$ = store.select('videos');
+    storePageNumber.select(selectfavouriteCollection).subscribe(fav => {
+      this.videosFavouriteSubject$.next(fav);
+    });
     storePageNumber.select(PageNumberNextCollection).subscribe(page => {
       this.pageNumberNext$ = page.valueOf();
     });
@@ -78,9 +84,9 @@ export class ApiService {
     }
     if (this.page !== undefined) {
       console.log(this.page);
-      return `search?pageToken=${this.page}&type=video&maxResults=3&q=${this.searchString}`;
+      return `search?pageToken=${this.page}&type=video&maxResults=20&q=${this.searchString}`;
     }
-    return `search?&type=video&maxResults=3&q=${this.searchString}`;
+    return `search?&type=video&maxResults=20&q=${this.searchString}`;
   }
   receiveUtlForVideoItem() {
     return `videos?&part=snippet,statistics&id=${this.videoId}`;

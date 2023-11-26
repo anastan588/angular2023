@@ -10,9 +10,10 @@ import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { FavoriteItemComponent } from './favorite-item/favorite-item.component';
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [FavoritePageComponent, FavoriteItemComponent, FilterPipe, SortingPipe],
+  declarations: [FavoritePageComponent, FavoriteItemComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -20,7 +21,8 @@ import { SortingPipe } from 'src/app/shared/pipes/sorting.pipe';
     ButtonModule,
     MatCardModule,
     MatIconModule,
-    FavoriteRoutingModule
+    FavoriteRoutingModule,
+    SharedModule
   ],
 })
 export class FavoritePageModule {}

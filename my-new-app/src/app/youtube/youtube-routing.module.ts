@@ -31,12 +31,6 @@ const routesYoutube: Routes = [
           ),
       },
       {
-        path: 'main',
-        canActivate: [loginGuard],
-        loadChildren: () =>
-          import('./pages/main-page/main.module').then(m => m.MainModule),
-      },
-      {
         path: 'favorite',
         canActivate: [loginGuard],
         loadChildren: () =>
