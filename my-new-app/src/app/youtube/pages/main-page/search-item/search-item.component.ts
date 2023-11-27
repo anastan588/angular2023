@@ -3,7 +3,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
 } from '@angular/core';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
 import { Router } from '@angular/router';

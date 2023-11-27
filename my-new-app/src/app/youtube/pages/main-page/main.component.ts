@@ -34,13 +34,11 @@ export class MainComponent implements DoCheck {
   }
 
   nextPage() {
-    // this.store.dispatch(PageNumberActions.nextPage());
     this.api.nextOrPreviosIndentifier.next('next');
     this.store.dispatch(loadvideos());
   }
 
   previousPage() {
-    // this.store.dispatch(PageNumberActions.nextPage());
     this.api.nextOrPreviosIndentifier.next('prev');
     this.store.dispatch(loadvideos());
   }

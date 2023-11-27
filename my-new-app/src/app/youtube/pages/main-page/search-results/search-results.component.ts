@@ -4,7 +4,7 @@ import { FiltersService } from 'src/app/core/services/filters/filters.service';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { searchCollection } from 'src/app/core/store/youtube/youtube.selectors';
+
 
 @Component({
   selector: 'app-search-results',
@@ -12,7 +12,6 @@ import { searchCollection } from 'src/app/core/store/youtube/youtube.selectors';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent implements OnInit {
-  // @Input() searchResults$: ReadonlyArray<IVideoItem> = [];
   searchResults$!: Observable<IVideoItem[]>;
   initialArray!: IVideoItem[];
   isDateSort!: string;
@@ -26,9 +25,6 @@ export class SearchResultsComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.searchResults$ = this.api.resultForCustomers$;
-    console.log(this.searchResults$);
-    //  this.store.dispatch({ type: '[Video API] Videos Loaded Success' });
-    // console.log(this.searchResults$);
     this.filterService.keyWord$.subscribe((word: string) => {
       this.wordFilter = word;
     });
