@@ -3,15 +3,15 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
-import { FavouriteVideosActions } from 'src/app/core/store/actions/actions';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/selectors/selectors';
+import { FavouriteVideosActions } from 'src/app/core/store/youtube/youtube.actions';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
+import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 
 @Component({
   selector: 'app-favorite-item',
   templateUrl: './favorite-item.component.html',
-  styleUrls: ['./favorite-item.component.scss']
+  styleUrls: ['./favorite-item.component.scss'],
 })
 export class FavoriteItemComponent {
   @Input() selected!: boolean;
@@ -26,7 +26,7 @@ export class FavoriteItemComponent {
   constructor(
     public router: Router,
     public readonly filterService: FilterPipe,
-    public readonly api:ApiService,
+    public readonly api: ApiService,
     private store: Store
   ) {
     this.dataPublication;
@@ -48,11 +48,13 @@ export class FavoriteItemComponent {
     console.log(this.video.id);
     const ID = this.video.id;
     if (this.selected === true) {
-      this.store.dispatch(FavouriteVideosActions.addFavourite({ videoId: `${ID}` }));
+      this.store.dispatch(
+        FavouriteVideosActions.addFavourite({ videoId: `${ID}` })
+      );
     } else {
       this.store.dispatch(
         FavouriteVideosActions.removeFavourite({
-          videoId:  `${ID}`
+          videoId: `${ID}`,
         })
       );
     }

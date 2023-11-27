@@ -3,8 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-import { setLoginToken } from 'src/app/core/store/actions/actions';
-import { IUser } from 'src/app/core/store/models/user';
+import { IUser } from 'src/app/core/data/models/user';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
 
 @Component({
@@ -43,8 +42,7 @@ export class LoginPageComponent {
 
   setLoginToken() {
     const user = this.loginUser();
-    console.log(user)
-    this.store.dispatch(setLoginToken({user}));
+    console.log(user);
     this.authService.setLoginAndPassword(user);
   }
 }

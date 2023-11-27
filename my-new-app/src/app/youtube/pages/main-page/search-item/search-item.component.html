@@ -3,7 +3,7 @@
     <img
       class="video-image"
       mat-card-image
-      [src]="video.snippet!.thumbnails.high.url" />
+      [src]="video.snippet!.thumbnails.high!.url" />
   </div>
   <mat-card-content *ngIf="video.statistics !== undefined">
     <div class="views">

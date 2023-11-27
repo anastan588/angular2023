@@ -5,8 +5,10 @@ import { Subject, debounceTime, filter, map } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
-import { VideosReceiveFromApiActions, loadvideos } from 'src/app/core/store/actions/actions';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import {
+  loadvideos,
+} from 'src/app/core/store/youtube/youtube.actions';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 
 @Component({
   selector: 'app-search-input',
@@ -26,7 +28,7 @@ export class SearchInputComponent {
     private readonly showResultsService: ShowResultsService,
     private readonly apiService: ApiService,
     private router: Router,
-    private store: Store<{ videos: IVideoItem[] }>,
+    private store: Store<{ videos: IVideoItem[] }>
   ) {
     this.open = true;
     this.results = true;
@@ -37,12 +39,16 @@ export class SearchInputComponent {
     this.open = !this.open;
   }
   ngOnInit() {
-    this.searchSubject.pipe(
-    map((value:string) => value.trim()),
-    filter((value:string) => value.length >= 3), debounceTime(this.debounceTimeMs)).subscribe(() => {
-      this.changeSearchWord();
-      this.showResults();
-    });
+    this.searchSubject
+      .pipe(
+        map((value: string) => value.trim()),
+        filter((value: string) => value.length >= 3),
+        debounceTime(this.debounceTimeMs)
+      )
+      .subscribe(() => {
+        this.changeSearchWord();
+        this.showResults();
+      });
   }
   onSearch() {
     this.searchSubject.next(this.isSearchWord);

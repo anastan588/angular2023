@@ -7,9 +7,8 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/auth/auth.service';
-import { VideosReceiveFromApiActions } from 'src/app/core/store/actions/actions';
-import { IAdmin } from 'src/app/core/store/models/admin';
-import { videosFromApiCollectionReducer } from 'src/app/core/store/reducers/reducers';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
+import { CustomVideosActions } from 'src/app/core/store/youtube/youtube.actions';
 
 @Component({
   selector: 'app-admin-page',
@@ -62,33 +61,33 @@ export class AdminPageComponent {
     this.maxDate = new Date(currentDate);
   }
 
-  admin(): IAdmin {
-    const admin: IAdmin = {
-      id: String(Math.floor(Math.random() * 10)),
+  admin(): IVideoItem {
+    const admin: IVideoItem = {
+      id: {
+        videoId: String(Math.floor(Math.random() * 10)),
+      },
       snippet: {
         publishedAt: this.adminForm.value.date!,
         title: this.adminForm.value.title!,
         description: this.adminForm.value.description!,
-       
-        tags: this.adminForm.value.tags!,
+        tags: this.adminForm.value.tags as string[],
         thumbnails: {
           high: {
             url: this.adminForm.value.link!,
+          },
+          standard: {
+            url: this.adminForm.value.link!,
+          },
         },
-        standard: {
-          url: this.adminForm.value.link!,
       },
-      },
-    },
-  };
+    };
     console.log(admin);
     return admin;
   }
-  
 
   setAdminNewVideoToken() {
     const admin = this.admin();
-    this.store.dispatch(VideosReceiveFromApiActions.addVideo({ video: admin }));
+    this.store.dispatch(CustomVideosActions.addVideo({ video: admin }));
     this.authService.setAdminToken(admin);
   }
 

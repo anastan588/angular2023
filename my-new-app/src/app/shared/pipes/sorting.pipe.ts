@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 
 @Pipe({
   name: 'sorting',
@@ -21,8 +21,8 @@ export class SortingPipe implements PipeTransform {
     }
     if (isViewSort !== 'none') {
       searchResults$.sort((first: IVideoItem, second: IVideoItem) => {
-        const firstView = Number(first.statistics.viewCount);
-        const secondView = Number(second.statistics.viewCount);
+        const firstView = Number(first.statistics!.viewCount);
+        const secondView = Number(second.statistics!.viewCount);
         return this.sortArray(firstView, secondView, isViewSort!);
       });
     }

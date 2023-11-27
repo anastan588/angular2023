@@ -5,14 +5,15 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { Store } from '@ngrx/store';
 import {
+  CustomVideosActions,
   FavouriteVideosActions,
-  VideosReceiveFromApiActions,
-} from 'src/app/core/store/actions/actions';
+} from 'src/app/core/store/youtube/youtube.actions';
+
 
 @Component({
   selector: 'app-search-item',
@@ -44,8 +45,9 @@ export class SearchItemComponent {
     this.router.navigate(['main/detailed', this.video.id]);
   }
   deleteCustomCard() {
+    console.log('hello');
     this.store.dispatch(
-      VideosReceiveFromApiActions.removeVideo({ video: this.video })
+      CustomVideosActions.removeVideo({ video: this.video})
     );
   }
 

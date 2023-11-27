@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, switchMap } from 'rxjs';
-import { IVideoItem } from '../../store/models/video-item';
+import { IVideoItem } from '../../data/models/video-item';
 import { HttpClient } from '@angular/common/http';
-import { ISearchResponse } from '../../store/models/search-response';
+import { ISearchResponse } from '../../data/models/search-response';
 import { Store } from '@ngrx/store';
-import { FavouriteVideosActions, PageNumberActions } from '../../store/actions/actions';
+import {
+  FavouriteVideosActions,
+  PageNumberActions,
+} from '../../store/youtube/youtube.actions';
 import {
   PageNumberNextCollection,
   PageNumberPrevoiusCollection,
+  customCollection,
+  pageItemsNumber,
   searchCollection,
   selectfavouriteCollection,
-} from '../../store/selectors/selectors';
-import { Actions } from '@ngrx/store-devtools/src/reducer';
+} from '../../store/youtube/youtube.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -37,15 +41,24 @@ export class ApiService {
   nextOrPreviosIndentifier = new BehaviorSubject<string>('');
   nextOrPrevous: string = '';
   page!: string;
+  itemsForRequest$ = 20;
 
   constructor(
     public http: HttpClient,
-    private store: Store<{ videos: IVideoItem[] }>,
-    private storePageNumber: Store
+    private storeVideos: Store<{ videos: IVideoItem[] }>,
+    private store: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
     this.store.select(searchCollection).subscribe(videos => {
-      this.myRequestResultObject.next(videos);
+      this.store.select(customCollection).subscribe(customs => {
+        this.myRequestResultObject.next(customs.concat(videos));
+        this.itemsForRequest$ = 20 - customs.length;
+        this.store.dispatch(
+          PageNumberActions.numberItems({
+            pageItems: this.itemsForRequest$!,
+          })
+        );
+      });
     });
     this.videoId = '';
     this.searchString = '';
@@ -55,15 +68,19 @@ export class ApiService {
       this.searchString = data;
     });
     this.videosFavourite$ = this.videosFavouriteSubject$.asObservable();
-    this.videos$ = store.select('videos');
-    storePageNumber.select(selectfavouriteCollection).subscribe(fav => {
+
+    this.videos$ = storeVideos.select('videos');
+    store.select(selectfavouriteCollection).subscribe(fav => {
       this.videosFavouriteSubject$.next(fav);
     });
-    storePageNumber.select(PageNumberNextCollection).subscribe(page => {
+    store.select(PageNumberNextCollection).subscribe(page => {
       this.pageNumberNext$ = page.valueOf();
     });
-    storePageNumber.select(PageNumberPrevoiusCollection).subscribe(page => {
+    store.select(PageNumberPrevoiusCollection).subscribe(page => {
       this.pageNumberPrevious$ = page.valueOf();
+    });
+    store.select(pageItemsNumber).subscribe(numbeOfItems => {
+      this.itemsForRequest$ = numbeOfItems;
     });
     this.nextOrPreviosIndentifier.subscribe(
       identifier => (this.nextOrPrevous = identifier)
@@ -74,9 +91,6 @@ export class ApiService {
     return this.searchWord$.next(word);
   }
   receiveUtlForVideoList() {
-    console.log(this.pageNumberNext$);
-    console.log(this.pageNumberPrevious$);
-    console.log(this.nextOrPrevous);
     if (this.nextOrPrevous === 'next') {
       this.page = this.pageNumberNext$;
     } else if (this.nextOrPrevous === 'prev') {
@@ -84,7 +98,7 @@ export class ApiService {
     }
     if (this.page !== undefined) {
       console.log(this.page);
-      return `search?pageToken=${this.page}&type=video&maxResults=20&q=${this.searchString}`;
+      return `search?pageToken=${this.page}&type=video&maxResults=${this.itemsForRequest$}&q=${this.searchString}`;
     }
     return `search?&type=video&maxResults=20&q=${this.searchString}`;
   }
@@ -93,26 +107,23 @@ export class ApiService {
   }
 
   getVideos() {
-    console.log(this.page);
+    console.log(this.itemsForRequest$);
     this.urlForVideoList = this.receiveUtlForVideoList();
     return this.http.get<ISearchResponse>(this.urlForVideoList).pipe(
       switchMap((response: ISearchResponse) => {
-        console.log(response);
-        console.log(response.nextPageToken);
-        console.log(response.prevPageToken);
         if (response.nextPageToken !== undefined) {
-          this.storePageNumber.dispatch(
+          this.store.dispatch(
             PageNumberActions.nextPage({ pageToken: response.nextPageToken })
           );
         }
         if (response.prevPageToken !== undefined) {
-          this.storePageNumber.dispatch(
+          this.store.dispatch(
             PageNumberActions.prevousPage({
               pageToken: response.prevPageToken,
             })
           );
         }
-        this.storePageNumber.dispatch(FavouriteVideosActions.resetFavourite())
+        this.store.dispatch(FavouriteVideosActions.resetFavourite());
         this.videoId = response.items
           .map((item: IVideoItem) => {
             return item.id.videoId;
@@ -123,34 +134,6 @@ export class ApiService {
       })
     );
   }
-
-  // getVideosFromYouTubeApi() {
-  //   this.urlForVideoList = this.receiveUtlForVideoList();
-  //   return this.http
-  //     .get<ISearchResponse>(this.urlForVideoList)
-  //     .pipe(
-  //       switchMap((response: ISearchResponse) => {
-  //         console.log(response.items);
-  //         this.videoId = response.items
-  //           .map((item: IVideoItem) => {
-  //             return item.id.videoId;
-  //           })
-  //           .join(',');
-  //         this.urlForVideoItem = this.receiveUtlForVideoItem();
-  //         return this.http.get(this.urlForVideoItem);
-  //       })
-  //     )
-  //     .subscribe(response => {
-  //       const myRequestResultArray = JSON.parse(JSON.stringify(response))
-  //         .items as IVideoItem[];
-  //       this.store.dispatch(
-  //         VideosReceiveFromApiActions.receiveVideosList({
-  //           videos: myRequestResultArray,
-  //         })
-  //       );
-  //       // this.myRequestResultObject.next(myRequestResultArray);
-  //     });
-  // }
 
   getVideoDetailsFromYouTubeApi(id: string) {
     this.videoId = id;

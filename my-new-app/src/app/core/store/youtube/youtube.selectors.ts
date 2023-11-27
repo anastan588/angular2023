@@ -1,9 +1,15 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { IVideoItem } from '../models/video-item';
+import { IVideoItem } from '../../data/models/video-item';
 
 export const searchVideos = createFeatureSelector<Array<IVideoItem>>('videos');
 
 export const searchCollection = createSelector(searchVideos, videos => {
+  return videos;
+});
+
+export const customVideos = createFeatureSelector<Array<IVideoItem>>('custom');
+
+export const customCollection = createSelector(customVideos, videos => {
   return videos;
 });
 
@@ -54,14 +60,16 @@ export const selectfavouriteCollection = createSelector(
 
 export const PageNumberNext = createFeatureSelector<String>('pageNext');
 export const PageNumberPrevious = createFeatureSelector<String>('pagePrevious');
-
 export const PageNumberNextCollection = createSelector(PageNumberNext, page => {
   return page;
 });
-
 export const PageNumberPrevoiusCollection = createSelector(
   PageNumberPrevious,
   page => {
     return page;
   }
 );
+export const itemsForPage = createFeatureSelector<number>('pageItems');
+export const pageItemsNumber = createSelector(itemsForPage, number => {
+  return number;
+});

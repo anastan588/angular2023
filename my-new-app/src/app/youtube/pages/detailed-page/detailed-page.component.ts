@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { VideosReceiveFromApiActions } from 'src/app/core/store/actions/actions';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
-import { selectCurrentVideo } from 'src/app/core/store/selectors/selectors';
+import { CustomVideosActions} from 'src/app/core/store/youtube/youtube.actions';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
+import { selectCurrentVideo } from 'src/app/core/store/youtube/youtube.selectors';
+
 
 @Component({
   selector: 'app-detailed-page',
@@ -39,7 +40,7 @@ export class DetailedPageComponent {
 
   deleteCustomCard() {
     this.store.dispatch(
-      VideosReceiveFromApiActions.removeVideo({ video: this.videoForShow })
+      CustomVideosActions.removeVideo({ video: this.videoForShow })
     );
     this.router.navigate(['main']);
   }

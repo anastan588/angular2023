@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/selectors/selectors';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
+import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 
 @Component({
   selector: 'app-favorite-page',

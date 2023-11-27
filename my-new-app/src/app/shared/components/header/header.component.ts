@@ -10,7 +10,7 @@ import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-fi
 import { SearchInputComponent } from './search-input/search-input.component';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectfavouriteCollection } from 'src/app/core/store/selectors/selectors';
+import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 
 @Component({
   selector: 'app-header',

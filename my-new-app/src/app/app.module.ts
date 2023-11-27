@@ -15,16 +15,17 @@ import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { StoreModule } from '@ngrx/store';
 import {
   PageNextReducer,
+  PageNumberReducer,
   PagePreviousReducer,
+  customVideosReducer,
   favouriteVideosReducer,
-  videosFromApiCollectionReducer,
-} from './core/store/reducers/reducers';
+  tubeVideosReducer,
+} from './core/store/youtube/youtube.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { EffectsModule } from '@ngrx/effects';
-import { VideoEffects } from './core/store/effects/effect';
+import { VideoEffects } from './core/store/youtube/youtube.effect';
 import { FilterPipe } from './shared/pipes/filter.pipe';
-import { SharedModule } from './shared/shared.module';
 import { SortingPipe } from './shared/pipes/sorting.pipe';
 
 @NgModule({
@@ -39,11 +40,14 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
     AuthModule,
     HttpClientModule,
     StoreModule.forRoot({
-      videos: videosFromApiCollectionReducer,
+      videos: tubeVideosReducer,
       favoiriteCollection: favouriteVideosReducer,
       pageNext: PageNextReducer,
       pagePrevious: PagePreviousReducer,
-      detailedVideo: videosFromApiCollectionReducer,
+      // detailedVideo: tubeVideosReducer,
+      custom: customVideosReducer,
+      pageItems: PageNumberReducer,
+
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),

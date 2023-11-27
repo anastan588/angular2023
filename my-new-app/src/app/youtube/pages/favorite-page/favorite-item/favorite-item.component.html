@@ -3,7 +3,7 @@
     <img
       class="video-image"
       mat-card-image
-      [src]="video.snippet.thumbnails.high.url" />
+      [src]="video.snippet.thumbnails.high!.url" />
   </div>
   <mat-card-content>
     <div class="views">
@@ -11,28 +11,28 @@
         src="./../../../../../assets/icons/eye.png"
         alt="views"
         class="views-img" />
-      <p class="views-amount">{{ video.statistics.viewCount }}</p>
+      <p class="views-amount">{{ video.statistics!.viewCount }}</p>
     </div>
     <div class="likes">
       <img
         src="./../../../../../assets/icons/like.png"
         alt="likes"
         class="views-img" />
-      <p class="likes-amount">{{ video.statistics.likeCount }}</p>
+      <p class="likes-amount">{{ video.statistics!.likeCount }}</p>
     </div>
     <div class="dislikes">
       <img
         src="./../../../../../assets/icons/dislike.png"
         alt="dislikes"
         class="views-img" />
-      <p class="dislikes-amount">{{ video.statistics.dislikeCount }}</p>
+      <p class="dislikes-amount">{{ video.statistics!.dislikeCount }}</p>
     </div>
     <div class="comments">
       <img
         src="./../../../../../assets/icons/comment.png"
         alt="comments"
         class="views-img" />
-      <p class="comments-amount">{{ video.statistics.commentCount }}</p>
+      <p class="comments-amount">{{ video.statistics!.commentCount }}</p>
     </div>
   </mat-card-content>
   <mat-card-header>{{ video.snippet.title }}</mat-card-header>

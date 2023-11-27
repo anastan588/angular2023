@@ -4,14 +4,8 @@ import {
   emptyProps,
   props,
 } from '@ngrx/store';
-import { IUser } from '../models/user';
-import { IVideoItem } from '../models/video-item';
-import { IAdmin } from '../models/admin';
+import { IVideoItem } from '../../data/models/video-item';
 
-export const setLoginToken = createAction(
-  '[LoginPage Component] setLoginToken',
-  props<{ user: IUser }>()
-);
 
 export const LOAD_VIDEOS = '[Main Page] Videos Loads';
 export const LOAD_VIDEOS_SUCCESS = '[Main Page] Videos Loaded Success';
@@ -22,12 +16,21 @@ export const loadvideossuccess = createAction(
   props<{ videos: IVideoItem[] }>
 );
 
-export const VideosReceiveFromApiActions = createActionGroup({
-  source: 'Video API',
+export const TubeVideosActions = createActionGroup({
+  source: 'Videos Tube',
   events: {
     'Receive Videos List': props<{ videos: Array<IVideoItem> }>(),
     'Remove Video': props<{ video: IVideoItem }>(),
-    'Add Video': props<{ video: IAdmin }>(),
+    'Add Video': props<{ video: IVideoItem }>(),
+  },
+});
+
+export const CustomVideosActions = createActionGroup({
+  source: 'Videos Custom',
+  events: {
+    'Receive Videos List': props<{ videos: Array<IVideoItem> }>(),
+    'Remove Video': props<{ video: IVideoItem }>(),
+    'Add Video': props<{ video: IVideoItem }>(),
   },
 });
 
@@ -52,5 +55,6 @@ export const PageNumberActions = createActionGroup({
   events: {
     'Next Page': props<{ pageToken: string }>(),
     'Prevous Page': props<{ pageToken: string }>(),
+    'Number Items':  props<{ pageItems: number }>(),
   },
 });

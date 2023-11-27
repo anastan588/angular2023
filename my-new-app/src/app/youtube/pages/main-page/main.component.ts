@@ -3,9 +3,7 @@ import { Store } from '@ngrx/store';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
-import {
-  loadvideos,
-} from 'src/app/core/store/actions/actions';
+import { loadvideos } from 'src/app/core/store/youtube/youtube.actions';
 
 @Component({
   selector: 'app-main',
@@ -37,13 +35,13 @@ export class MainComponent implements DoCheck {
 
   nextPage() {
     // this.store.dispatch(PageNumberActions.nextPage());
-    this.api.nextOrPreviosIndentifier.next('next')
+    this.api.nextOrPreviosIndentifier.next('next');
     this.store.dispatch(loadvideos());
   }
 
   previousPage() {
     // this.store.dispatch(PageNumberActions.nextPage());
-    this.api.nextOrPreviosIndentifier.next('prev')
+    this.api.nextOrPreviosIndentifier.next('prev');
     this.store.dispatch(loadvideos());
   }
 }

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 
 @Pipe({
   name: 'filter',
