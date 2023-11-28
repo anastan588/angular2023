@@ -1,7 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
   LoadCustomVideos,
-  PageNumberActions,
   addCustomVideo,
   addFavoriteVideo,
   addVideo,
@@ -11,6 +10,9 @@ import {
   removeFavoriteVideo,
   removeVideo,
   resetFavoriteVideos,
+  setNextPage,
+  setNumberItemsOnPage,
+  setPreviousPage,
 } from './youtube.actions';
 import { InitialVideosTubeState } from './youtube.state';
 import { IVideoItem } from '../../data/models/video-item';
@@ -63,13 +65,13 @@ export const favouriteVideosReducer = createReducer(
 
 export const PageNumberReducer = createReducer(
   InitialVideosTubeState.pageSize,
-  on(PageNumberActions.numberItems, (_state, { pageItems }) => pageItems)
+  on(setNumberItemsOnPage, (_state, { pageItems }) => pageItems)
 );
 export const PageNextReducer = createReducer(
   InitialVideosTubeState.nextPageNumber,
-  on(PageNumberActions.nextPage, (_state, { pageToken }) => pageToken)
+  on(setNextPage, (_state, { pageToken }) => pageToken)
 );
 export const PagePreviousReducer = createReducer(
   InitialVideosTubeState.prevPageNumber,
-  on(PageNumberActions.prevousPage, (_state, { pageToken }) => pageToken)
+  on(setPreviousPage, (_state, { pageToken }) => pageToken)
 );

@@ -20,14 +20,14 @@ export const selectCurrentVideo = createSelector(
   searchVideos,
   selectDetailledVideoState,
   (videos, detailedVideo) => {
-    console.log(videos);
-    console.log(detailedVideo);
+    // console.log(videos);
+    // console.log(detailedVideo);
     const det = videos.filter(video => {
       const videoSelect = String(video.id);
-      console.log(detailedVideo);
+      // console.log(detailedVideo);
       const detailedSelect = String(detailedVideo.id);
-      console.log(videoSelect);
-      console.log(detailedSelect);
+      // console.log(videoSelect);
+      // console.log(detailedSelect);
       return videoSelect === detailedSelect;
     });
     console.log(det);
@@ -51,11 +51,9 @@ export const selectfavouriteCollection = createSelector(
       id =>
         videos.find(video => {
           const videoSelect = video.id;
-          console.log(videoSelect);
           return videoSelect.toString() === id;
         })!
     );
-    console.log(fav);
     return fav;
   }
 );

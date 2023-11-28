@@ -28,6 +28,7 @@ import { VideoEffects } from './core/store/youtube/youtube.effect';
 import { FilterPipe } from './shared/pipes/filter.pipe';
 import { SortingPipe } from './shared/pipes/sorting.pipe';
 import { FavoriteService } from './core/services/favorite/favorite.service';
+import { SlicePipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],

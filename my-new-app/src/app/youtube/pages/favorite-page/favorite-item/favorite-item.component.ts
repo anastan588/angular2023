@@ -62,7 +62,6 @@ export class FavoriteItemComponent {
   }
 
   ngOnInit() {
-    console.log(this.video);
     // this.searchResults$ = this.api.resultForCustomers$;
     // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
     //   this.initialArray = JSON.parse(JSON.stringify(data));

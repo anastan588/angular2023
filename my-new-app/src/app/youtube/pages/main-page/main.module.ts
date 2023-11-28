@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonModule } from 'src/app/shared/components/button/button.module';
 import { SearchResultsComponent } from './search-results/search-results.component';
@@ -12,6 +12,7 @@ import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.d
 import { HeaderModule } from 'src/app/shared/components/header.module';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 
@@ -33,6 +34,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     BordersItemsDirective,
     HeaderModule,
     SharedModule,
+    MatPaginatorModule
   ],
   exports: [SearchItemComponent],
 })

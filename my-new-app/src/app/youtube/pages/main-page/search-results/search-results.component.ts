@@ -38,4 +38,5 @@ export class SearchResultsComponent implements OnInit {
       this.initialArray = JSON.parse(JSON.stringify(data));
     });
   }
+
 }

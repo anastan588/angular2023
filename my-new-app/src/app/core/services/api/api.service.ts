@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../data/models/search-response';
 import { Store } from '@ngrx/store';
 import {
-  PageNumberActions, resetFavoriteVideos,
+  resetFavoriteVideos, setNextPage, setNumberItemsOnPage, setPreviousPage,
 } from '../../store/youtube/youtube.actions';
 import {
   PageNumberNextCollection,
@@ -53,7 +53,7 @@ export class ApiService {
         this.myRequestResultObject.next(customs.concat(videos));
         this.itemsForRequest$ = 20 - customs.length;
         this.store.dispatch(
-          PageNumberActions.numberItems({
+          setNumberItemsOnPage({
             pageItems: this.itemsForRequest$!,
           })
         );
@@ -112,12 +112,12 @@ export class ApiService {
       switchMap((response: ISearchResponse) => {
         if (response.nextPageToken !== undefined) {
           this.store.dispatch(
-            PageNumberActions.nextPage({ pageToken: response.nextPageToken })
+            setNextPage({ pageToken: response.nextPageToken })
           );
         }
         if (response.prevPageToken !== undefined) {
           this.store.dispatch(
-            PageNumberActions.prevousPage({
+            setPreviousPage({
               pageToken: response.prevPageToken,
             })
           );

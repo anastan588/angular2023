@@ -1,6 +1,6 @@
 <app-search-item
   *ngFor="
-    let video of (searchResults$ | async)!
+    let video of (searchResults$ | async)!.slice(0, 5)
       | sorting: isDateSort : isViewSort : initialArray
       | filter: wordFilter
   "

@@ -61,21 +61,27 @@ export const addFavoriteVideo = createAction(
 );
 
 
+export const setNextPage = createAction(
+  '[YOUTUBE] Set next Page Token',
+  props<{ pageToken: string }>(),
+);
 
-// export const FavouriteVideosActions = createActionGroup({
-//   source: 'Videos Favourite',
+export const setPreviousPage = createAction(
+  '[YOUTUBE] Set previous Page Token',
+  props<{ pageToken: string }>(),
+);
+
+export const setNumberItemsOnPage = createAction(
+  '[YOUTUBE] Set Number Items On Page',
+  props<{ pageItems: number }>(),
+);
+
+
+// export const PageNumberActions = createActionGroup({
+//   source: 'page Number',
 //   events: {
-//     'Add Favourite': props<{ videoId: string }>(),
-//     'Remove Favourite': props<{ videoId: string }>(),
-//     'Reset Favourite': emptyProps(),
+//     'Next Page': props<{ pageToken: string }>(),
+//     'Prevous Page': props<{ pageToken: string }>(),
+//     'Number Items':  props<{ pageItems: number }>(),
 //   },
 // });
-
-export const PageNumberActions = createActionGroup({
-  source: 'page Number',
-  events: {
-    'Next Page': props<{ pageToken: string }>(),
-    'Prevous Page': props<{ pageToken: string }>(),
-    'Number Items':  props<{ pageItems: number }>(),
-  },
-});
