@@ -1,49 +1,62 @@
-import { createReducer, on } from '@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import {
-  CustomVideosActions,
-  FavouriteVideosActions,
+  LoadCustomVideos,
   PageNumberActions,
-  TubeVideosActions,
+  addCustomVideo,
+  addFavoriteVideo,
+  addVideo,
+  loadFavoriteVideos,
+  loadVideosSuccess,
+  removeCustomVideo,
+  removeFavoriteVideo,
+  removeVideo,
+  resetFavoriteVideos,
 } from './youtube.actions';
 import { InitialVideosTubeState } from './youtube.state';
+import { IVideoItem } from '../../data/models/video-item';
 
-export const tubeVideosReducer = createReducer(
+export const tubeVideosReducer = createReducer<IVideoItem[]>(
   InitialVideosTubeState.tubeVideos,
-  on(TubeVideosActions.receiveVideosList, (state, { videos }) => {
+  on(loadVideosSuccess, (_state, { videos }) => {
     return videos;
   }),
-  on(TubeVideosActions.removeVideo, (state, { video }) =>
+  on(removeVideo, (state, { video }) =>
     state.filter(item => item!.id !== video.id)
   ),
-  on(TubeVideosActions.addVideo, (state, { video }) => {
+  on(addVideo, (state, { video }) => {
     return [video, ...state];
   })
-);
+
+  );
+  
 
 export const customVideosReducer = createReducer(
   InitialVideosTubeState.customVideos,
-  on(CustomVideosActions.receiveVideosList, (state, { videos }) => {
+  on(LoadCustomVideos, (state, { videos }) => {
     return state.concat(videos);
   }),
-  on(CustomVideosActions.addVideo, (state, { video }) => {
+  on(addCustomVideo, (state, { video }) => {
     return [video, ...state];
   }),
-  on(CustomVideosActions.removeVideo, (state, { video }) =>
+  on(removeCustomVideo, (state, { video }) =>
     state.filter(item => item!.id.videoId !== video.id.videoId)
   )
 );
 
 export const favouriteVideosReducer = createReducer(
   InitialVideosTubeState.favouriteVideoItemsId,
-  on(FavouriteVideosActions.removeFavourite, (state, { videoId }) =>
+  on(loadFavoriteVideos, (_state, { videoIds }) => {
+    return videoIds;
+  }),
+  on(removeFavoriteVideo, (state, { videoId }) =>
     state.filter(id => id !== videoId)
   ),
-  on(FavouriteVideosActions.addFavourite, (state, { videoId }) => {
+  on(addFavoriteVideo, (state, { videoId }) => {
     console.log(videoId);
     if (state.indexOf(videoId) > -1) return state;
     return [...state, videoId];
   }),
-  on(FavouriteVideosActions.resetFavourite, state => {
+  on(resetFavoriteVideos, _state => {
     return [];
   })
 );

@@ -6,7 +6,7 @@ import { ApiService } from 'src/app/core/services/api/api.service';
 import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 import {
-  loadvideos,
+  loadVideos,
 } from 'src/app/core/store/youtube/youtube.actions';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
 
@@ -55,7 +55,7 @@ export class SearchInputComponent {
   }
   showResults() {
     this.router.navigate(['main']);
-    this.store.dispatch(loadvideos());
+    this.store.dispatch(loadVideos());
     // this.apiService.getVideos();
   }
   changeSearchWord() {

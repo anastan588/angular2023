@@ -51,7 +51,7 @@
     #favButtonNotSelected
     color="warn"
     aria-label="favorite"
-    (click)="toggleSelected()">
+    (click)="toggleSelected($event)">
     <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
     <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
   </button>

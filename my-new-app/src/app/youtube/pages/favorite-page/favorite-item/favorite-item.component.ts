@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
-import { FavouriteVideosActions } from 'src/app/core/store/youtube/youtube.actions';
+import { addFavoriteVideo, removeFavoriteVideo } from 'src/app/core/store/youtube/youtube.actions';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
 import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
+
 
 @Component({
   selector: 'app-favorite-item',
@@ -49,11 +50,11 @@ export class FavoriteItemComponent {
     const ID = this.video.id;
     if (this.selected === true) {
       this.store.dispatch(
-        FavouriteVideosActions.addFavourite({ videoId: `${ID}` })
+        addFavoriteVideo({ videoId: `${ID}` })
       );
     } else {
       this.store.dispatch(
-        FavouriteVideosActions.removeFavourite({
+        removeFavoriteVideo({
           videoId: `${ID}`,
         })
       );

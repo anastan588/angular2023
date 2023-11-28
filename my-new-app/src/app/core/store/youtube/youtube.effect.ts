@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap} from 'rxjs/operators';
 import { ApiService } from '../../services/api/api.service';
 import {
-  TubeVideosActions,
-  loadvideos,
+  loadVideos,
+  loadVideosSuccess,
 } from './youtube.actions';
 import { Store } from '@ngrx/store';
 
@@ -13,13 +13,11 @@ import { Store } from '@ngrx/store';
 export class VideoEffects {
   loadVideos$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadvideos),
+      ofType(loadVideos),
       mergeMap(() =>
         this.apiService.getVideos().pipe(
           map((response: any) => {
-            return TubeVideosActions.receiveVideosList({
-              videos: response.items,
-            });
+            return loadVideosSuccess({videos:response.items});
           })
         )
       )

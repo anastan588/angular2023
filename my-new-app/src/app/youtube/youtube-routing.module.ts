@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { loginGuard } from '../auth/login.guard';
 import { YoutubeComponent } from './youtube.component';
+import { favouriteGuard } from '../core/guards/favourite.guard';
 
 const routesYoutube: Routes = [
   {
@@ -32,7 +33,7 @@ const routesYoutube: Routes = [
       },
       {
         path: 'favorite',
-        canActivate: [loginGuard],
+        canActivate: [favouriteGuard],
         loadChildren: () =>
           import('./pages/favorite-page/favorite-page.module').then(m => m.FavoritePageModule),
       },

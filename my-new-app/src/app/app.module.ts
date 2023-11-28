@@ -27,6 +27,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { VideoEffects } from './core/store/youtube/youtube.effect';
 import { FilterPipe } from './shared/pipes/filter.pipe';
 import { SortingPipe } from './shared/pipes/sorting.pipe';
+import { FavoriteService } from './core/services/favorite/favorite.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -61,6 +62,7 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
     SortingPipe,
     MatIconRegistry,
     ApiService,
+    FavoriteService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

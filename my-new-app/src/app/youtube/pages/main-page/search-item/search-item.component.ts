@@ -2,16 +2,19 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
+import { IID, IVideoItem } from 'src/app/core/data/models/video-item';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { Store } from '@ngrx/store';
 import {
-  CustomVideosActions,
-  FavouriteVideosActions,
+  addFavoriteVideo,
+  removeCustomVideo,
+  removeFavoriteVideo,
 } from 'src/app/core/store/youtube/youtube.actions';
+import { selectfavouriteCollection, selectfavouriteCollectionState } from 'src/app/core/store/youtube/youtube.selectors';
 
 
 @Component({
@@ -19,10 +22,11 @@ import {
   templateUrl: './search-item.component.html',
   styleUrls: ['./search-item.component.scss'],
 })
-export class SearchItemComponent {
+export class SearchItemComponent implements OnInit{
   @Input() selected!: boolean;
   @Output() selectedChange = new EventEmitter<boolean>();
   @Input()
+  
   video!: IVideoItem;
   dataPublication!: Date;
   timePublication!: number;
@@ -39,30 +43,39 @@ export class SearchItemComponent {
     this.colorOfFooter = {};
     this.selected = false;
   }
-
+ ngOnInit(): void {
+   this.store.select(selectfavouriteCollectionState)
+   .subscribe(data=> {
+    const isFavourite = data.find((item) => {
+      const ID = JSON.parse(JSON.stringify(this.video.id));
+      return item === ID;
+    });
+      if (isFavourite !== undefined) {
+        this.selected = true;
+      }
+   })
+ }
   navigateToDetailedPage() {
     this.router.navigate(['main/detailed', this.video.id]);
   }
   deleteCustomCard() {
-    console.log('hello');
     this.store.dispatch(
-      CustomVideosActions.removeVideo({ video: this.video})
+      removeCustomVideo({ video: this.video})
     );
   }
 
-  public toggleSelected() {
+  public toggleSelected(event$: Event) {
+    event$.stopPropagation();
     this.selected = !this.selected;
-    console.log(this.selected);
     this.selectedChange.emit(this.selected);
-    console.log(this.video.id);
     const ID = this.video.id;
     if (this.selected === true) {
       this.store.dispatch(
-        FavouriteVideosActions.addFavourite({ videoId: `${ID}` })
+        addFavoriteVideo({ videoId: `${ID}` })
       );
     } else {
       this.store.dispatch(
-        FavouriteVideosActions.removeFavourite({
+        removeFavoriteVideo({
           videoId: `${ID}`,
         })
       );

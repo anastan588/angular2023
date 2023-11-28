@@ -36,15 +36,17 @@ export const selectCurrentVideo = createSelector(
 );
 
 export const selectfavouriteCollectionState = createFeatureSelector<
-  ReadonlyArray<string>
+  Array<string>
 >('favoiriteCollection');
+
+export const receiveFavouriteVideo = createSelector(selectfavouriteCollectionState, videosIds=> {
+  return videosIds;
+});
 
 export const selectfavouriteCollection = createSelector(
   searchVideos,
   selectfavouriteCollectionState,
   (videos, favoiriteCollection) => {
-    console.log(videos);
-    console.log(favoiriteCollection);
     const fav = favoiriteCollection.map(
       id =>
         videos.find(video => {

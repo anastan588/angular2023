@@ -12,6 +12,17 @@
           {{ videoForShow.snippet.publishedAt | date: 'EEEE, MMMM d, y' }}
         </p>
       </mat-card-header>
+      <button
+        *ngIf="videoForShow.statistics !== undefined"
+        mat-icon-button
+        id="{{ videoForShow.id.videoId }}"
+        #favButtonNotSelected
+        color="warn"
+        aria-label="favorite"
+        (click)="toggleSelected()">
+        <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
+        <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
+      </button>
       <mat-card-content>
         <p class="description-title">Description</p>
         <p class="description-text">{{ videoForShow.snippet.description }}</p>

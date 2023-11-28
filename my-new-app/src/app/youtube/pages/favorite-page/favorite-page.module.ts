@@ -25,4 +25,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule
   ],
 })
-export class FavoritePageModule {}
+export class FavoritePageModule {
+  constructor() {
+    console.log('favorite');
+  }
+}
