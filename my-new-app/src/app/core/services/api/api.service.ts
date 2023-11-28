@@ -5,8 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../data/models/search-response';
 import { Store } from '@ngrx/store';
 import {
-  FavouriteVideosActions,
-  PageNumberActions,
+  PageNumberActions, resetFavoriteVideos,
 } from '../../store/youtube/youtube.actions';
 import {
   PageNumberNextCollection,
@@ -123,7 +122,7 @@ export class ApiService {
             })
           );
         }
-        this.store.dispatch(FavouriteVideosActions.resetFavourite());
+        this.store.dispatch(resetFavoriteVideos());
         this.videoId = response.items
           .map((item: IVideoItem) => {
             return item.id.videoId;
