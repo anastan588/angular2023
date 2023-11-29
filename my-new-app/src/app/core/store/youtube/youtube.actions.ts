@@ -15,12 +15,12 @@ export const loadVideosSuccess = createAction(
   props<{ videos: IVideoItem[] }>(),
 );
 
-export const removeVideo = createAction(
+export const removeTubeVideo = createAction(
   '[YOUTUBE] Remove Video',
   props<{ video: IVideoItem }>(),
 );
 
-export const addVideo = createAction(
+export const addTubeVideo = createAction(
   '[YOUTUBE] Add Video',
   props<{ video: IVideoItem }>(),
 );

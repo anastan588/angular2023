@@ -1,5 +1,6 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createSelector, createFeatureSelector, State } from '@ngrx/store';
 import { IVideoItem } from '../../data/models/video-item';
+
 
 export const searchVideos = createFeatureSelector<Array<IVideoItem>>('videos');
 
