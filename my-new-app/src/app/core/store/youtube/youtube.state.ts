@@ -6,7 +6,6 @@ export interface IVideosTubeState {
   favouriteVideoItemsId: Array<string>;
   nextPageNumber: string;
   prevPageNumber: string;
-  pageSize: number;
 }
 
 export const InitialVideosTubeState: IVideosTubeState = {
@@ -15,5 +14,4 @@ export const InitialVideosTubeState: IVideosTubeState = {
   favouriteVideoItemsId: [],
   nextPageNumber: '',
   prevPageNumber: '',
-  pageSize: 20,
 };

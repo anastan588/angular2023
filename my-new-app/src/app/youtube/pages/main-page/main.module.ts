@@ -14,6 +14,7 @@ import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatInput } from '@angular/material/input';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     BordersItemsDirective,
     HeaderModule,
     SharedModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   exports: [SearchItemComponent],
 })

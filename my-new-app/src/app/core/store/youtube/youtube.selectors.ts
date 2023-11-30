@@ -66,7 +66,4 @@ export const selectPageNumberPrevious = createSelector(youTubeSelector, state =>
   return state.prevPageNumber;
 });
 
-export const selectPageItems = createSelector(youTubeSelector, state => {
-  return state.pageSize;
-});
 

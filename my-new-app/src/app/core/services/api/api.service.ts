@@ -5,11 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../data/models/search-response';
 import { Store } from '@ngrx/store';
 import {
-  resetFavoriteVideos, setNextPage, setNumberItemsOnPage, setPreviousPage,
+  resetFavoriteVideos,
+  setNextPage,
+  setNumberItemsOnPage,
+  setPreviousPage,
 } from '../../store/youtube/youtube.actions';
 import {
   selectCustomVideos,
-  selectPageItems,
   selectPageNumberNext,
   selectPageNumberPrevious,
   selectSearchVideos,
@@ -41,6 +43,8 @@ export class ApiService {
   nextOrPrevous: string = '';
   page!: string;
   itemsForRequest$ = 20;
+  itemsOnPageObject$ = new BehaviorSubject<number>(20);
+
 
   constructor(
     public http: HttpClient,
@@ -48,15 +52,11 @@ export class ApiService {
     private store: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
+  
+
     this.store.select(selectSearchVideos).subscribe(videos => {
       this.store.select(selectCustomVideos).subscribe(customs => {
         this.myRequestResultObject.next(customs.concat(videos));
-        this.itemsForRequest$ = 20 - customs.length;
-        this.store.dispatch(
-          setNumberItemsOnPage({
-            pageItems: this.itemsForRequest$!,
-          })
-        );
       });
     });
     this.videoId = '';
@@ -77,9 +77,6 @@ export class ApiService {
     });
     store.select(selectPageNumberPrevious).subscribe(page => {
       this.pageNumberPrevious$ = page.valueOf();
-    });
-    store.select(selectPageItems).subscribe(numbeOfItems => {
-      this.itemsForRequest$ = numbeOfItems;
     });
     this.nextOrPreviosIndentifier.subscribe(
       identifier => (this.nextOrPrevous = identifier)

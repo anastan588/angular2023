@@ -64,10 +64,6 @@ export const youTubeReducer = createReducer(
     favouriteVideoItemsId: [],
   })),
 
-  on(YoutubeActions.setNumberItemsOnPage, (state, { pageItems }) => ({
-    ...state,
-    pageSize: pageItems, //отправляем в стейт видео
-  })),
   on(YoutubeActions.setNextPage, (state, { pageToken }) => ({
     ...state,
     nextPageNumber: pageToken, //отправляем в стейт видео
