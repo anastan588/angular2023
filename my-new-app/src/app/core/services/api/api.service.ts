@@ -8,12 +8,12 @@ import {
   resetFavoriteVideos, setNextPage, setNumberItemsOnPage, setPreviousPage,
 } from '../../store/youtube/youtube.actions';
 import {
-  PageNumberNextCollection,
-  PageNumberPrevoiusCollection,
-  customCollection,
-  pageItemsNumber,
-  searchCollection,
-  selectfavouriteCollection,
+  selectCustomVideos,
+  selectPageItems,
+  selectPageNumberNext,
+  selectPageNumberPrevious,
+  selectSearchVideos,
+  selectfavouriteCollectionVideos,
 } from '../../store/youtube/youtube.selectors';
 
 @Injectable({
@@ -48,8 +48,8 @@ export class ApiService {
     private store: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
-    this.store.select(searchCollection).subscribe(videos => {
-      this.store.select(customCollection).subscribe(customs => {
+    this.store.select(selectSearchVideos).subscribe(videos => {
+      this.store.select(selectCustomVideos).subscribe(customs => {
         this.myRequestResultObject.next(customs.concat(videos));
         this.itemsForRequest$ = 20 - customs.length;
         this.store.dispatch(
@@ -68,17 +68,17 @@ export class ApiService {
     });
     this.videosFavourite$ = this.videosFavouriteSubject$.asObservable();
 
-    this.videos$ = storeVideos.select('videos');
-    store.select(selectfavouriteCollection).subscribe(fav => {
+    this.videos$ = storeVideos.select(selectSearchVideos);
+    store.select(selectfavouriteCollectionVideos).subscribe(fav => {
       this.videosFavouriteSubject$.next(fav);
     });
-    store.select(PageNumberNextCollection).subscribe(page => {
+    store.select(selectPageNumberNext).subscribe(page => {
       this.pageNumberNext$ = page.valueOf();
     });
-    store.select(PageNumberPrevoiusCollection).subscribe(page => {
+    store.select(selectPageNumberPrevious).subscribe(page => {
       this.pageNumberPrevious$ = page.valueOf();
     });
-    store.select(pageItemsNumber).subscribe(numbeOfItems => {
+    store.select(selectPageItems).subscribe(numbeOfItems => {
       this.itemsForRequest$ = numbeOfItems;
     });
     this.nextOrPreviosIndentifier.subscribe(

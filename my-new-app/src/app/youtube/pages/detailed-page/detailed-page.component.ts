@@ -1,10 +1,22 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {  addFavoriteVideo, removeCustomVideo, removeFavoriteVideo} from 'src/app/core/store/youtube/youtube.actions';
+import {
+  addFavoriteVideo,
+  removeCustomVideo,
+  removeFavoriteVideo,
+} from 'src/app/core/store/youtube/youtube.actions';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { selectCurrentVideo, selectfavouriteCollectionState } from 'src/app/core/store/youtube/youtube.selectors';
-
+import {
+  selectCustomVideos,
+  selectFavouriteVideos,
+} from 'src/app/core/store/youtube/youtube.selectors';
 
 @Component({
   selector: 'app-detailed-page',
@@ -33,31 +45,30 @@ export class DetailedPageComponent {
     // console.log(this.videoId);
     // console.log(this.videoId.match(/\d/));
     if (this.videoId.match(/^\d$/)) {
-      this.store
-        .select(selectCurrentVideo)
-        .subscribe(video => (this.videoForShow = video));
+      this.store.select(selectCustomVideos).subscribe(customVideos => {
+        this.videoForShow = customVideos.filter(video => {
+          const videoSelect = String(video.id.videoId);
+          return videoSelect === this.videoId;
+        })[0];
+      });
     }
 
-    this.store.select(selectfavouriteCollectionState)
-   .subscribe(data=> {
-    const isFavourite = data.find((item) => {
-      const ID = JSON.parse(JSON.stringify(this.videoId));
-      return item === ID;
-    });
+    this.store.select(selectFavouriteVideos).subscribe(data => {
+      const isFavourite = data.find(item => {
+        const ID = JSON.parse(JSON.stringify(this.videoId));
+        return item === ID;
+      });
       console.log(isFavourite);
       if (isFavourite !== undefined) {
         this.selected = true;
       }
-   })
+    });
   }
 
   deleteCustomCard() {
-    this.store.dispatch(
-      removeCustomVideo({ video: this.videoForShow })
-    );
+    this.store.dispatch(removeCustomVideo({ video: this.videoForShow }));
     this.router.navigate(['main']);
   }
-
 
   public toggleSelected() {
     this.selected = !this.selected;
@@ -66,9 +77,7 @@ export class DetailedPageComponent {
     console.log(this.videoId);
     const ID = this.videoId;
     if (this.selected === true) {
-      this.store.dispatch(
-        addFavoriteVideo({ videoId: `${ID}` })
-      );
+      this.store.dispatch(addFavoriteVideo({ videoId: `${ID}` }));
     } else {
       this.store.dispatch(
         removeFavoriteVideo({

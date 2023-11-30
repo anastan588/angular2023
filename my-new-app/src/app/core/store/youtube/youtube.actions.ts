@@ -1,7 +1,5 @@
 import {
   createAction,
-  createActionGroup,
-  emptyProps,
   props,
 } from '@ngrx/store';
 import { IVideoItem } from '../../data/models/video-item';
@@ -77,11 +75,3 @@ export const setNumberItemsOnPage = createAction(
 );
 
 
-// export const PageNumberActions = createActionGroup({
-//   source: 'page Number',
-//   events: {
-//     'Next Page': props<{ pageToken: string }>(),
-//     'Prevous Page': props<{ pageToken: string }>(),
-//     'Number Items':  props<{ pageItems: number }>(),
-//   },
-// });

@@ -1,56 +1,56 @@
 import { createSelector, createFeatureSelector, State } from '@ngrx/store';
 import { IVideoItem } from '../../data/models/video-item';
+import { IVideosTubeState } from './youtube.state';
 
+export const youTubeSelector = createFeatureSelector<IVideosTubeState>('YOUTUBE');
 
-export const searchVideos = createFeatureSelector<Array<IVideoItem>>('videos');
+export const selectSearchVideos = createSelector(youTubeSelector, state => {
+  return state.tubeVideos;
+})
 
-export const searchCollection = createSelector(searchVideos, videos => {
-  return videos;
+export const selectCustomVideos = createSelector(youTubeSelector, state => {
+  return state.customVideos;
 });
 
-export const customVideos = createFeatureSelector<Array<IVideoItem>>('custom');
-
-export const customCollection = createSelector(customVideos, videos => {
-  return videos;
+export const selectFavouriteVideos = createSelector(youTubeSelector, state => {
+  return state.favouriteVideoItemsId;
 });
 
-export const selectDetailledVideoState =
-  createFeatureSelector<IVideoItem>('detailedVideo');
+// export const selectDetailledVideoState =
+//   createFeatureSelector<IVideoItem>('detailedVideo');
 
-export const selectCurrentVideo = createSelector(
-  searchVideos,
-  selectDetailledVideoState,
-  (videos, detailedVideo) => {
-    // console.log(videos);
-    // console.log(detailedVideo);
-    const det = videos.filter(video => {
-      const videoSelect = String(video.id);
-      // console.log(detailedVideo);
-      const detailedSelect = String(detailedVideo.id);
-      // console.log(videoSelect);
-      // console.log(detailedSelect);
-      return videoSelect === detailedSelect;
-    });
-    console.log(det);
-    return det[0];
-  }
-);
+// export const selectCurrentVideo = createSelector(
+//   youTubeSelector,
+//   (state) => {
+//     // console.log(videos);
+//     // console.log(detailedVideo);
+//     const det = state.customVideos.filter(video => {
+//       const videoSelect = String(video.id);
+//       // console.log(detailedVideo);
+//       const detailedSelect = String(detailedVideo.id);
+//       // console.log(videoSelect);
+//       // console.log(detailedSelect);
+//       return videoSelect === detailedSelect;
+//     });
+//     console.log(det);
+//     return det[0];
+//   }
+// );
 
-export const selectfavouriteCollectionState = createFeatureSelector<
-  Array<string>
->('favoiriteCollection');
+// export const selectfavouriteCollectionState = createFeatureSelector<
+//   Array<string>
+// >('favoiriteCollection');
 
-export const receiveFavouriteVideo = createSelector(selectfavouriteCollectionState, videosIds=> {
-  return videosIds;
-});
+// export const receiveFavouriteVideo = createSelector(selectfavouriteCollectionState, videosIds=> {
+//   return videosIds;
+// });
 
-export const selectfavouriteCollection = createSelector(
-  searchVideos,
-  selectfavouriteCollectionState,
-  (videos, favoiriteCollection) => {
-    const fav = favoiriteCollection.map(
+export const selectfavouriteCollectionVideos = createSelector(
+  youTubeSelector,
+  (state) => {
+    const fav = state.favouriteVideoItemsId.map(
       id =>
-        videos.find(video => {
+        state.tubeVideos.find(video => {
           const videoSelect = video.id;
           return videoSelect.toString() === id;
         })!
@@ -59,18 +59,14 @@ export const selectfavouriteCollection = createSelector(
   }
 );
 
-export const PageNumberNext = createFeatureSelector<String>('pageNext');
-export const PageNumberPrevious = createFeatureSelector<String>('pagePrevious');
-export const PageNumberNextCollection = createSelector(PageNumberNext, page => {
-  return page;
+export const selectPageNumberNext = createSelector(youTubeSelector, state => {
+  return state.nextPageNumber;
 });
-export const PageNumberPrevoiusCollection = createSelector(
-  PageNumberPrevious,
-  page => {
-    return page;
-  }
-);
-export const itemsForPage = createFeatureSelector<number>('pageItems');
-export const pageItemsNumber = createSelector(itemsForPage, number => {
-  return number;
+export const selectPageNumberPrevious = createSelector(youTubeSelector, state => {
+  return state.prevPageNumber;
 });
+
+export const selectPageItems = createSelector(youTubeSelector, state => {
+  return state.pageSize;
+});
+

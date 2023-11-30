@@ -9,7 +9,6 @@ import { Observable} from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 import { FavoriteService } from 'src/app/core/services/favorite/favorite.service';
 
 @Component({
@@ -39,8 +38,5 @@ export class FavoritePageComponent implements OnInit {
     this.favoriteService.canRouteToFavoritePage$.subscribe((data)=>{
       console.log(data)
     });
-    // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-    //   this.initialArray = JSON.parse(JSON.stringify(data));
-    // });
   }
 }

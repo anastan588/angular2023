@@ -14,7 +14,7 @@ import {
   removeCustomVideo,
   removeFavoriteVideo,
 } from 'src/app/core/store/youtube/youtube.actions';
-import { selectfavouriteCollection, selectfavouriteCollectionState } from 'src/app/core/store/youtube/youtube.selectors';
+import { selectFavouriteVideos} from 'src/app/core/store/youtube/youtube.selectors';
 
 
 @Component({
@@ -44,7 +44,7 @@ export class SearchItemComponent implements OnInit{
     this.selected = false;
   }
  ngOnInit(): void {
-   this.store.select(selectfavouriteCollectionState)
+   this.store.select(selectFavouriteVideos)
    .subscribe(data=> {
     const isFavourite = data.find((item) => {
       const ID = JSON.parse(JSON.stringify(this.video.id));
@@ -56,9 +56,15 @@ export class SearchItemComponent implements OnInit{
    })
  }
   navigateToDetailedPage() {
-    this.router.navigate(['main/detailed', this.video.id]);
+    let id = JSON.parse(JSON.stringify(this.video.id));
+    if(this.video.id.videoId !== undefined) {
+      id = this.video.id.videoId;
+    }
+    console.log(id);
+    this.router.navigate(['main/detailed', id]);
   }
   deleteCustomCard() {
+    console.log(this.video);
     this.store.dispatch(
       removeCustomVideo({ video: this.video})
     );

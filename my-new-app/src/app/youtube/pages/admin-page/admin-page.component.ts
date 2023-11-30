@@ -89,6 +89,7 @@ export class AdminPageComponent {
     const admin = this.admin();
     this.store.dispatch(addCustomVideo({ video: admin }));
     this.authService.setAdminToken(admin);
+    this.resetAdminForm();
   }
 
   addTagField() {

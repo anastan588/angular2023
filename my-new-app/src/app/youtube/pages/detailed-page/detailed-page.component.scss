@@ -16,6 +16,9 @@ mat-card {
   width: auto;
   height: 100%;
 }
+.image {
+  max-width: 800px;
+}
 .card-description {
   display: flex;
   flex-direction: column;

@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { addFavoriteVideo, removeFavoriteVideo } from 'src/app/core/store/youtube/youtube.actions';
 import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
 import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
 
 
@@ -44,9 +42,7 @@ export class FavoriteItemComponent {
 
   public toggleSelected() {
     this.selected = !this.selected;
-    console.log(this.selected);
     this.selectedChange.emit(this.selected);
-    console.log(this.video.id);
     const ID = this.video.id;
     if (this.selected === true) {
       this.store.dispatch(
@@ -62,9 +58,6 @@ export class FavoriteItemComponent {
   }
 
   ngOnInit() {
-    // this.searchResults$ = this.api.resultForCustomers$;
-    // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-    //   this.initialArray = JSON.parse(JSON.stringify(data));
-    // });
+  
   }
 }

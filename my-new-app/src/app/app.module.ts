@@ -37,14 +37,7 @@ import { SlicePipe } from '@angular/common';
     AuthModule,
     HttpClientModule,
     StoreModule.forRoot({
-      videos: youTubeReducer,
-      favoiriteCollection: youTubeReducer,
-      pageNext: youTubeReducer,
-      pagePrevious: youTubeReducer,
-      // detailedVideo: tubeVideosReducer,
-      custom: youTubeReducer,
-      pageItems: youTubeReducer,
-
+      YOUTUBE: youTubeReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),

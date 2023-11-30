@@ -1,85 +1,79 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import {
-  LoadCustomVideos,
-  addCustomVideo,
-  addFavoriteVideo,
-  addTubeVideo,
-  loadFavoriteVideos,
-  loadVideosSuccess,
-  removeCustomVideo,
-  removeFavoriteVideo,
-  removeTubeVideo,
-  resetFavoriteVideos,
-  setNextPage,
-  setNumberItemsOnPage,
-  setPreviousPage,
-} from './youtube.actions';
+import * as YoutubeActions from './youtube.actions';
 import { InitialVideosTubeState } from './youtube.state';
 import { IVideoItem } from '../../data/models/video-item';
 import { state } from '@angular/animations';
 
 export const youTubeReducer = createReducer(
   InitialVideosTubeState,
-    on(loadVideosSuccess, (state, { videos }) => ({
-      ...state,
-      tubeVideos: videos, //отправляем в стейт видео
-    })),
-    on(LoadCustomVideos, (state, { videos }) => ({
-      ...state,
-      customVideos: [...state.tubeVideos, ...videos],
-    })),
-    on(loadFavoriteVideos, (state, { videoIds }) => ({
-      ...state,
-      videoIds: [...videoIds],
-    })),
-
-    
-    on(removeTubeVideo, (state, { video }) => ({
+  on(YoutubeActions.loadVideosSuccess, (state, { videos }) => ({
     ...state,
-    tubeVideos: state.tubeVideos.filter(item => item.id !== video.id)
+    tubeVideos: videos, //отправляем в стейт видео
   })),
-  on(addTubeVideo, (state, { video }) => ({
+  on(YoutubeActions.LoadCustomVideos, (state, { videos }) => ({
     ...state,
-    tubeVideos: [video, ...state.tubeVideos]
+    customVideos: [...state.tubeVideos, ...videos],
+  })),
+  on(YoutubeActions.loadFavoriteVideos, (state, { videoIds }) => ({
+    ...state,
+    videoIds: [...videoIds],
   })),
 
-  on(addCustomVideo, ((state, { video }) => ({
+  on(YoutubeActions.removeTubeVideo, (state, { video }) => ({
     ...state,
-    customVideos: [video, ...state.customVideos]
-  }))),
-  on(removeCustomVideo, ((state, { video }) => ({
+    tubeVideos: state.tubeVideos.filter(item => item.id !== video.id),
+  })),
+  on(YoutubeActions.addTubeVideo, (state, { video }) => ({
     ...state,
-    customVideos: state.customVideos.filter(item => item.id !== video.id)
-  }))),
+    tubeVideos: [video, ...state.tubeVideos],
+  })),
 
-
-  on(addFavoriteVideo, ((state, { videoId }) => ({
+  on(YoutubeActions.addCustomVideo, (state, { video }) => ({
     ...state,
-    favouriteVideoItemsId: [videoId, ...state.favouriteVideoItemsId]
-  }))),
-  on(removeFavoriteVideo, ((state, { videoId }) => ({
+    customVideos: [video, ...state.customVideos],
+  })),
+  on(YoutubeActions.removeCustomVideo, (state, { video }) => ({
     ...state,
-    favouriteVideoItemsId: (state.favouriteVideoItemsId.indexOf(videoId) > -1) ? state.favouriteVideoItemsId : state.favouriteVideoItemsId.filter(id => id !== videoId)
-  }))),
-  on(resetFavoriteVideos, ((state) => ({
+    customVideos: state.customVideos.filter(item => {
+      let itemId =  JSON.parse(JSON.stringify(item.id));
+      let videoId = JSON.parse(JSON.stringify(video.id));
+      if (item.id.videoId !== undefined) {
+        itemId = item.id.videoId;
+        videoId = video.id.videoId;
+      }
+      console.log(item.id);
+      console.log(video.id);
+      console.log(item.id !== video.id);
+      return itemId !== videoId;
+    }),
+  })),
+
+  on(YoutubeActions.addFavoriteVideo, (state, { videoId }) => ({
     ...state,
-    favouriteVideoItemsId: []
-  }))),
+    favouriteVideoItemsId: [videoId, ...state.favouriteVideoItemsId],
+  })),
+  on(YoutubeActions.removeFavoriteVideo, (state, { videoId }) => ({
+    ...state,
+    favouriteVideoItemsId:
+      state.favouriteVideoItemsId.indexOf(videoId) === -1
+        ? state.favouriteVideoItemsId
+        : state.favouriteVideoItemsId.filter(id => id !== videoId),
+  })),
+  on(YoutubeActions.resetFavoriteVideos, state => ({
+    ...state,
+    favouriteVideoItemsId: [],
+  })),
 
-
-  on(setNumberItemsOnPage, (state, { pageItems }) => ({
+  on(YoutubeActions.setNumberItemsOnPage, (state, { pageItems }) => ({
     ...state,
     pageSize: pageItems, //отправляем в стейт видео
   })),
-  on(setNextPage, (state, { pageToken }) => ({
+  on(YoutubeActions.setNextPage, (state, { pageToken }) => ({
     ...state,
     nextPageNumber: pageToken, //отправляем в стейт видео
   })),
-  on(setPreviousPage, (state, { pageToken }) => ({
+  on(YoutubeActions.setPreviousPage, (state, { pageToken }) => ({
     ...state,
     prevPageNumber: pageToken, //отправляем в стейт видео
-  })),
-
-)
-
-
+  }))
+);
