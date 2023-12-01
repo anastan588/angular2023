@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api/api.service';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
+import { PanginationService } from 'src/app/core/services/pangination.service';
 import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
 import { loadVideos } from 'src/app/core/store/youtube/youtube.actions';
 
@@ -23,17 +24,20 @@ export class MainComponent implements OnInit {
   isShowMain = false;
   pageEvent!: PageEvent;
   @Input() pageIndex: number = 0;
+  @Input() previousPageIndex: number = 0;
   @Input() length!: number;
   @Input() pageSize: number = 20;
   @Input() pageSizeOptions: number[] = [5, 10, 15, 20];
   @Output() page = new EventEmitter<PageEvent>();
   pages: number[] = [];
-
+  start: number = 0;
+  end: number = 20;
   constructor(
     public readonly showResultsService: ShowResultsService,
     private readonly filterService: FiltersService,
     private readonly api: ApiService,
-    private store: Store
+    private store: Store,
+    private readonly pangination: PanginationService,
   ) {
     // this.api.itemsOnPageObject$.subscribe(number => {
     //   console.log(number);
@@ -73,10 +77,20 @@ export class MainComponent implements OnInit {
     this.store.dispatch(loadVideos());
   }
   setItemsOnPage(event: PageEvent) {
-    console.log(event);
+    if (this.pageSize !== event.pageSize) {
+      this.end = event.pageSize;
+    }
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-    console.log(this.pageSize);
-    console.log(this.pageIndex);
+    this.previousPageIndex = event.previousPageIndex as number;
+    if (this.pageIndex > this.previousPageIndex) {
+      this.start = this.start + this.pageSize;
+      this.end = this.end + this.pageSize;
+    } else if (this.pageIndex < this.previousPageIndex) {
+      this.start = this.start - this.pageSize;
+      this.end = this.end - this.pageSize;
+    }
+    this.pangination.setStartAndEnd(this.start, this.end);
+    
   }
 }

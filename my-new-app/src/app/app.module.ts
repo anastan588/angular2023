@@ -24,6 +24,7 @@ import { FilterPipe } from './shared/pipes/filter.pipe';
 import { SortingPipe } from './shared/pipes/sorting.pipe';
 import { FavoriteService } from './core/services/favorite/favorite.service';
 import { SlicePipe } from '@angular/common';
+import { PanginationService } from './core/services/pangination.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,6 +53,7 @@ import { SlicePipe } from '@angular/common';
     MatIconRegistry,
     ApiService,
     FavoriteService,
+    PanginationService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
