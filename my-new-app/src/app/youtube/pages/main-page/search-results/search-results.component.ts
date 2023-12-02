@@ -32,14 +32,10 @@ export class SearchResultsComponent implements OnInit {
     public readonly api: ApiService,
     public readonly pagination: PanginationService,
     private store: Store<{ videos: IVideoItem[] }>
-  ) {
-    
-  }
+  ) {}
   ngOnInit() {
     this.searchResultsObject$.asObservable();
-    this.api.resultForCustomers$.subscribe(value => {
-      this.searchResultsObject$.next(value);
-    });
+    this.searchResults$ = this.searchResultsObject$;
     this.filterService.keyWord$.subscribe((word: string) => {
       this.wordFilter = word;
     });
@@ -49,16 +45,12 @@ export class SearchResultsComponent implements OnInit {
     this.filterService.viewSort$.subscribe((sort: string) => {
       this.isViewSort = sort;
     });
-    this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-      this.initialArray = JSON.parse(JSON.stringify(data));
-    });
+
     this.pagination.startPositionObject$.subscribe(value => {
       this.startPaginationPosition = value;
     });
     this.pagination.endPositionObject$.subscribe(value => {
       this.endPaginationPosition = value;
-      console.log(value);
-      console.log(this.endPaginationPosition);
       this.api.resultForCustomers$
         .pipe(
           map(array => {
@@ -66,16 +58,13 @@ export class SearchResultsComponent implements OnInit {
               this.startPaginationPosition,
               this.endPaginationPosition
             );
-            console.log(arrayForShow);
             return arrayForShow;
           })
-        ).subscribe((value=>{
-          this.searchResultsObject$.next(value); 
-          console.log( this.searchResultsObject$);
-          console.log( this.searchResults$);
-        }))
-       
+        )
+        .subscribe(value => {
+          this.searchResultsObject$.next(value);
+          this.initialArray = JSON.parse(JSON.stringify(value));
+        });
     });
   }
-
 }

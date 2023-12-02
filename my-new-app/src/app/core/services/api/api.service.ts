@@ -52,8 +52,6 @@ export class ApiService {
     private store: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
-  
-
     this.store.select(selectSearchVideos).subscribe(videos => {
       this.store.select(selectCustomVideos).subscribe(customs => {
         this.myRequestResultObject.next(customs.concat(videos));

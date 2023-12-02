@@ -44,6 +44,7 @@ export class SearchItemComponent implements OnInit{
     this.selected = false;
   }
  ngOnInit(): void {
+  // console.log(this.video);
    this.store.select(selectFavouriteVideos)
    .subscribe(data=> {
     const isFavourite = data.find((item) => {
