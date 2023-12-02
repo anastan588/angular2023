@@ -12,6 +12,7 @@ import {
   StoreModule,
 } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 
 const mockVideo = {
   kind: 'youtube#video',
@@ -64,6 +65,7 @@ describe('AdminPageComponent', () => {
         ActionsSubject,
         ReducerManager,
         ReducerManagerDispatcher,
+        provideMockStore(),
         { provide: Store },
         { provide: ActivatedRoute, useValue: { mockVideo } },
       ],

@@ -5,6 +5,10 @@ import { Observable } from 'rxjs';
 import { AuthService } from './../../../auth/auth.service';
 import { IUser } from './../../../core/data/models/user';
 import { createPasswordValidator } from './../../../core/validators/password.validator';
+const mockUser = {
+ email: 'mail@mail.ru',
+ password: '123456Ui',
+};
 
 @Component({
   selector: 'app-login-page',
