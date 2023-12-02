@@ -1,32 +1,24 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { IID, IVideoItem } from 'src/app/core/data/models/video-item';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IVideoItem } from './../../../../core/data/models/video-item';
 import { Router } from '@angular/router';
-import { ApiService } from 'src/app/core/services/api/api.service';
+import { ApiService } from './../../../../core/services/api/api.service';
 import { Store } from '@ngrx/store';
 import {
   addFavoriteVideo,
   removeCustomVideo,
   removeFavoriteVideo,
-} from 'src/app/core/store/youtube/youtube.actions';
-import { selectFavouriteVideos} from 'src/app/core/store/youtube/youtube.selectors';
-
+} from './../../../../../app/core/store/youtube/youtube.actions';
+import { selectFavouriteVideos } from './../../../../core/store/youtube/youtube.selectors';
 
 @Component({
   selector: 'app-search-item',
   templateUrl: './search-item.component.html',
   styleUrls: ['./search-item.component.scss'],
 })
-export class SearchItemComponent implements OnInit{
+export class SearchItemComponent implements OnInit {
   @Input() selected!: boolean;
   @Output() selectedChange = new EventEmitter<boolean>();
   @Input()
-  
   video!: IVideoItem;
   dataPublication!: Date;
   timePublication!: number;
@@ -43,22 +35,21 @@ export class SearchItemComponent implements OnInit{
     this.colorOfFooter = {};
     this.selected = false;
   }
- ngOnInit(): void {
-  // console.log(this.video);
-   this.store.select(selectFavouriteVideos)
-   .subscribe(data=> {
-    const isFavourite = data.find((item) => {
-      const ID = JSON.parse(JSON.stringify(this.video.id));
-      return item === ID;
-    });
+  ngOnInit(): void {
+    // console.log(this.video);
+    this.store.select(selectFavouriteVideos).subscribe(data => {
+      const isFavourite = data.find(item => {
+        const ID = JSON.parse(JSON.stringify(this.video.id));
+        return item === ID;
+      });
       if (isFavourite !== undefined) {
         this.selected = true;
       }
-   })
- }
+    });
+  }
   navigateToDetailedPage() {
     let id = JSON.parse(JSON.stringify(this.video.id));
-    if(this.video.id.videoId !== undefined) {
+    if (this.video.id.videoId !== undefined) {
       id = this.video.id.videoId;
     }
     console.log(id);
@@ -66,9 +57,7 @@ export class SearchItemComponent implements OnInit{
   }
   deleteCustomCard() {
     console.log(this.video);
-    this.store.dispatch(
-      removeCustomVideo({ video: this.video})
-    );
+    this.store.dispatch(removeCustomVideo({ video: this.video }));
   }
 
   public toggleSelected(event$: Event) {
@@ -77,9 +66,7 @@ export class SearchItemComponent implements OnInit{
     this.selectedChange.emit(this.selected);
     const ID = this.video.id;
     if (this.selected === true) {
-      this.store.dispatch(
-        addFavoriteVideo({ videoId: `${ID}` })
-      );
+      this.store.dispatch(addFavoriteVideo({ videoId: `${ID}` }));
     } else {
       this.store.dispatch(
         removeFavoriteVideo({

@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { AuthService } from 'src/app/auth/auth.service';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { addCustomVideo } from 'src/app/core/store/youtube/youtube.actions';
+import { AuthService } from './../../../auth/auth.service';
+import { IVideoItem } from './../../../core/data/models/video-item';
+import { addCustomVideo } from './../../../core/store/youtube/youtube.actions';
 
 @Component({
   selector: 'app-admin-page',

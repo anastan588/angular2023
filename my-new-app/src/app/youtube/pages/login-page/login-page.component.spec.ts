@@ -1,6 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginPageComponent } from './login-page.component';
+import {
+  ActionsSubject,
+  ReducerManager,
+  ReducerManagerDispatcher,
+  StateObservable,
+  Store,
+  StoreModule,
+} from '@ngrx/store';
 
 describe('LoginPageComponent', () => {
   let component: LoginPageComponent;
@@ -8,7 +16,15 @@ describe('LoginPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginPageComponent]
+      declarations: [LoginPageComponent],
+      providers: [
+        StateObservable,
+        ActionsSubject,
+        ReducerManager,
+        ReducerManagerDispatcher,
+        StoreModule.forRoot({}),
+        Store,
+      ],
     });
     fixture = TestBed.createComponent(LoginPageComponent);
     component = fixture.componentInstance;

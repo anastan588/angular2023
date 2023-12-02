@@ -9,11 +9,11 @@ import {
 import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { PanginationService } from 'src/app/core/services/pangination.service';
-import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
-import { loadVideos } from 'src/app/core/store/youtube/youtube.actions';
+import { ApiService } from './../../../core/services/api/api.service';
+import { FiltersService } from './../../../core/services/filters/filters.service';
+import { PanginationService } from './../../../core/services/pangination.service';
+import { ShowResultsService } from './../../../core/services/show-results/show-results.service';
+import { loadVideos } from './../../../core/store/youtube/youtube.actions';
 
 @Component({
   selector: 'app-main',

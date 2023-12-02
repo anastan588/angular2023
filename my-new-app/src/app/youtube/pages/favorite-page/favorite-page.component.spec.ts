@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FavoritePageComponent } from './favorite-page.component';
+import { Store } from '@ngrx/store';
+import { FilterPipe } from './../../../shared/pipes/filter.pipe';
+import { ActivatedRoute } from '@angular/router';
 
 describe('FavoritePageComponent', () => {
   let component: FavoritePageComponent;
@@ -8,7 +11,23 @@ describe('FavoritePageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FavoritePageComponent]
+      declarations: [FavoritePageComponent],
+      imports: [HttpClientTestingModule],
+      providers: [
+        FilterPipe,
+        {
+          provide: Store,
+          useValue: {
+            select: jest.fn().mockReturnValue({ subscribe: jest.fn() }),
+          },
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            /* Mock properties and methods used by the component */
+          },
+        },
+      ],
     });
     fixture = TestBed.createComponent(FavoritePageComponent);
     component = fixture.componentInstance;

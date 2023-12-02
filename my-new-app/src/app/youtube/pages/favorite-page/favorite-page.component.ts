@@ -6,10 +6,10 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable} from 'rxjs';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { FavoriteService } from 'src/app/core/services/favorite/favorite.service';
+import { ApiService } from './../../../core/services/api/api.service';
+import { FiltersService } from './../../../core/services/filters/filters.service';
+import { IVideoItem } from './../../../core/data/models/video-item';
+import { FavoriteService } from './../../../core/services/favorite/favorite.service';
 
 @Component({
   selector: 'app-favorite-page',

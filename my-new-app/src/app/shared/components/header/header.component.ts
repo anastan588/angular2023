@@ -2,10 +2,10 @@ import {
   Component,
   DoCheck,
 } from '@angular/core';
-import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
+import { OpenFilterMenuService } from './../../../core/services/open-filter/open-filter-menu.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FavoriteService } from 'src/app/core/services/favorite/favorite.service';
+import { FavoriteService } from './../../../core/services/favorite/favorite.service';
 
 @Component({
   selector: 'app-header',

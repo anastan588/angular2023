@@ -11,12 +11,12 @@ import {
   addFavoriteVideo,
   removeCustomVideo,
   removeFavoriteVideo,
-} from 'src/app/core/store/youtube/youtube.actions';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
+} from './../../../core/store/youtube/youtube.actions';
+import { IVideoItem } from './../../../core/data/models/video-item';
 import {
   selectCustomVideos,
   selectFavouriteVideos,
-} from 'src/app/core/store/youtube/youtube.selectors';
+} from './../../../core/store/youtube/youtube.selectors';
 
 @Component({
   selector: 'app-detailed-page',

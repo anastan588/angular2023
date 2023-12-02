@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { addFavoriteVideo, removeFavoriteVideo } from 'src/app/core/store/youtube/youtube.actions';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
+import { ApiService } from './../../../../core/services/api/api.service';
+import { addFavoriteVideo, removeFavoriteVideo } from './../../../../core/store/youtube/youtube.actions';
+import { IVideoItem } from './../../../../core/data/models/video-item';
+import { FilterPipe } from './../../../../shared/pipes/filter.pipe';
 
 
 @Component({

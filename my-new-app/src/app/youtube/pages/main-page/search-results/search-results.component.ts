@@ -1,16 +1,13 @@
 import {
   Component,
-  DoCheck,
-  Input,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { ApiService } from 'src/app/core/services/api/api.service';
+import { IVideoItem } from './../../../../core/data/models/video-item';
+import { FiltersService } from './../../../../core/services/filters/filters.service';
+import { ApiService } from './../../../../../app/core/services/api/api.service';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { PanginationService } from 'src/app/core/services/pangination.service';
+import { PanginationService } from './../../../../core/services/pangination.service';
 
 @Component({
   selector: 'app-search-results',
