@@ -1,14 +1,12 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import * as YoutubeActions from './youtube.actions';
 import { InitialVideosTubeState } from './youtube.state';
-import { IVideoItem } from '../../data/models/video-item';
-import { state } from '@angular/animations';
 
 export const youTubeReducer = createReducer(
   InitialVideosTubeState,
   on(YoutubeActions.loadVideosSuccess, (state, { videos }) => ({
     ...state,
-    tubeVideos: videos, //отправляем в стейт видео
+    tubeVideos: videos,
   })),
   on(YoutubeActions.LoadCustomVideos, (state, { videos }) => ({
     ...state,
@@ -16,7 +14,7 @@ export const youTubeReducer = createReducer(
   })),
   on(YoutubeActions.loadFavoriteVideos, (state, { videoIds }) => ({
     ...state,
-    videoIds: [...videoIds],
+    favouriteVideoItemsId: [...videoIds],
   })),
 
   on(YoutubeActions.removeTubeVideo, (state, { video }) => ({
@@ -35,15 +33,12 @@ export const youTubeReducer = createReducer(
   on(YoutubeActions.removeCustomVideo, (state, { video }) => ({
     ...state,
     customVideos: state.customVideos.filter(item => {
-      let itemId =  JSON.parse(JSON.stringify(item.id));
+      let itemId = JSON.parse(JSON.stringify(item.id));
       let videoId = JSON.parse(JSON.stringify(video.id));
       if (item.id.videoId !== undefined) {
         itemId = item.id.videoId;
         videoId = video.id.videoId;
       }
-      console.log(item.id);
-      console.log(video.id);
-      console.log(item.id !== video.id);
       return itemId !== videoId;
     }),
   })),
@@ -66,10 +61,10 @@ export const youTubeReducer = createReducer(
 
   on(YoutubeActions.setNextPage, (state, { pageToken }) => ({
     ...state,
-    nextPageNumber: pageToken, //отправляем в стейт видео
+    nextPageNumber: pageToken,
   })),
   on(YoutubeActions.setPreviousPage, (state, { pageToken }) => ({
     ...state,
-    prevPageNumber: pageToken, //отправляем в стейт видео
+    prevPageNumber: pageToken,
   }))
 );

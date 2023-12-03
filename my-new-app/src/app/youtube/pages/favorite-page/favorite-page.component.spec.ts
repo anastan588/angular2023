@@ -24,7 +24,6 @@ describe('FavoritePageComponent', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            /* Mock properties and methods used by the component */
           },
         },
       ],

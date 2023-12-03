@@ -11,7 +11,7 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       providers: [
-        { provide: Store, useValue: {} }, // Provide a mock version of _Store
+        { provide: Store, useValue: {} },
       ],
     });
     fixture = TestBed.createComponent(HeaderComponent);
