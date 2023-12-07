@@ -8,6 +8,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'main',
+    loadChildren: () =>
+      import('./milestone/pages/main/main.module').then(m => m.MainModule),
+  },
+  {
     path: 'signup',
     loadChildren: () =>
       import('./milestone/pages/signup/signup.module').then(

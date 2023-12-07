@@ -9,15 +9,14 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
 import { ButtonComponent } from './shared/components/button/button.component';
 import { MaterialModule } from './material/material.module';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { SignupService } from './core/services/signup.service';
+import { SigninService } from './core/services/signin.service';
+import { MainComponent } from './milestone/pages/main/main.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MainComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -32,6 +31,7 @@ import { SignupService } from './core/services/signup.service';
   ],
   providers: [
     SignupService,
+    SigninService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

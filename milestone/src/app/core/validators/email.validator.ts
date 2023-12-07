@@ -11,6 +11,6 @@ export function createEmailValidator(duplicateEmail: string): ValidatorFn {
     if (value === duplicateEmail) {
       emailValid = false;
     }
-    return emailValid ? null :  { email: true };
+    return emailValid ? null : { email: true };
   };
 }
