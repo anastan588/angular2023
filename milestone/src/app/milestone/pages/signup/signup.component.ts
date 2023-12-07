@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ISingUp } from 'src/app/core/models/signup';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
+import { SignupService } from 'src/app/core/services/signup.service';
+import { createEmailValidator } from 'src/app/core/validators/email.validator';
 
 @Component({
   selector: 'app-signup',
@@ -11,11 +16,21 @@ import { createPasswordValidator } from 'src/app/core/validators/password.valida
   styleUrls: ['./signup.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
+  isButtonDisabled!: boolean;
+  duplicateEmail!: string;
   hide = true;
   signupForm = this.fb.group({
-    firstName: ['', { validators: [Validators.required] }],
-    email: ['', { validators: [Validators.required, Validators.email] }],
+    name: ['', { validators: [Validators.required] }],
+    email: [
+      '',
+      {
+        validators: [
+          Validators.required,
+          createEmailValidator(this.duplicateEmail),
+        ],
+      },
+    ],
     password: [
       '',
       {
@@ -26,24 +41,50 @@ export class SignupComponent {
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
-  ) {}
+    private router: Router,
+    private signupService: SignupService
+  ) {
+    this.isButtonDisabled = true;
+    
+  }
+
+  ngOnInit() {
+    this.signupForm.valueChanges.subscribe(() => {
+      this.isButtonDisabled = this.signupForm.invalid;
+    });
+    this.signupService.isDisabledButton$.subscribe(value => {
+      this.isButtonDisabled = value;
+    });
+    this.signupService.duplicateEmail$.subscribe(value => {
+      this.duplicateEmail = value;
+      this.signupForm.get('email')?.setValidators([
+        Validators.required,
+        createEmailValidator(this.duplicateEmail)
+      ]);
+    });
+  }
 
   signupUser(): ISingUp {
     const signup: ISingUp = {
-      firstname: this.signupForm.value.firstName!,
+      name: this.signupForm.value.name!,
       email: this.signupForm.value.email!,
       password: this.signupForm.value.password!,
     };
     return signup;
   }
 
-  setUser() {
+  sendUserToServer() {
     const user = this.signupUser();
-    console.log(user);
+    this.isButtonDisabled = true;
+    this.signupService.sendRegistrationDataToServer(user);
   }
 
   redirectSignin() {
-    this.router.navigate(['signin'])
+    this.router.navigate(['signin']);
+  }
+
+  ngOnDestroy() {
+    this.signupService.isDisabledButtonObject$.unsubscribe();
+    this.signupService.isDisabledButtonObject$.unsubscribe();
   }
 }
