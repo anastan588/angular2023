@@ -7,7 +7,7 @@ import {
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
-import { ISignIn } from '../models/signin';
+import { ISignIn, ISignInToken } from '../models/signin';
 import { IServerResponse } from '../models/serverresponse';
 
 @Injectable({
@@ -33,7 +33,7 @@ export class SigninService {
     console.log(requestbody);
     this.setDataToLocalStorage(requestbody);
     return this.http
-      .post<IServerResponse>(this.url, requestbody)
+      .post<ISignInToken>(this.url, requestbody)
       .pipe(
         map(response => {
           this.showToastMessage('Singing in succeed', 'close');
