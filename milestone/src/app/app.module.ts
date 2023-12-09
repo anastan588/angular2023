@@ -16,7 +16,9 @@ import { SigninService } from './core/services/signin/signin.service';
 import { MainComponent } from './milestone/pages/main/main.component';
 import { AuthService } from './core/services/auth/auth.service';
 import { ProfileService } from './core/services/profile/profile.service';
-
+import { MilestoneReducer } from './core/store/milestone/milestone.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { MileStoneUserEffects } from './core/store/milestone/milestone.user.effect';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -25,12 +27,13 @@ import { ProfileService } from './core/services/profile/profile.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({ MILESTONE: MilestoneReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     SharedModule,
     MaterialModule,
     ButtonComponent,
     HttpClientModule,
+    EffectsModule.forRoot([MileStoneUserEffects]),
   ],
   providers: [
     SignupService,

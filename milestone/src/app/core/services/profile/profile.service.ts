@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   MatSnackBar,
@@ -6,50 +10,42 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { IServerResponseSignIn, IServerResponseSignUp } from '../../models/serverresponse';
+import {
+  IServerResponseSignIn,
+  IServerResponseSignUp,
+} from '../../models/serverresponse';
 import { IUser } from '../../models/user';
 import { catchError, map, of } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { loadMilestoneUserSuccess } from '../../store/milestone/milestone.actions';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProfileService {
   url: string;
+  httpHeaders!: HttpHeaders;
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
     this.url = 'profile';
+    const user = localStorage.getItem('user');
+    const userRequestBody: IServerResponseSignIn = user
+      ? JSON.parse(user)
+      : null;
+    this.httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${userRequestBody.token}`,
+      'rs-uid': `${userRequestBody.uid}`,
+      'rs-email': `${userRequestBody.email}`,
+    });
   }
 
-
-  getUsersData(requestbody: IServerResponseSignIn) {
-    console.log(requestbody);
-    return this.http
-      .get<IUser>(this.url, requestbody)
-      .pipe(
-        map(response => {
-        }),
-        catchError((error: HttpErrorResponse) => {
-          const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
-          if (serverResponse.type === 'PrimaryDuplicationException') {
-            
-          }
-          this.showToastMessage(
-            'Registration failed: ' + serverResponse.message,
-            'close'
-          );
-          return of({ type: serverResponse.type, message: serverResponse.message });
-        })
-      )
-      .subscribe(value => {
-        return value;
-      });
+  getUsersData() {
+    return this.http.get<IUser>(this.url, { headers: this.httpHeaders })
   }
-
 
   showToastMessage(
     message: string,
