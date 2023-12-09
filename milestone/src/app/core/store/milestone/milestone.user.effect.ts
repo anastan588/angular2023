@@ -8,18 +8,18 @@ import { ProfileService } from '../../services/profile/profile.service';
 
 @Injectable()
 export class MileStoneUserEffects {
-  // loadUser$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(loadMilestoneUser),
-  //     mergeMap(() =>
-  //       this.apiService.getVideos().pipe(
-  //         map((response: any) => {
-  //           return loadMilestoneUserSuccess({user: response});
-  //         })
-  //       )
-  //     )
-  //   )
-  // );
+  loadUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadMilestoneUser),
+      mergeMap(() =>
+        this.profileService.getUsersData().pipe(
+          map((response: any) => {
+            return loadMilestoneUserSuccess({user: response});
+          })
+        )
+      )
+    )
+  );
 
   constructor(
     private actions$: Actions,

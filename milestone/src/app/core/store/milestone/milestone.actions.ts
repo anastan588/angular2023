@@ -9,5 +9,5 @@ export const loadMilestoneUserSuccess = createAction(
 );
 export const editUserName = createAction(
     '[MILESTONE] Edit user name',
-    props<{ name: string }>(),
+    props<{ nameS: string }>(),
   );

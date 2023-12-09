@@ -6,6 +6,10 @@ export const MilestoneReducer = createReducer(
   InitialMileStoneState,
   on(MilestoneActions.loadMilestoneUserSuccess, (state, { user }) => ({
     ...state,
-    tubeVideos: user,
+    user: { ...state.user, ...user },
+  })),
+  on(MilestoneActions.editUserName, (state, { nameS }) => ({
+    ...state,
+    user: { ...state.user, name: { ...state.user.name, S: nameS } },
   }))
 );
