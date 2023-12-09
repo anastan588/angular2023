@@ -15,7 +15,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { IServerResponse } from '../models/serverresponse';
+import { IServerResponseSignUp } from '../models/serverresponse';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +41,7 @@ export class SignupService {
   sendRegistrationDataToServer(requestbody: ISingUp) {
     console.log(requestbody);
     return this.http
-      .post<IServerResponse>(this.url, requestbody)
+      .post<IServerResponseSignUp>(this.url, requestbody)
       .pipe(
         map(response => {
           this.showToastMessage('Registration succeed', 'close');
@@ -49,7 +49,7 @@ export class SignupService {
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          const serverResponse: IServerResponse = error.error;
+          const serverResponse: IServerResponseSignUp = error.error;
           console.log(serverResponse.message);
           console.log(serverResponse.type);
           if (serverResponse.type === 'PrimaryDuplicationException') {

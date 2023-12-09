@@ -9,15 +9,24 @@
           placeholder="ivanov@example.com"
           formControlName="email"
           required />
-        <mat-error
+          <mat-error
           *ngIf="
             signinForm.get('email')!.hasError('email') &&
-            !signinForm.get('email')!.hasError('required')
+            !signinForm.get('email')!.hasError('required') &&
+            signinForm.value.email !== notFoundEmail
           ">
           Please enter a valid email
         </mat-error>
         <mat-error *ngIf="signinForm.get('email')!.hasError('required')">
           Please enter a login email
+        </mat-error>
+        <mat-error
+          *ngIf="
+            signinForm.value.email === notFoundEmail &&
+            signinForm.get('email')!.hasError('email') &&
+            !signinForm.get('email')!.hasError('required')
+          ">
+         Email doesn't exist in the system. Please enter other email
         </mat-error>
       </mat-form-field>
       <mat-form-field>

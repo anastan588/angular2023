@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ISignIn } from 'src/app/core/models/signin';
 import { SigninService } from 'src/app/core/services/signin.service';
+import { createEmailValidator } from 'src/app/core/validators/email.validator';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
 
 @Component({
@@ -13,7 +14,7 @@ import { createPasswordValidator } from 'src/app/core/validators/password.valida
 })
 export class SigninComponent {
   isButtonDisabled!: boolean;
-  duplicateEmail!: string;
+  notFoundEmail!: string;
   hide = true;
   signinForm = this.fb.group({
     email: [
@@ -42,9 +43,20 @@ export class SigninComponent {
     this.signinForm.valueChanges.subscribe(() => {
       this.isButtonDisabled = this.signinForm.invalid;
     });
-    // this.signupService.isDisabledButton$.subscribe(value => {
-    //   this.isButtonDisabled = value;
-    // });
+    this.signinService.isDisabledButton$.subscribe(value => {
+      this.isButtonDisabled = value;
+    });
+    this.signinService.notFoundEmail$.subscribe(value => {
+      this.notFoundEmail = value;
+      console.log(value);
+      console.log(this.notFoundEmail);
+      this.signinForm
+        .get('email')
+        ?.setValidators([
+          Validators.required,
+          createEmailValidator(this.notFoundEmail),
+        ]);
+    });
   }
 
   signinUser(): ISignIn {
@@ -66,7 +78,7 @@ export class SigninComponent {
   }
 
   ngOnDestroy() {
-    // this.signupService.isDisabledButtonObject$.unsubscribe();
-    // this.signupService.isDisabledButtonObject$.unsubscribe();
+    this.signinService.isDisabledButtonObject$.unsubscribe();
+    this.signinService.notFoundEmailObject$.unsubscribe();
   }
 }

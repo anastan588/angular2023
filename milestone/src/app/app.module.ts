@@ -14,6 +14,9 @@ import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { SignupService } from './core/services/signup.service';
 import { SigninService } from './core/services/signin.service';
 import { MainComponent } from './milestone/pages/main/main.component';
+import { AuthService } from './core/services/auth.service';
+import { DefaultpageService } from './core/services/defaultpage.service';
+
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -32,6 +35,7 @@ import { MainComponent } from './milestone/pages/main/main.component';
   providers: [
     SignupService,
     SigninService,
+    AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

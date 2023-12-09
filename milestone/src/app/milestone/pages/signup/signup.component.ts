@@ -85,6 +85,6 @@ export class SignupComponent implements OnInit {
 
   ngOnDestroy() {
     this.signupService.isDisabledButtonObject$.unsubscribe();
-    this.signupService.isDisabledButtonObject$.unsubscribe();
+    this.signupService.duplicateEmailObject$.unsubscribe();
   }
 }
