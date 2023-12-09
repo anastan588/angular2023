@@ -7,7 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ISingUp } from 'src/app/core/models/signup';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
-import { SignupService } from 'src/app/core/services/signup.service';
+import { SignupService } from 'src/app/core/services/signup/signup.service';
 import { createEmailValidator } from 'src/app/core/validators/email.validator';
 
 @Component({

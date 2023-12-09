@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ISignIn } from 'src/app/core/models/signin';
-import { SigninService } from 'src/app/core/services/signin.service';
+import { SigninService } from 'src/app/core/services/signin/signin.service';
 import { createEmailValidator } from 'src/app/core/validators/email.validator';
 import { createPasswordValidator } from 'src/app/core/validators/password.validator';
 

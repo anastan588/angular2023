@@ -17,4 +17,7 @@ export class AppComponent {
   redirectToSignIn() {
     this.router.navigate(['signin']);
   }
+  redirectToProfile() {
+    this.router.navigate(['profile']);
+  }
 }

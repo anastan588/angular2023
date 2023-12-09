@@ -11,11 +11,11 @@ import { ButtonComponent } from './shared/components/button/button.component';
 import { MaterialModule } from './material/material.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
-import { SignupService } from './core/services/signup.service';
-import { SigninService } from './core/services/signin.service';
+import { SignupService } from './core/services/signup/signup.service';
+import { SigninService } from './core/services/signin/signin.service';
 import { MainComponent } from './milestone/pages/main/main.component';
-import { AuthService } from './core/services/auth.service';
-import { DefaultpageService } from './core/services/defaultpage.service';
+import { AuthService } from './core/services/auth/auth.service';
+import { ProfileService } from './core/services/profile/profile.service';
 
 
 @NgModule({
@@ -36,6 +36,7 @@ import { DefaultpageService } from './core/services/defaultpage.service';
     SignupService,
     SigninService,
     AuthService,
+    ProfileService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

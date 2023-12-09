@@ -1,11 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ISingUp } from '../../models/signup';
 import {
   BehaviorSubject,
   Observable,
@@ -14,63 +9,58 @@ import {
   map,
   of,
 } from 'rxjs';
-import { ISignIn } from '../models/signin';
-import { IServerResponseSignIn } from '../models/serverresponse';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { IServerResponseSignUp } from '../../models/serverresponse';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SigninService {
+export class SignupService {
   url: string;
   isDisabledButtonObject$ = new Subject<boolean>();
   isDisabledButton$!: Observable<boolean>;
-  notFoundEmailObject$ = new BehaviorSubject<string>('');
-  notFoundEmail$!: Observable<string>;
+  duplicateEmailObject$ = new BehaviorSubject<string>('');
+  duplicateEmail$!: Observable<string>;
 
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
     private router: Router
   ) {
-    this.url = 'login';
+    this.url = 'registration';
     this.isDisabledButton$ = this.isDisabledButtonObject$.asObservable();
     this.isDisabledButtonObject$.next(true);
-    this.notFoundEmail$ = this.notFoundEmailObject$.asObservable();
+    this.duplicateEmail$ = this.duplicateEmailObject$.asObservable();
   }
 
-  setDataToLocalStorage(user: IServerResponseSignIn) {
-    localStorage.setItem('user', JSON.stringify(user));
-  }
-
-  sendSignInDataToServer(requestbody: ISignIn) {
+  sendRegistrationDataToServer(requestbody: ISingUp) {
     console.log(requestbody);
-
     return this.http
-      .post<IServerResponseSignIn>(this.url, requestbody)
+      .post<IServerResponseSignUp>(this.url, requestbody)
       .pipe(
         map(response => {
-          this.showToastMessage('Singing in succeed', 'close');
-          this.router.navigate(['main']);
-          response.email = requestbody.email;
-          this.setDataToLocalStorage(response);
+          this.showToastMessage('Registration succeed', 'close');
+          this.router.navigate(['signin']);
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
-          const serverResponse: IServerResponseSignIn = error.error;
+          const serverResponse: IServerResponseSignUp = error.error;
           console.log(serverResponse.message);
           console.log(serverResponse.type);
-          if (serverResponse.type === 'NotFoundException') {
+          if (serverResponse.type === 'PrimaryDuplicationException') {
             this.isDisabledButtonObject$.next(true);
-            this.notFoundEmailObject$.next(requestbody.email);
+            this.duplicateEmailObject$.next(requestbody.email);
           }
           this.showToastMessage(
-            'Signing in failed: ' + serverResponse.message,
+            'Registration failed: ' + serverResponse.message,
             'close'
           );
-          return of({
-            type: serverResponse.type,
-            message: serverResponse.message,
-          });
+          return of({ type: serverResponse.type, message: serverResponse.message });
         })
       )
       .subscribe(value => {

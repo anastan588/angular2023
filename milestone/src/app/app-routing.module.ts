@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { AuthService } from './core/services/auth.service';
-import { DefaultpageService } from './core/services/defaultpage.service';
+import { AuthService } from './core/services/auth/auth.service';
+import { DefaultpageService } from './core/services/defaultpage/defaultpage.service';
 import { mainGuard } from './core/guards/main.guard';
 
 const routes: Routes = [
- 
   {
     path: 'main',
     canActivate: [mainGuard],
@@ -28,7 +27,15 @@ const routes: Routes = [
       import('./milestone/pages/signin/signin.module').then(
         m => m.SigninModule
       ),
-  }, 
+  },
+  {
+    path: 'profile',
+    canActivate: [mainGuard],
+    loadChildren: () =>
+      import('./milestone/pages/profile/profile.module').then(
+        m => m.ProfileModule
+      ),
+  },
   {
     path: '',
     redirectTo: '',
