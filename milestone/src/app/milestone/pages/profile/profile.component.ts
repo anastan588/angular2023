@@ -12,7 +12,10 @@ import { IServerResponseSignIn } from 'src/app/core/models/serverresponse';
 import { IUser } from 'src/app/core/models/user';
 import { IUserName } from 'src/app/core/models/userUpdate';
 import { ProfileService } from 'src/app/core/services/profile/profile.service';
-import { loadMilestoneUser } from 'src/app/core/store/milestone/milestone.actions';
+import {
+  editUserName,
+  loadMilestoneUser,
+} from 'src/app/core/store/milestone/milestone.actions';
 import { selectUser } from 'src/app/core/store/milestone/milestone.selectors';
 
 @Component({
@@ -25,11 +28,11 @@ export class ProfileComponent implements OnInit {
   newName!: string;
   requestbodyForName!: IUserName;
   @Output() isEdit!: boolean;
-  emailForm = this.fb.group({
-    email: [
+  nameForm = this.fb.group({
+    name: [
       '',
       {
-        validators: [Validators.required, Validators.email],
+        validators: [Validators.required],
       },
     ],
   });
@@ -41,7 +44,7 @@ export class ProfileComponent implements OnInit {
   ) {
     this.requestbodyForName = {
       name: '',
-    }
+    };
   }
 
   ngOnInit(): void {
@@ -49,7 +52,7 @@ export class ProfileComponent implements OnInit {
     this.store.dispatch(loadMilestoneUser());
     this.store.select(selectUser).subscribe(value => {
       this.user = value;
-      this.newName = value.email.S;
+      this.newName = value.name.S;
       console.log(this.user);
     });
   }
@@ -69,6 +72,8 @@ export class ProfileComponent implements OnInit {
     console.log(this.newName);
     this.requestbodyForName.name = this.newName;
     this.profileService.requestBodyForService$.next(this.requestbodyForName);
-    this.store.dispatch(loadMilestoneUser());
+    this.profileService.sentUsersNewData();
+    this.store.dispatch(editUserName({ nameS: this.newName }));
+    return this.isEdit = false;
   }
 }
