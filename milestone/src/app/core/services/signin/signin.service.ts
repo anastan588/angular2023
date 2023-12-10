@@ -16,6 +16,7 @@ import {
 } from 'rxjs';
 import { ISignIn } from '../../models/signin';
 import { IServerResponseSignIn } from '../../models/serverresponse';
+import { ToastMessageService } from '../toast-message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class SigninService {
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private toastMessageService: ToastMessageService
   ) {
     this.url = 'login';
     this.isDisabledButton$ = this.isDisabledButtonObject$.asObservable();
@@ -49,7 +51,7 @@ export class SigninService {
       .post<IServerResponseSignIn>(this.url, requestbody)
       .pipe(
         map(response => {
-          this.showToastMessage('Singing in succeed', 'close');
+          this.toastMessageService.showToastMessage('Singing in succeed', 'close');
           this.router.navigate(['main']);
           response.email = requestbody.email;
           this.setDataToLocalStorage(response);
@@ -63,7 +65,7 @@ export class SigninService {
             this.isDisabledButtonObject$.next(true);
             this.notFoundEmailObject$.next(requestbody.email);
           }
-          this.showToastMessage(
+          this.toastMessageService.showToastMessage(
             'Signing in failed: ' + serverResponse.message,
             'close'
           );
@@ -78,19 +80,4 @@ export class SigninService {
       });
   }
 
-  showToastMessage(
-    message: string,
-    action: string,
-    position: {
-      horizontal: MatSnackBarHorizontalPosition;
-      vertical: MatSnackBarVerticalPosition;
-    } = { horizontal: 'center', vertical: 'top' }
-  ) {
-    this.toastMessage.open(message, action, {
-      duration: 5000,
-      horizontalPosition: position.horizontal,
-      verticalPosition: position.vertical,
-      panelClass: 'snackbar',
-    });
-  }
 }

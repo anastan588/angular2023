@@ -10,7 +10,6 @@ import { createPasswordValidator } from 'src/app/core/validators/password.valida
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SigninComponent {
   isButtonDisabled!: boolean;
