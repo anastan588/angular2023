@@ -44,6 +44,13 @@ export class ProfileService {
   ) {
     this.url = 'profile';
     this.requestBody$ = this.requestBodyForService$.asObservable();
+
+    this.requestBodyForService$.subscribe(value => {
+      this.request = value;
+    });
+  }
+
+  getUsersData() {
     const user = localStorage.getItem('user');
     const userRequestBody: IServerResponseSignIn = user
       ? JSON.parse(user)
@@ -56,12 +63,6 @@ export class ProfileService {
       });
     }
 
-    this.requestBodyForService$.subscribe(value => {
-      this.request = value;
-    });
-  }
-
-  getUsersData() {
     return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
   }
 
