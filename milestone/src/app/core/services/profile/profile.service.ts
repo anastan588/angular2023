@@ -62,13 +62,7 @@ export class ProfileService {
   }
 
   getUsersData() {
-    console.log(this.request);
-    if (this.request === undefined) {
-      return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
-    }
-    return this.http.put<IUser>(this.url, this.request, {
-      headers: this.httpHeaders,
-    });
+    return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
   }
 
   sentUsersNewData() {
