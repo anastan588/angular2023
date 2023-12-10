@@ -24,7 +24,7 @@
         </mat-error>
       </mat-form-field>
     </form>
-    <app-button (click)="saveChangesOfUserName()" [disabled]="nameForm.invalid"
+    <app-button (click)="saveChangesOfUserName()" [disabled]="isButtonDisabled"
       >Save</app-button
     >
     <app-button (click)="cancelEditMode()">Cancel</app-button>

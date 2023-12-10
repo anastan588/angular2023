@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
   user!: IUser;
   newName!: string;
   requestbodyForName!: IUserName;
+  isButtonDisabled!: boolean;
   @Output() isEdit!: boolean;
   nameForm = this.fb.group({
     name: [
@@ -55,6 +56,9 @@ export class ProfileComponent implements OnInit {
       this.newName = value.name.S;
       console.log(this.user);
     });
+    this.nameForm.valueChanges.subscribe(() => {
+      this.isButtonDisabled = this.nameForm.invalid;
+    });
   }
 
   makeEditMode() {
@@ -71,9 +75,9 @@ export class ProfileComponent implements OnInit {
   saveChangesOfUserName() {
     console.log(this.newName);
     this.requestbodyForName.name = this.newName;
+    this.isButtonDisabled = false;
     this.profileService.requestBodyForService$.next(this.requestbodyForName);
     this.profileService.sentUsersNewData();
-    this.store.dispatch(editUserName({ nameS: this.newName }));
-    return this.isEdit = false;
+    return (this.isEdit = false);
   }
 }

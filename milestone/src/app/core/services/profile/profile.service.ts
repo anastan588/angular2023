@@ -17,7 +17,10 @@ import {
 import { IUser } from '../../models/user';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { loadMilestoneUserSuccess } from '../../store/milestone/milestone.actions';
+import {
+  editUserName,
+  loadMilestoneUserSuccess,
+} from '../../store/milestone/milestone.actions';
 import { selectUser } from '../../store/milestone/milestone.selectors';
 import { IUserName } from '../../models/userUpdate';
 import { ToastMessageService } from '../toast-message.service';
@@ -36,7 +39,9 @@ export class ProfileService {
     public http: HttpClient,
     private toastMessage: MatSnackBar,
     private router: Router,
-    private store: Store, private toastmessageservice: ToastMessageService) {
+    private store: Store,
+    private toastmessageservice: ToastMessageService
+  ) {
     this.url = 'profile';
     this.requestBody$ = this.requestBodyForService$.asObservable();
     const user = localStorage.getItem('user');
@@ -78,7 +83,7 @@ export class ProfileService {
             'Updating user name succeed',
             'close'
           );
-          this.router.navigate(['signin']);
+          this.store.dispatch(editUserName({ nameS: this.request.name }));
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
