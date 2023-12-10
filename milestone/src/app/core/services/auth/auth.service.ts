@@ -42,13 +42,13 @@ export class AuthService {
       : null;
     console.log(userRequestBody);
     console.log(userRequestBody !== null);
-   
-      this.httpHeaders = new HttpHeaders({
-        Authorization: `Bearer ${userRequestBody.token}`,
-        'rs-uid': `${userRequestBody.uid}`,
-        'rs-email': `${userRequestBody.email}`,
-      });
-      console.log(userRequestBody.token);
+
+    this.httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${userRequestBody.token}`,
+      'rs-uid': `${userRequestBody.uid}`,
+      'rs-email': `${userRequestBody.email}`,
+    });
+    console.log(userRequestBody.token);
 
     console.log(this.httpHeaders);
     return this.http
@@ -98,11 +98,49 @@ export class AuthService {
 
   getDefaultRoute(): string {
     this.getLocalStorageData();
+    console.log(this.router.url);
     if (this.isLoggedIn === false) {
-      this.router.navigate(['signin']);
+      if (
+        this.router.url === '/' ||
+        this.router.url === '/signin' ||
+        this.router.url === '/signup' ||
+        this.router.url === '/profile' ||
+        this.router.url === '/main'
+      ) {
+        this.router.navigate(['signin']);
+      }
     } else if (this.isLoggedIn === true) {
-      this.router.navigate(['main']);
+      if (
+        this.router.url === '/' ||
+        this.router.url === '/signin' ||
+        this.router.url === '/signup' ||
+        this.router.url === '/profile' ||
+        this.router.url === '/main'
+      ) {
+        this.router.navigate(['main']);
+      }
     }
-    return this.isLoggedIn ? 'main' : 'signin';
+    if (this.isLoggedIn) {
+      if (
+        this.router.url === '/' ||
+        this.router.url === '/signin' ||
+        this.router.url === '/signup' ||
+        this.router.url === '/profile' ||
+        this.router.url === '/main'
+      ) {
+        return 'main';
+      }
+    } else {
+      if (
+        this.router.url === '/' ||
+        this.router.url === '/signin' ||
+        this.router.url === '/signup' ||
+        this.router.url === '/profile' ||
+        this.router.url === '/main'
+      ) {
+        return '';
+      }
+    }
+    return '';
   }
 }

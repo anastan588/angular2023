@@ -21,7 +21,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { MileStoneUserEffects } from './core/store/milestone/milestone.user.effect';
 import { CoreModule } from './core/core.module';
 
-
 @NgModule({
   declarations: [AppComponent, MainComponent],
   imports: [

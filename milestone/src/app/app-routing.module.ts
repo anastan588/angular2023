@@ -4,8 +4,12 @@ import { authGuard } from './core/guards/auth.guard';
 import { DefaultpageService } from './core/services/defaultpage/defaultpage.service';
 import { mainGuard } from './core/guards/main.guard';
 
-
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
   {
     path: 'main',
     canActivate: [mainGuard],
@@ -36,10 +40,13 @@ const routes: Routes = [
         m => m.ProfileModule
       ),
   },
+
   {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full',
+    path: '**',
+    loadChildren: () =>
+      import('./shared/pages/not-found/not-found.module').then(
+        m => m.NotFoundModule
+      ),
   },
 ];
 
@@ -51,7 +58,7 @@ export class AppRoutingModule {
   constructor(private defaultRouteService: DefaultpageService) {
     const defaultRoute = this.defaultRouteService.getDefaultRoute();
     console.log(defaultRoute);
-    routes[3].redirectTo = defaultRoute;
-    console.log(routes[3].redirectTo);
+    routes[0].redirectTo = defaultRoute;
+    console.log(routes[0].redirectTo);
   }
 }
