@@ -6,7 +6,7 @@
     </div>
     <div class="login_block">
       <app-button (click)="redirectToProfile()">Profile</app-button>
-      <app-button (click)="redirectToSignIn()">Login</app-button>
+      <app-button (click)="redirectToSignIn()">{{userStatus}}</app-button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
