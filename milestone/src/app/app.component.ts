@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { SigninService } from './core/services/signin/signin.service';
+import { AuthService } from './core/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,27 +10,28 @@ import { SigninService } from './core/services/signin/signin.service';
 })
 export class AppComponent {
   userStatus!: string;
+  isButtonDisabled!: boolean;
   title = 'milestone';
-  constructor(private router: Router,
-    private signinService: SigninService) {
-     
-    }
+  constructor(
+    private router: Router,
+    private signinService: SigninService,
+    private authService: AuthService
+  ) {
+    this.isButtonDisabled = false;
+  }
   redirectToSignUp() {
     this.router.navigate(['signup']);
   }
 
   redirectToSignIn() {
-    if (!localStorage.getItem('user')) {
+    console.log(!localStorage.getItem('user'));
+    if (localStorage.getItem('user')) {
       console.log('logout default');
-      this.router.navigate(['main']);
-     
+      this.authService.quitFromApplication();
     } else {
-      this.userStatus = 'Login';
-      console.log('login default');
-       localStorage.removeItem('user');
       this.router.navigate(['signin']);
+      console.log('login default');
     }
-    
   }
   redirectToProfile() {
     this.router.navigate(['profile']);
@@ -38,11 +40,19 @@ export class AppComponent {
     this.signinService.userStatusObject$.subscribe(data => {
       console.log(data);
       this.userStatus = data;
-    }); 
+    });
+    this.authService.userStatusObject$.subscribe(data => {
+      console.log(data);
+      this.userStatus = data;
+    });
+    this.authService.isButtonDisabledObject$.subscribe(data => {
+      console.log(data);
+      this.isButtonDisabled = data;
+    });
     if (!localStorage.getItem('user')) {
-       this.userStatus = 'Login'
-      } else {
-        this.userStatus = 'Logout'
-      }
+      this.userStatus = 'Login';
+    } else {
+      this.userStatus = 'Logout';
+    }
   }
 }
