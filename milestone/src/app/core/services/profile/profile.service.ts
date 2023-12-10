@@ -15,9 +15,10 @@ import {
   IServerResponseSignUp,
 } from '../../models/serverresponse';
 import { IUser } from '../../models/user';
-import { catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { loadMilestoneUserSuccess } from '../../store/milestone/milestone.actions';
+import { selectUser } from '../../store/milestone/milestone.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,7 @@ import { loadMilestoneUserSuccess } from '../../store/milestone/milestone.action
 export class ProfileService {
   url: string;
   httpHeaders!: HttpHeaders;
+  catchedUser!: Observable<IUser>;
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
@@ -44,7 +46,13 @@ export class ProfileService {
   }
 
   getUsersData() {
-    return this.http.get<IUser>(this.url, { headers: this.httpHeaders })
+    return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
+  }
+
+  getUserFromStore() {
+    this.catchedUser = this.store.select(selectUser);
+    console.log(this.catchedUser);
+    return this.catchedUser;
   }
 
   showToastMessage(

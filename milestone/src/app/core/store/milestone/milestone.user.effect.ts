@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  mergeMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import {
   loadMilestoneUser,
@@ -29,6 +35,11 @@ export class MileStoneUserEffects {
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMilestoneUser),
+      withLatestFrom(this.profileService.getUserFromStore()),
+      filter(([action, catchedUser]) => {
+        console.log(catchedUser);
+        return !catchedUser.uid.S;
+      }),
       mergeMap(() =>
         this.profileService.getUsersData().pipe(
           map(response => {
