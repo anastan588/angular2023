@@ -12,6 +12,7 @@ export class AppComponent {
   userStatus!: string;
   isButtonDisabled!: boolean;
   title = 'milestone';
+  isLogged!: boolean;
   constructor(
     private router: Router,
     private signinService: SigninService,
@@ -22,8 +23,11 @@ export class AppComponent {
   redirectToSignUp() {
     this.router.navigate(['signup']);
   }
-
   redirectToSignIn() {
+    this.router.navigate(['signin']);
+  }
+
+  redirectToSignInLogOut() {
     console.log(!localStorage.getItem('user'));
     if (localStorage.getItem('user')) {
       console.log('logout default');
@@ -54,5 +58,11 @@ export class AppComponent {
     } else {
       this.userStatus = 'Logout';
     }
+    this.isLogged = this.authService.getLocalStorageData();
+    // if (this.isLogged) {
+    //   this.router.navigate(['main']);
+    // } else if (!this.isLogged) {
+    //   this.router.navigate(['signin']);
+    // }
   }
 }

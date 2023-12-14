@@ -100,47 +100,13 @@ export class AuthService {
     this.getLocalStorageData();
     console.log(this.router.url);
     if (this.isLoggedIn === false) {
-      if (
-        this.router.url === '/' ||
-        this.router.url === '/signin' ||
-        this.router.url === '/signup' ||
-        this.router.url === '/profile' ||
-        this.router.url === '/main'
-      ) {
-        this.router.navigate(['signin']);
-      }
+      this.router.navigate(['signin']);
     } else if (this.isLoggedIn === true) {
-      if (
-        this.router.url === '/' ||
-        this.router.url === '/signin' ||
-        this.router.url === '/signup' ||
-        this.router.url === '/profile' ||
-        this.router.url === '/main'
-      ) {
-        this.router.navigate(['main']);
-      }
+      this.router.navigate(['/']);
     }
     if (this.isLoggedIn) {
-      if (
-        this.router.url === '/' ||
-        this.router.url === '/signin' ||
-        this.router.url === '/signup' ||
-        this.router.url === '/profile' ||
-        this.router.url === '/main'
-      ) {
-        return 'main';
-      }
-    } else {
-      if (
-        this.router.url === '/' ||
-        this.router.url === '/signin' ||
-        this.router.url === '/signup' ||
-        this.router.url === '/profile' ||
-        this.router.url === '/main'
-      ) {
-        return '';
-      }
-    }
+      return '/';
+    } 
     return '';
   }
 }

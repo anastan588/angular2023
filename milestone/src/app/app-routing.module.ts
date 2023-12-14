@@ -3,19 +3,22 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { DefaultpageService } from './core/services/defaultpage/defaultpage.service';
 import { mainGuard } from './core/guards/main.guard';
+import { MainComponent } from './milestone';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '',
-    pathMatch: 'full',
-  },
-  {
-    path: 'main',
     canActivate: [mainGuard],
     loadChildren: () =>
       import('./milestone/pages/main/main.module').then(m => m.MainModule),
   },
+
+  // {
+  //   path: 'main',
+  //   canActivate: [mainGuard],
+  //   loadChildren: () =>
+  //     import('./milestone/pages/main/main.module').then(m => m.MainModule),
+  // },
   {
     path: 'signup',
     canActivate: [authGuard],
@@ -40,7 +43,6 @@ const routes: Routes = [
         m => m.ProfileModule
       ),
   },
-
   {
     path: '**',
     loadChildren: () =>
@@ -56,9 +58,9 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
   constructor(private defaultRouteService: DefaultpageService) {
-    const defaultRoute = this.defaultRouteService.getDefaultRoute();
-    console.log(defaultRoute);
-    routes[0].redirectTo = defaultRoute;
-    console.log(routes[0].redirectTo);
+    // const defaultRoute = this.defaultRouteService.getDefaultRoute();
+    // console.log(defaultRoute);
+    // routes[0].redirectTo = defaultRoute;
+    // console.log(routes[0].redirectTo);
   }
 }

@@ -6,7 +6,11 @@
     </div>
     <div class="login_block">
       <app-button (click)="redirectToProfile()">Profile</app-button>
-      <app-button (click)="redirectToSignIn()" [disabled]="isButtonDisabled">{{userStatus}}</app-button>
+      <app-button
+        (click)="redirectToSignInLogOut()"
+        [disabled]="isButtonDisabled"
+        >{{ userStatus }}</app-button
+      >
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
