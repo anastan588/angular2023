@@ -20,6 +20,8 @@ import { MilestoneReducer } from './core/store/milestone/milestone.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { MileStoneUserEffects } from './core/store/milestone/milestone.user.effect';
 import { CoreModule } from './core/core.module';
+import { MileStoneGroupsEffects } from './core/store/milestone/milestone.groups.effect';
+import { MatIconRegistry } from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -35,13 +37,14 @@ import { CoreModule } from './core/core.module';
     ButtonComponent,
     HttpClientModule,
     CoreModule,
-    EffectsModule.forRoot([MileStoneUserEffects]),
+    EffectsModule.forRoot([MileStoneUserEffects, MileStoneGroupsEffects]),
   ],
   providers: [
     SignupService,
     SigninService,
     AuthService,
     ProfileService,
+    MatIconRegistry,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

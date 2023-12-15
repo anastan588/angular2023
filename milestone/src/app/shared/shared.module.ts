@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from './index';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { NotFoundModule } from './pages/not-found/not-found.module';
+import * as Shared from './index';
+import { MaterialModule } from '../material/material.module';
+
 
 @NgModule({
-  declarations: [],
-  imports: [CommonModule, ButtonComponent, NotFoundModule],
+  declarations: [
+    Shared.DialogCreateGroupComponent,
+    Shared.DialogDeleteGroupComponent,
+  ],
+  imports: [CommonModule, ButtonComponent, Shared.NotFoundModule, MaterialModule],
 })
 export class SharedModule {}

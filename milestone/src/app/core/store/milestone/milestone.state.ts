@@ -1,7 +1,9 @@
+import { IGroups } from '../../models/groups';
 import { IUser } from '../../models/user';
 
 export interface IMilestoneState {
   user: IUser;
+  groups: IGroups;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -18,5 +20,9 @@ export const InitialMileStoneState: IMilestoneState = {
     createdAt: {
       S: '',
     },
+  },
+  groups: {
+    Count: 0,
+    Items: [],
   },
 };

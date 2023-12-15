@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>Enter name of new group</h1>
+<div mat-dialog-content>
+  <mat-card [formGroup]="groupForm">
+    <mat-form-field validate>
+      <mat-label>Enter na</mat-label>
+      <input
+        matInput
+        placeholder="Please enter a title"
+        formControlName="name"
+        maxlength="30"
+        required />
+      <mat-error *ngIf="groupForm.get('title')!.hasError('minlength')">
+        The title length must be at least 3 characters
+      </mat-error>
+      <mat-error
+        *ngIf="
+          groupForm.get('name')!.hasError('maxlength') &&
+          !groupForm.get('name')!.hasError('required')
+        ">
+        The name length must be max 30 characters
+      </mat-error>
+      <mat-error *ngIf="groupForm.get('name')!.hasError('required')">
+        Please enter a name
+      </mat-error>
+      <mat-hint align="end"
+        >{{ groupForm.get('name')!.value?.length }}/30</mat-hint
+      >
+    </mat-form-field>
+  </mat-card>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>
+    Ok
+  </button>
+</div>

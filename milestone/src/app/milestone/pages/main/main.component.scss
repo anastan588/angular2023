@@ -1,0 +1,58 @@
+.main_container {
+  display: flex;
+  gap: 30px;
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.peoples {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+  align-items: center;
+}
+mat-card-header {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 30px;
+}
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.group_item {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  background-color: #f0f0f0;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 10px;
+  border-radius: 40px;
+}
+.group_title {
+  font-weight: 600;
+}
+
+mat-icon-button {
+  
+}
+

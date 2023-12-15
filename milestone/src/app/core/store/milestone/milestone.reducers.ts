@@ -11,5 +11,9 @@ export const MilestoneReducer = createReducer(
   on(MilestoneActions.editUserName, (state, { nameS }) => ({
     ...state,
     user: { ...state.user, name: { ...state.user.name, S: nameS } },
+  })),
+  on(MilestoneActions.loadMilestoneGroupsSuccess, (state, { groups }) => ({
+    ...state,
+    groups: { ...state.groups, ...groups },
   }))
 );

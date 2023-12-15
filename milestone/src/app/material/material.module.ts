@@ -8,7 +8,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
+import { MatGridListModule, MatGridTile } from '@angular/material/grid-list';
+import {
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogModule,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [],
@@ -21,6 +28,8 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatGridListModule,
+    MatDialogModule,
   ],
   exports: [
     MatButtonModule,
@@ -31,6 +40,8 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
+    MatGridListModule,
+    MatDialogModule,
   ],
   providers: [MatSnackBar],
 })

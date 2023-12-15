@@ -1,1 +1,24 @@
-<p>main works!</p>
+<div class="main_container">
+  <mat-card class="groups">
+    <mat-card-header>Groups</mat-card-header>
+    <mat-card-actions>
+      <app-button>Update groups</app-button>
+      <app-button (click)="openCreationGroupForm()">Create group</app-button>
+    </mat-card-actions>
+    <mat-card-content>
+      <div class="group_item" *ngFor="let group of groups$!">
+        <p class="group_title">{{ group.name.S }}</p>
+        <button mat-icon-button color="warn" aria-label="delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="peoples">
+    <mat-card-header>Peoples</mat-card-header>
+    <mat-card-actions>
+      <app-button>Update groups</app-button>
+    </mat-card-actions>
+    <mat-card-content></mat-card-content>
+  </mat-card>
+</div>
