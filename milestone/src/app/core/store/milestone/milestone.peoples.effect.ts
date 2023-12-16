@@ -14,7 +14,6 @@ import {
 } from './milestone.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IServerResponseSignUp } from '../../models/serverresponse';
-import { of } from 'rxjs';
 import { ToastMessageService } from '../../services/toast-message.service';
 import { GroupsService } from '../../services/groups/groups.service';
 

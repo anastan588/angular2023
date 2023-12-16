@@ -1,9 +1,11 @@
-<p class="group_title">{{ currentGroup.name.S }}</p>
-<button
-  *ngIf="currentGroup.createdBy.S === userID"
-  mat-icon-button
-  color="warn"
-  aria-label="delete"
-  (click)="openDeleteForm()">
-  <mat-icon>delete</mat-icon>
-</button>
+<div class="group-item" (click)="navigateToGropConverstionPage($event)">
+  <p class="group_title">{{ currentGroup.name.S }}</p>
+  <button
+    *ngIf="currentGroup.createdBy.S === userID"
+    mat-icon-button
+    color="warn"
+    aria-label="delete"
+    (click)="openDeleteForm($event)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>

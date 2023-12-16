@@ -61,5 +61,37 @@ export const MilestoneReducer = createReducer(
       ...state.groupsUpdateTimer,
       currentTime: currenttime,
     },
+  })),
+  on(MilestoneActions.loadMilestoneUsersSuccess, (state, { peoples }) => ({
+    ...state,
+    peoples: { ...state.peoples, ...peoples },
+  })),
+  on(MilestoneActions.startPeoplesTimer, state => ({
+    ...state,
+    peoplesUpdateTimer: {
+      ...state.peoplesUpdateTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopPeoplesTimer, state => ({
+    ...state,
+    peoplesUpdateTimer: {
+      ...state.peoplesUpdateTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetPeoplesTimer, state => ({
+    ...state,
+    peoplesUpdateTimer: {
+      ...state.peoplesUpdateTimer,
+      currentTime: 0,
+    },
+  })),
+  on(MilestoneActions.updatePeoplesTimer, (state, { currenttime }) => ({
+    ...state,
+    peoplesUpdateTimer: {
+      ...state.peoplesUpdateTimer,
+      currentTime: currenttime,
+    },
   }))
 );

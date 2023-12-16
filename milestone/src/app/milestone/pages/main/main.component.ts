@@ -14,6 +14,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import {
   DialogCreateGroupComponent,
 } from 'src/app/shared';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -29,7 +30,8 @@ export class MainComponent implements OnInit {
   constructor(
     private groupsService: GroupsService,
     private store: Store,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) {}
   ngOnInit(): void {
     this.store.dispatch(loadMilestoneGroups());
@@ -63,4 +65,5 @@ export class MainComponent implements OnInit {
     this.clickOnUpdateButton = false;
     this.groupsService.clickOnUpdateButtonObject$.next(this.clickOnUpdateButton);
   }
+  
 }

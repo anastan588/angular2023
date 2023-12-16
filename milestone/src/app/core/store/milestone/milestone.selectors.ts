@@ -18,6 +18,19 @@ export const selectUserUid = createSelector(MilestoneSelector, state => {
 export const selectGroups = createSelector(MilestoneSelector, state => {
   return state.groups.Items;
 });
-export const selectGruopsUpdateTime = createSelector(MilestoneSelector, state => {
-  return state.groupsUpdateTimer.currentTime;
+export const selectGruopsUpdateTime = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.groupsUpdateTimer.currentTime;
+  }
+);
+
+export const selectPeoples = createSelector(MilestoneSelector, state => {
+  return state.peoples.Items;
 });
+export const selectPeoplesUpdateTime = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.groupsUpdateTimer.currentTime;
+  }
+);

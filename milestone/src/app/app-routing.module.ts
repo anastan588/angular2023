@@ -13,12 +13,11 @@ const routes: Routes = [
       import('./milestone/pages/main/main.module').then(m => m.MainModule),
   },
 
-  // {
-  //   path: 'main',
-  //   canActivate: [mainGuard],
-  //   loadChildren: () =>
-  //     import('./milestone/pages/main/main.module').then(m => m.MainModule),
-  // },
+  {
+    path: 'group/:id',
+    loadChildren: () =>
+      import('./milestone/pages/group/group.module').then(m => m.GroupModule),
+  },
   {
     path: 'signup',
     canActivate: [authGuard],

@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { IGroup } from 'src/app/core/models/groups';
 import { GroupsService } from 'src/app/core/services/groups/groups.service';
 import { DialogDeleteGroupComponent } from '../../../../shared/components/dialog-delete-group/dialog-delete-group.component';
-import { group } from '@angular/animations';
 import { IGroupDeleteRequest } from 'src/app/core/models/groupsUpdate';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-group-item',
@@ -20,14 +21,20 @@ export class GroupItemComponent implements OnInit {
   constructor(
     private groupsService: GroupsService,
     private store: Store,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+   
   ) {}
   ngOnInit(): void {
     const user = localStorage.getItem('user');
     const userBody = user ? JSON.parse(user) : null;
     this.userID = userBody.uid;
   }
-  openDeleteForm() {
+  openDeleteForm(event: Event) {
+    event.stopPropagation();
+    const button = event.currentTarget as HTMLButtonElement;
+    console.log(button);
+    button.blur();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.minWidth = '50vw';
     const data: IGroupDeleteRequest = {
@@ -44,4 +51,9 @@ export class GroupItemComponent implements OnInit {
       console.log('The dialog delete was closed');
     });
   }
+  navigateToGropConverstionPage(event: Event) {
+    event.stopPropagation();
+    console.log(this.currentGroup);
+    this.router.navigate(['group', this.currentGroup.id.S, ]);
+   }
 }
