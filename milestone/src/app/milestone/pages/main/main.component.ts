@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatGridTile } from '@angular/material/grid-list';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { IGroup } from 'src/app/core/models/groups';
 import { GroupsService } from 'src/app/core/services/groups/groups.service';
-import { loadMilestoneGroups } from 'src/app/core/store/milestone/milestone.actions';
-import { selectGroups } from 'src/app/core/store/milestone/milestone.selectors';
 import {
-  MatDialog,
-  MatDialogConfig,
-} from '@angular/material/dialog';
-import { DialogCreateGroupComponent } from 'src/app/shared';
+  loadMilestoneGroups,
+  startGroupTimer,
+} from 'src/app/core/store/milestone/milestone.actions';
+import {
+  selectGroups,
+  selectGruopsUpdateTime,
+} from 'src/app/core/store/milestone/milestone.selectors';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import {
+  DialogCreateGroupComponent,
+} from 'src/app/shared';
 
 @Component({
   selector: 'app-main',
@@ -20,8 +22,10 @@ import { DialogCreateGroupComponent } from 'src/app/shared';
 })
 export class MainComponent implements OnInit {
   groups$!: Array<IGroup>;
+  currentGroup!: IGroup;
   userID!: string;
-
+  timeUpdateGroupsTimer!: number;
+  clickOnUpdateButton!: boolean;
   constructor(
     private groupsService: GroupsService,
     private store: Store,
@@ -33,12 +37,9 @@ export class MainComponent implements OnInit {
     this.store.select(selectGroups).subscribe(value => {
       this.groups$ = value;
     });
-    const user = localStorage.getItem('user');
-    console.log(user);
-    const userBody = user ? JSON.parse(user) : null;
-    this.userID = userBody.uid;
-    console.log(this.userID);
-    
+    this.store
+      .select(selectGruopsUpdateTime)
+      .subscribe(value => (this.timeUpdateGroupsTimer = value));
   }
 
   openCreationGroupForm() {
@@ -48,9 +49,18 @@ export class MainComponent implements OnInit {
       DialogCreateGroupComponent,
       dialogConfig
     );
-    
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog creation was closed');
     });
+  }
+
+  startTimerAndUpdateGroups() {
+    this.clickOnUpdateButton = true;
+    this.timeUpdateGroupsTimer = 59;
+    this.store.dispatch(startGroupTimer());
+    this.groupsService.clickOnUpdateButtonObject$.next(this.clickOnUpdateButton);
+    this.store.dispatch(loadMilestoneGroups());
+    this.clickOnUpdateButton = false;
+    this.groupsService.clickOnUpdateButtonObject$.next(this.clickOnUpdateButton);
   }
 }

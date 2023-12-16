@@ -11,10 +11,18 @@ import {
   IServerResponseSignUp,
 } from '../../models/serverresponse';
 import { IGroup, IGroups } from '../../models/groups';
-import { IGroupCreateResponse, IGroupName } from '../../models/groupsUpdate';
+import {
+  IGroupCreateResponse,
+  IGroupDeleteRequest,
+  IGroupName,
+} from '../../models/groupsUpdate';
 import { Observable, Subject, catchError, map, of } from 'rxjs';
-import { addNewGroup } from '../../store/milestone/milestone.actions';
+import {
+  addNewGroup,
+  removeUserGroup,
+} from '../../store/milestone/milestone.actions';
 import { MatDialog } from '@angular/material/dialog';
+import { selectGroups } from '../../store/milestone/milestone.selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +32,17 @@ export class GroupsService {
   urlgroupsCreate: string;
   urlgroupsDelete: string;
   httpHeaders!: HttpHeaders;
-  requestBodyForService$ = new Subject<IGroupName>();
-  requestBody$!: Observable<IGroupName>;
-  request!: IGroupName;
+  requestBodyForServiceCreate$ = new Subject<IGroupName>();
+  requestBodyCreate$!: Observable<IGroupName>;
+  requestCreate!: IGroupName;
+  requestBodyForServiceDelete$ = new Subject<IGroupDeleteRequest>();
+  requestBodyDelete$!: Observable<IGroupDeleteRequest>;
+  requestDelete!: IGroupDeleteRequest;
   newGroupItem!: IGroup;
-
+  catchedGroups!: Observable<IGroup[]>;
+  clickOnUpdateButtonObject$ = new Subject<boolean>();
+  clickOnUpdateButton$!: Observable<boolean>;
+  catchedUpdateButtonState!: boolean;
   constructor(
     public http: HttpClient,
     private store: Store,
@@ -37,12 +51,18 @@ export class GroupsService {
   ) {
     this.urlgroupsList = 'groups/list';
     this.urlgroupsCreate = 'groups/create';
-    this.urlgroupsDelete = 'groups/delete?groupID={:groupID}';
-    this.requestBody$ = this.requestBodyForService$.asObservable();
+    this.urlgroupsDelete = `groups/delete?groupID={:groupID}`;
+    this.requestBodyCreate$ = this.requestBodyForServiceCreate$.asObservable();
 
-    this.requestBodyForService$.subscribe(value => {
-      this.request = value;
+    this.requestBodyForServiceCreate$.subscribe(value => {
+      this.requestCreate = value;
     });
+    this.requestBodyDelete$ = this.requestBodyForServiceDelete$.asObservable();
+
+    this.requestBodyForServiceDelete$.subscribe(value => {
+      this.requestDelete = value;
+    });
+    this.clickOnUpdateButton$ = this.clickOnUpdateButtonObject$.asObservable();
   }
 
   getGroupsData() {
@@ -63,10 +83,10 @@ export class GroupsService {
   }
 
   sentNewGroupData() {
-    console.log(this.request);
+    console.log(this.requestCreate);
     const createdAt = new Date();
     return this.http
-      .post<IGroupCreateResponse>(this.urlgroupsCreate, this.request, {
+      .post<IGroupCreateResponse>(this.urlgroupsCreate, this.requestCreate, {
         headers: this.httpHeaders,
       })
       .pipe(
@@ -81,7 +101,7 @@ export class GroupsService {
               S: response.groupID,
             },
             name: {
-              S: this.request.name,
+              S: this.requestCreate.name,
             },
             createdAt: {
               S: createdAt.toString(),
@@ -92,6 +112,53 @@ export class GroupsService {
           };
           console.log(this.newGroupItem);
           this.store.dispatch(addNewGroup({ IGroupItem: this.newGroupItem }));
+          setTimeout(() => {
+            this.dialog.closeAll();
+          }, 1000);
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          const serverResponse: IServerResponseSignUp = error.error;
+          console.log(serverResponse.message);
+          console.log(serverResponse.type);
+          this.toastmessageservice.showToastMessage(
+            'Updating user name failed: ' + serverResponse.message,
+            'close'
+          );
+          return of({
+            type: serverResponse.type,
+            message: serverResponse.message,
+          });
+        })
+      )
+      .subscribe(value => {
+        return value;
+      });
+  }
+
+  getGroupsFromStore() {
+    this.catchedGroups = this.store.select(selectGroups);
+    console.log(this.catchedGroups);
+    return this.catchedGroups;
+  }
+
+  sentDeleteGroupData() {
+    console.log(this.requestDelete);
+    this.urlgroupsDelete = `groups/delete?groupID=${this.requestDelete.groupID}`;
+    return this.http
+      .delete(this.urlgroupsDelete, {
+        headers: this.httpHeaders,
+      })
+      .pipe(
+        map(response => {
+          this.toastmessageservice.showToastMessage(
+            'Deletion of group succeed',
+            'close'
+          );
+
+          this.store.dispatch(
+            removeUserGroup({ id: this.requestDelete.groupID })
+          );
           setTimeout(() => {
             this.dialog.closeAll();
           }, 1000);

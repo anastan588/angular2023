@@ -26,11 +26,18 @@ export class MileStoneGroupsEffects {
   loadGroups$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMilestoneGroups),
+      withLatestFrom(this.groupsService.getGroupsFromStore()),
+      filter(([action, catchedGroups]) => {
+        console.log(catchedGroups[0]);
+        this.groupsService.clickOnUpdateButton$.subscribe(value => {
+          this.clickOnUpdateButton = value;
+          return this.clickOnUpdateButton;
+        });
+        return !catchedGroups[0] || this.clickOnUpdateButton === true;
+      }),
       mergeMap(() =>
         this.groupsService.getGroupsData().pipe(
           map(response => {
-            console.log('groups service');
-            console.log(response);
             return loadMilestoneGroupsSuccess({ groups: response });
           }),
           catchError((error: HttpErrorResponse) => {
@@ -49,6 +56,7 @@ export class MileStoneGroupsEffects {
     )
   );
 
+  clickOnUpdateButton!: boolean;
   constructor(
     private actions$: Actions,
     private groupsService: GroupsService,

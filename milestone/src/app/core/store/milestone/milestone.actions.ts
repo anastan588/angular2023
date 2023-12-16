@@ -16,11 +16,24 @@ export const editUserName = createAction(
 export const loadMilestoneGroups = createAction('[MILESTONE] Load Groups');
 
 export const loadMilestoneGroupsSuccess = createAction(
-  '[MILESTONE] Load Groups(Success)',
+  '[MILESTONE] Load Groups (Success)',
   props<{ groups: IGroups }>()
 );
 
 export const addNewGroup = createAction(
   '[MILESTONE] Add new Group',
   props<{ IGroupItem: IGroup }>()
+);
+
+export const removeUserGroup = createAction(
+  '[MILESTONE] Remove user Group',
+  props<{ id: string }>(),
+);
+
+export const startGroupTimer = createAction('[MILESTONE] Timer Start');
+export const stopGroupTimer = createAction('[MILESTONE] Timer Stop');
+export const resetGroupTimer = createAction('[MILESTONE] Timer Reset');
+export const updateGroupTimer = createAction(
+  '[MILESTONE] Timer Update',
+  props<{ currenttime: number }>()
 );

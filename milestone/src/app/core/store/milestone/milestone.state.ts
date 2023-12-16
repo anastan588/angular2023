@@ -4,6 +4,10 @@ import { IUser } from '../../models/user';
 export interface IMilestoneState {
   user: IUser;
   groups: IGroups;
+  groupsUpdateTimer: {
+    currentTime: number;
+    isRunning: boolean;
+  };
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -24,5 +28,9 @@ export const InitialMileStoneState: IMilestoneState = {
   groups: {
     Count: 0,
     Items: [],
+  },
+  groupsUpdateTimer: {
+    currentTime: 60,
+    isRunning: false,
   },
 };

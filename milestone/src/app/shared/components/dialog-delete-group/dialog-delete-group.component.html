@@ -1,1 +1,9 @@
-<p>dialog-delete-group works!</p>
+<div mat-dialog-content class="dialog_window">
+  <h1 mat-dialog-title>Do you really want to delete this group?</h1>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button cdkFocusInitial (click)="deleteCurrentGroup()">
+      Yes
+    </button>
+  </div>
+</div>

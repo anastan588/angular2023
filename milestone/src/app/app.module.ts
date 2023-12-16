@@ -22,9 +22,11 @@ import { MileStoneUserEffects } from './core/store/milestone/milestone.user.effe
 import { CoreModule } from './core/core.module';
 import { MileStoneGroupsEffects } from './core/store/milestone/milestone.groups.effect';
 import { MatIconRegistry } from '@angular/material/icon';
+import { GroupItemComponent } from './milestone';
+import { MileStartGroupTimerEffects } from './core/store/milestone/milestone.groupsTimer.effect';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent],
+  declarations: [AppComponent, MainComponent, GroupItemComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -37,8 +39,9 @@ import { MatIconRegistry } from '@angular/material/icon';
     ButtonComponent,
     HttpClientModule,
     CoreModule,
-    EffectsModule.forRoot([MileStoneUserEffects, MileStoneGroupsEffects]),
+    EffectsModule.forRoot([MileStoneUserEffects, MileStoneGroupsEffects, MileStartGroupTimerEffects]),
   ],
+  exports: [GroupItemComponent],
   providers: [
     SignupService,
     SigninService,

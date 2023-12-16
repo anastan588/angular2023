@@ -23,5 +23,43 @@ export const MilestoneReducer = createReducer(
       Items: [...state.groups.Items, IGroupItem],
       Count: state.groups.Items.length + 1,
     },
+  })),
+  on(MilestoneActions.removeUserGroup, (state, { id }) => ({
+    ...state,
+    groups: {
+      Items: state.groups.Items.filter(item => {
+        let itemId = item.id.S;
+        return itemId !== id;
+      }),
+      Count: state.groups.Items.length - 1,
+    },
+  })),
+  on(MilestoneActions.startGroupTimer, state => ({
+    ...state,
+    groupsUpdateTimer: {
+      ...state.groupsUpdateTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopGroupTimer, state => ({
+    ...state,
+    groupsUpdateTimer: {
+      ...state.groupsUpdateTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetGroupTimer, state => ({
+    ...state,
+    groupsUpdateTimer: {
+      ...state.groupsUpdateTimer,
+      currentTime: 0,
+    },
+  })),
+  on(MilestoneActions.updateGroupTimer, (state, { currenttime }) => ({
+    ...state,
+    groupsUpdateTimer: {
+      ...state.groupsUpdateTimer,
+      currentTime: currenttime,
+    },
   }))
 );

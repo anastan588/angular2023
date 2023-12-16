@@ -41,7 +41,7 @@ export class DialogCreateGroupComponent {
       JSON.stringify(this.groupForm.controls.name.value)
     );
     console.log(this.requestbodyForName);
-    this.groupsSeRvice.requestBodyForService$.next(this.requestbodyForName);
+    this.groupsSeRvice.requestBodyForServiceCreate$.next(this.requestbodyForName);
     this.groupsSeRvice.sentNewGroupData();
   }
 }

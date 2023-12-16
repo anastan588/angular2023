@@ -47,12 +47,17 @@ mat-card-content {
   padding-left: 20px;
   padding-right: 10px;
   border-radius: 40px;
-}
-.group_title {
-  font-weight: 600;
+  cursor: pointer;
 }
 
-mat-icon-button {
-  
+.group_item:hover {
+  background-color: #c0c0c0;
 }
+
+app-group-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 
