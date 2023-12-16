@@ -8,7 +8,11 @@
     <mat-card-content>
       <div class="group_item" *ngFor="let group of groups$!">
         <p class="group_title">{{ group.name.S }}</p>
-        <button mat-icon-button color="warn" aria-label="delete">
+        <button
+          *ngIf="group.createdBy.S === userID"
+          mat-icon-button
+          color="warn"
+          aria-label="delete">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

@@ -2,15 +2,19 @@
 <div mat-dialog-content>
   <mat-card [formGroup]="groupForm">
     <mat-form-field validate>
-      <mat-label>Enter na</mat-label>
+      <mat-label>Enter name</mat-label>
       <input
         matInput
-        placeholder="Please enter a title"
+        placeholder="Please enter a nameof new group"
         formControlName="name"
         maxlength="30"
         required />
-      <mat-error *ngIf="groupForm.get('title')!.hasError('minlength')">
-        The title length must be at least 3 characters
+      <mat-error
+        *ngIf="
+          groupForm.get('name')!.hasError('pattern') &&
+          !groupForm.get('name')!.hasError('required')
+        ">
+        Name can only contain letters, digits, or spaces
       </mat-error>
       <mat-error
         *ngIf="
@@ -29,8 +33,11 @@
   </mat-card>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onCancel()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="" cdkFocusInitial>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button
+    mat-button
+    cdkFocusInitial
+    [disabled]="groupForm.invalid" (click)="createNewGroup()">
     Ok
   </button>
 </div>

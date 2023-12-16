@@ -11,6 +11,9 @@ export const selectUser = createSelector(MilestoneSelector, state => {
 export const selectUserName = createSelector(MilestoneSelector, state => {
   return state.user.name.S;
 });
+export const selectUserUid = createSelector(MilestoneSelector, state => {
+  return state.user.uid.S;
+});
 
 export const selectGroups = createSelector(MilestoneSelector, state => {
   return state.groups.Items;

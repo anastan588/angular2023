@@ -15,5 +15,13 @@ export const MilestoneReducer = createReducer(
   on(MilestoneActions.loadMilestoneGroupsSuccess, (state, { groups }) => ({
     ...state,
     groups: { ...state.groups, ...groups },
+  })),
+  on(MilestoneActions.addNewGroup, (state, { IGroupItem }) => ({
+    ...state,
+    groups: {
+      ...state.groups,
+      Items: [...state.groups.Items, IGroupItem],
+      Count: state.groups.Items.length + 1,
+    },
   }))
 );

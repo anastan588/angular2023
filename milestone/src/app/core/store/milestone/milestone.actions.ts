@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user';
-import { IGroups } from '../../models/groups';
+import { IGroup, IGroups } from '../../models/groups';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
 
@@ -18,4 +18,9 @@ export const loadMilestoneGroups = createAction('[MILESTONE] Load Groups');
 export const loadMilestoneGroupsSuccess = createAction(
   '[MILESTONE] Load Groups(Success)',
   props<{ groups: IGroups }>()
+);
+
+export const addNewGroup = createAction(
+  '[MILESTONE] Add new Group',
+  props<{ IGroupItem: IGroup }>()
 );
