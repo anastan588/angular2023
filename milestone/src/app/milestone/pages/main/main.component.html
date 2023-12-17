@@ -21,17 +21,37 @@
       >
       <app-button (click)="openCreationGroupForm()">Create group</app-button>
     </mat-card-actions>
-    <mat-card-content>
+    <mat-card-content class="group_block">
       <div class="group_item" *ngFor="let group of groups$">
         <app-group-item [currentGroup]="group"></app-group-item>
       </div>
     </mat-card-content>
   </mat-card>
   <mat-card class="peoples">
-    <mat-card-header>Peoples</mat-card-header>
+    <mat-card-header>People</mat-card-header>
     <mat-card-actions>
-      <app-button>Update groups</app-button>
+      <app-button
+        *ngIf="timeUpdatePeopleTimer === 60"
+        (click)="startTimerAndUpdatePeople()"
+        >Update people</app-button
+      >
+      <app-button
+        *ngIf="timeUpdatePeopleTimer < 60 && timeUpdatePeopleTimer > 9"
+        (click)="startTimerAndUpdatePeople()"
+        [disabled]="timeUpdatePeopleTimer !== 60"
+        >Time to next update: 00:{{ timeUpdatePeopleTimer }}</app-button
+      >
+      <app-button
+        *ngIf="timeUpdatePeopleTimer <= 9"
+        (click)="startTimerAndUpdatePeople()"
+        [disabled]="timeUpdatePeopleTimer !== 60"
+        >Time to next update: 00:0{{ timeUpdatePeopleTimer }}</app-button
+      >
     </mat-card-actions>
-    <mat-card-content></mat-card-content>
+    <mat-card-content class="people_block">
+      <div class="people_item" *ngFor="let person of people$">
+        <app-person-item [currentPerson]="person" [conversations]="conversationsUser"></app-person-item>
+      </div>
+    </mat-card-content>
   </mat-card>
 </div>

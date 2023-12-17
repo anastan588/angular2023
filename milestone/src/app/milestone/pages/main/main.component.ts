@@ -4,17 +4,23 @@ import { IGroup } from 'src/app/core/models/groups';
 import { GroupsService } from 'src/app/core/services/groups/groups.service';
 import {
   loadMilestoneGroups,
+  loadMilestoneUsers,
   startGroupTimer,
+  startPeoplesTimer,
 } from 'src/app/core/store/milestone/milestone.actions';
 import {
+  selectConversations,
   selectGroups,
   selectGruopsUpdateTime,
+  selectPeoples,
+  selectPeoplesUpdateTime,
 } from 'src/app/core/store/milestone/milestone.selectors';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {
-  DialogCreateGroupComponent,
-} from 'src/app/shared';
+import { DialogCreateGroupComponent } from 'src/app/shared';
 import { Router } from '@angular/router';
+import { IPerson } from 'src/app/core/models/peoples';
+import { PeoplesService } from 'src/app/core/services/peoples/peoples.service';
+import { IConversation } from 'src/app/core/models/conversations';
 
 @Component({
   selector: 'app-main',
@@ -23,18 +29,25 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
   groups$!: Array<IGroup>;
+  people$!: Array<IPerson>;
   currentGroup!: IGroup;
   userID!: string;
   timeUpdateGroupsTimer!: number;
-  clickOnUpdateButton!: boolean;
+  clickOnUpdateButtonGroups!: boolean;
+  timeUpdatePeopleTimer!: number;
+  clickOnUpdateButtonPeople!: boolean;
+  conversationsUser!: IConversation[];
+
   constructor(
     private groupsService: GroupsService,
+    private peopleService: PeoplesService,
     private store: Store,
     public dialog: MatDialog,
-    private router: Router,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.store.dispatch(loadMilestoneGroups());
+    this.store.dispatch(loadMilestoneUsers());
     console.log('groups service');
     this.store.select(selectGroups).subscribe(value => {
       this.groups$ = value;
@@ -42,6 +55,16 @@ export class MainComponent implements OnInit {
     this.store
       .select(selectGruopsUpdateTime)
       .subscribe(value => (this.timeUpdateGroupsTimer = value));
+    this.store.select(selectPeoples).subscribe(value => {
+      this.people$ = value;
+    });
+    this.store
+      .select(selectPeoplesUpdateTime)
+      .subscribe(value => (this.timeUpdatePeopleTimer = value));
+      this.store.select(selectConversations).subscribe(value => {
+        this.conversationsUser = value;
+        console.log(this.conversationsUser);
+      });
   }
 
   openCreationGroupForm() {
@@ -57,13 +80,30 @@ export class MainComponent implements OnInit {
   }
 
   startTimerAndUpdateGroups() {
-    this.clickOnUpdateButton = true;
+    this.clickOnUpdateButtonGroups = true;
     this.timeUpdateGroupsTimer = 59;
     this.store.dispatch(startGroupTimer());
-    this.groupsService.clickOnUpdateButtonObject$.next(this.clickOnUpdateButton);
+    this.groupsService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonGroups
+    );
     this.store.dispatch(loadMilestoneGroups());
-    this.clickOnUpdateButton = false;
-    this.groupsService.clickOnUpdateButtonObject$.next(this.clickOnUpdateButton);
+    this.clickOnUpdateButtonGroups = false;
+    this.groupsService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonGroups
+    );
   }
-  
+
+  startTimerAndUpdatePeople() {
+    this.clickOnUpdateButtonPeople = true;
+    this.timeUpdatePeopleTimer = 59;
+    this.store.dispatch(startPeoplesTimer());
+    this.peopleService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonPeople
+    );
+    this.store.dispatch(loadMilestoneUsers());
+    this.clickOnUpdateButtonPeople = false;
+    this.peopleService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonPeople
+    );
+  }
 }

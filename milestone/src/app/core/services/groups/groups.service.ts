@@ -43,6 +43,7 @@ export class GroupsService {
   clickOnUpdateButtonObject$ = new Subject<boolean>();
   clickOnUpdateButton$!: Observable<boolean>;
   catchedUpdateButtonState!: boolean;
+
   constructor(
     public http: HttpClient,
     private store: Store,
@@ -122,7 +123,7 @@ export class GroupsService {
           console.log(serverResponse.message);
           console.log(serverResponse.type);
           this.toastmessageservice.showToastMessage(
-            'Updating user name failed: ' + serverResponse.message,
+            'Creating new group failed: ' + serverResponse.message,
             'close'
           );
           return of({

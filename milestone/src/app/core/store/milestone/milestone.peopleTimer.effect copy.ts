@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
-import { Action, State, Store } from '@ngrx/store';
+import { map, switchMap, take, tap } from 'rxjs/operators';
+import { Action,  Store } from '@ngrx/store';
 import {
-  startGroupTimer,
-  stopGroupTimer,
-  updateGroupTimer,
+  startPeoplesTimer,
+  stopPeoplesTimer,
+  updatePeoplesTimer,
 } from './milestone.actions';
-import { Observable, interval, of } from 'rxjs';
+import { interval} from 'rxjs';
 
 @Injectable()
-export class MileStartGroupTimerEffects {
-  startGroupTimer$ = createEffect(() =>
+export class MileStartPeopleTimerEffects {
+  startPeopleTimer$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(startGroupTimer),
+      ofType(startPeoplesTimer),
       switchMap(() =>
         interval(1000).pipe(
           take(60), 
           map(tick => 60 - tick - 1), 
           tap(currenttime => {
             if (currenttime === 0) {
-              this.store.dispatch(stopGroupTimer());
-              this.store.dispatch(updateGroupTimer({ currenttime: 60 }));
+              this.store.dispatch(stopPeoplesTimer());
+              this.store.dispatch(updatePeoplesTimer({ currenttime: 60 }));
             } else {
-              this.store.dispatch(updateGroupTimer({ currenttime }));
+              this.store.dispatch(updatePeoplesTimer({ currenttime }));
             }
           }) 
         )

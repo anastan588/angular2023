@@ -19,6 +19,11 @@ const routes: Routes = [
       import('./milestone/pages/group/group.module').then(m => m.GroupModule),
   },
   {
+    path: 'conversation/:id',
+    loadChildren: () =>
+      import('./milestone/pages/personal/personal.module').then(m => m.PersonalModule),
+  },
+  {
     path: 'signup',
     canActivate: [authGuard],
     loadChildren: () =>

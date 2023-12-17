@@ -9,38 +9,55 @@ import {
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import {
-  loadMilestoneGroups,
-  loadMilestoneGroupsSuccess,
+  loadMilestoneConversationsSuccess,
+  loadMilestoneUsers,
+  loadMilestoneUsersSuccess,
 } from './milestone.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IServerResponseSignUp } from '../../models/serverresponse';
 import { ToastMessageService } from '../../services/toast-message.service';
-import { GroupsService } from '../../services/groups/groups.service';
-import { of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { PeoplesService } from '../../services/peoples/peoples.service';
 
 @Injectable()
-export class MileStoneGroupsEffects {
-  loadGroups$ = createEffect(() =>
+export class MilePoeplesEffects {
+  loadPeoples$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadMilestoneGroups),
-      withLatestFrom(this.groupsService.getGroupsFromStore()),
-      filter(([action, catchedGroups]) => {
-        console.log(catchedGroups[0]);
-        this.groupsService.clickOnUpdateButton$.subscribe(value => {
+      ofType(loadMilestoneUsers),
+      withLatestFrom(this.peopleService.getPeopleFromStore()),
+      filter(([action, catchedPeople]) => {
+        console.log(catchedPeople[0]);
+        this.peopleService.clickOnUpdateButton$.subscribe(value => {
           this.clickOnUpdateButton = value;
           return this.clickOnUpdateButton;
         });
-        return !catchedGroups[0] || this.clickOnUpdateButton === true;
+        console.log(this.clickOnUpdateButton);
+        return !catchedPeople[0] || this.clickOnUpdateButton === true;
       }),
       mergeMap(() =>
-        this.groupsService.getGroupsData().pipe(
-          map(response => {
-            return loadMilestoneGroupsSuccess({ groups: response });
+        forkJoin(
+          this.peopleService.getPeoplesData(),
+          this.peopleService.getConverasationData()
+        ).pipe(
+          mergeMap(([peoplesData, conversationData]) => {
+            console.log(peoplesData);
+            console.log(conversationData);
+            loadMilestoneUsersSuccess({ peoples: peoplesData });
+            loadMilestoneConversationsSuccess({
+              conversations: conversationData,
+            });
+            return [
+              loadMilestoneUsersSuccess({ peoples: peoplesData }),
+              loadMilestoneConversationsSuccess({
+                conversations: conversationData,
+              }),
+            ];
           }),
           catchError((error: HttpErrorResponse) => {
             const serverResponse: IServerResponseSignUp = error.error;
             this.toastMessageService.showToastMessage(
-              'Loading groups data failed: ' + serverResponse.message,
+              'Loading users and conversations data failed: ' +
+                serverResponse.message,
               'close'
             );
             return of({
@@ -56,7 +73,7 @@ export class MileStoneGroupsEffects {
   clickOnUpdateButton!: boolean;
   constructor(
     private actions$: Actions,
-    private groupsService: GroupsService,
+    private peopleService: PeoplesService,
     private store: Store,
     private toastMessageService: ToastMessageService
   ) {}

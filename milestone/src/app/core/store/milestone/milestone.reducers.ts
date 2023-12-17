@@ -93,5 +93,27 @@ export const MilestoneReducer = createReducer(
       ...state.peoplesUpdateTimer,
       currentTime: currenttime,
     },
-  }))
+  })),
+  on(MilestoneActions.loadMilestoneConversationsSuccess, (state, { conversations }) => ({
+    ...state,
+    conversations: { ...state.conversations, ...conversations },
+  })),
+  on(MilestoneActions.addNewConversation, (state, { conversation }) => ({
+    ...state,
+    conversations: {
+      ...state.conversations,
+      Items: [...state.conversations.Items, conversation],
+      Count: state.conversations.Items.length + 1,
+    },
+  })),
+  on(MilestoneActions.removeConversation, (state, { id }) => ({
+    ...state,
+    conversations: {
+      Items: state.conversations.Items.filter(item => {
+        let itemId = item.id.S;
+        return itemId !== id;
+      }),
+      Count: state.conversations.Items.length - 1,
+    },
+  })),
 );

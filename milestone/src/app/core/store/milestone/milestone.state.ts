@@ -1,3 +1,4 @@
+import { IConversations } from '../../models/conversations';
 import { IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
 import { IUser } from '../../models/user';
@@ -14,6 +15,7 @@ export interface IMilestoneState {
     currentTime: number;
     isRunning: boolean;
   };
+  conversations: IConversations;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -46,5 +48,9 @@ export const InitialMileStoneState: IMilestoneState = {
   peoplesUpdateTimer: {
     currentTime: 60,
     isRunning: false,
+  },
+  conversations: {
+    Count: 0,
+    Items: [],
   },
 };

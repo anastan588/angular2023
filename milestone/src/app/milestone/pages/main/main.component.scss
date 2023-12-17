@@ -32,7 +32,7 @@ mat-card-actions {
   display: flex;
   gap: 30px;
 }
-mat-card-content {
+.group_block {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -60,4 +60,23 @@ app-group-item {
   width: 100%;
 }
 
+.people_item {
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  cursor: pointer;
 
+}
+app-person-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+.people_block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+}

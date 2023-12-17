@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user';
 import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples, IPerson } from '../../models/peoples';
+import { IConversation, IConversations } from '../../models/conversations';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
 
@@ -44,7 +45,7 @@ export const updateGroupTimer = createAction(
 export const loadMilestoneUsers = createAction('[MILESTONE] Load Users');
 
 export const loadMilestoneUsersSuccess = createAction(
-  '[MILESTONE] Load Groups (Success)',
+  '[MILESTONE] Load Users (Success)',
   props<{ peoples: IPeoples }>()
 );
 
@@ -55,4 +56,22 @@ export const resetPeoplesTimer = createAction('[MILESTONE] Peoples Timer Reset')
 export const updatePeoplesTimer = createAction(
   '[MILESTONE] Peoples Timer Update',
   props<{ currenttime: number }>()
+);
+
+
+export const loadMilestoneConversations = createAction('[MILESTONE] Load Conversations');
+
+export const loadMilestoneConversationsSuccess = createAction(
+  '[MILESTONE] Load Conversations (Success)',
+  props<{ conversations: IConversations }>()
+);
+
+export const addNewConversation = createAction(
+  '[MILESTONE] Add new Conversation',
+  props<{ conversation: IConversation }>()
+);
+
+export const removeConversation = createAction(
+  '[MILESTONE] Remove user Conversation',
+  props<{ id: string }>(),
 );
