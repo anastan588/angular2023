@@ -94,10 +94,13 @@ export const MilestoneReducer = createReducer(
       currentTime: currenttime,
     },
   })),
-  on(MilestoneActions.loadMilestoneConversationsSuccess, (state, { conversations }) => ({
-    ...state,
-    conversations: { ...state.conversations, ...conversations },
-  })),
+  on(
+    MilestoneActions.loadMilestoneConversationsSuccess,
+    (state, { conversations }) => ({
+      ...state,
+      conversations: { ...state.conversations, ...conversations },
+    })
+  ),
   on(MilestoneActions.addNewConversation, (state, { conversation }) => ({
     ...state,
     conversations: {
@@ -114,6 +117,60 @@ export const MilestoneReducer = createReducer(
         return itemId !== id;
       }),
       Count: state.conversations.Items.length - 1,
+    },
+  })),
+  on(
+    MilestoneActions.loadMilestoneCurrentGroupForConversationSuccess,
+    (state, { currentGroup }) => ({
+      ...state,
+      currentGroup: { ...state.currentGroup, ...currentGroup },
+    })
+  ),
+
+  on(MilestoneActions.startCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      currentTime: 0,
+    },
+  })),
+  on(
+    MilestoneActions.updateCurrentGroupConversationTimer,
+    (state, { currenttime }) => ({
+      ...state,
+      groupUpdateMessagesTimer: {
+        ...state.groupUpdateMessagesTimer,
+        currentTime: currenttime,
+      },
+    })
+  ),
+  on(
+    MilestoneActions.loadMilestoneGroupMessagesSuccess,
+    (state, { groupMessages }) => ({
+      ...state,
+      groupMessages: { ...state.groupMessages, ...groupMessages },
+    })
+  ),
+  on(MilestoneActions.addNewGroupMessage, (state, { groupMessage }) => ({
+    ...state,
+    groupMessages: {
+      ...state.groupMessages,
+      Items: [...state.groupMessages.Items, groupMessage],
+      Count: state.groupMessages.Items.length + 1,
     },
   })),
 );

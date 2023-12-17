@@ -3,6 +3,7 @@ import { IUser } from '../../models/user';
 import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples, IPerson } from '../../models/peoples';
 import { IConversation, IConversations } from '../../models/conversations';
+import { IGroupMessage, IGroupMessages } from '../../models/groupMessages';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
 
@@ -74,4 +75,29 @@ export const addNewConversation = createAction(
 export const removeConversation = createAction(
   '[MILESTONE] Remove user Conversation',
   props<{ id: string }>(),
+);
+
+export const loadMilestoneCurrentGroupForConversationSuccess = createAction(
+  '[MILESTONE] Load Current Group (Success)',
+  props<{ currentGroup: IGroup }>()
+);
+
+export const startCurrentGroupConversationTimer = createAction('[MILESTONE] Current Group Conversation Timer Start');
+export const stopCurrentGroupConversationTimer = createAction('[MILESTONE] Current Group Conversation Timer Stop');
+export const resetCurrentGroupConversationTimer = createAction('[MILESTONE] Current Group Conversation Timer Reset');
+export const updateCurrentGroupConversationTimer = createAction(
+  '[MILESTONE] Current Group Conversation Timer Update',
+  props<{ currenttime: number }>()
+);
+
+export const loadMilestoneGroupMessages = createAction('[MILESTONE] Load Group Messages');
+
+export const loadMilestoneGroupMessagesSuccess = createAction(
+  '[MILESTONE] Load Group Messages (Success)',
+  props<{ groupMessages: IGroupMessages }>()
+);
+
+export const addNewGroupMessage = createAction(
+  '[MILESTONE] Add new Group Message',
+  props<{ groupMessage: IGroupMessage }>()
 );

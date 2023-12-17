@@ -38,3 +38,21 @@ export const selectPeoplesUpdateTime = createSelector(
 export const selectConversations = createSelector(MilestoneSelector, state => {
   return state.conversations.Items;
 });
+
+export const selectCurrentGroupForConversation = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.currentGroup;
+  }
+);
+
+export const selectGroupConversationMessagesUpdateTime = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.groupUpdateMessagesTimer.currentTime;
+  }
+);
+
+export const selectGroupMessages = createSelector(MilestoneSelector, state => {
+  return state.groupMessages.Items;
+});

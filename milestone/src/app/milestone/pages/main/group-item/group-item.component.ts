@@ -6,7 +6,8 @@ import { GroupsService } from 'src/app/core/services/groups/groups.service';
 import { DialogDeleteGroupComponent } from '../../../../shared/components/dialog-delete-group/dialog-delete-group.component';
 import { IGroupDeleteRequest } from 'src/app/core/models/groupsUpdate';
 import { Router } from '@angular/router';
-
+import { GroupDialogService } from 'src/app/core/services/group-dialog/group-dialog.service';
+import { loadMilestoneCurrentGroupForConversationSuccess } from 'src/app/core/store/milestone/milestone.actions';
 
 @Component({
   selector: 'app-group-item',
@@ -23,7 +24,7 @@ export class GroupItemComponent implements OnInit {
     private store: Store,
     public dialog: MatDialog,
     private router: Router,
-   
+    private groupDialogService: GroupDialogService
   ) {}
   ngOnInit(): void {
     const user = localStorage.getItem('user');
@@ -54,6 +55,12 @@ export class GroupItemComponent implements OnInit {
   navigateToGropConverstionPage(event: Event) {
     event.stopPropagation();
     console.log(this.currentGroup);
-    this.router.navigate(['group', this.currentGroup.id.S, ]);
-   }
+    this.groupDialogService.currentGroupObject$.next(this.currentGroup);
+    this.store.dispatch(
+      loadMilestoneCurrentGroupForConversationSuccess({
+        currentGroup: this.currentGroup,
+      })
+    );
+    this.router.navigate(['group', this.currentGroup.id.S]);
+  }
 }

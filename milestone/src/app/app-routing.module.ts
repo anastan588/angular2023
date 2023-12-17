@@ -15,11 +15,13 @@ const routes: Routes = [
 
   {
     path: 'group/:id',
+    canActivate: [mainGuard],
     loadChildren: () =>
       import('./milestone/pages/group/group.module').then(m => m.GroupModule),
   },
   {
     path: 'conversation/:id',
+    canActivate: [mainGuard],
     loadChildren: () =>
       import('./milestone/pages/personal/personal.module').then(m => m.PersonalModule),
   },

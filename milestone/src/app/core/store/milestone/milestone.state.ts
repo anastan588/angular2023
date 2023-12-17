@@ -1,5 +1,6 @@
 import { IConversations } from '../../models/conversations';
-import { IGroups } from '../../models/groups';
+import { IGroupMessages } from '../../models/groupMessages';
+import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
 import { IUser } from '../../models/user';
 
@@ -16,6 +17,12 @@ export interface IMilestoneState {
     isRunning: boolean;
   };
   conversations: IConversations;
+  currentGroup: IGroup;
+  groupUpdateMessagesTimer: {
+    currentTime: number;
+    isRunning: boolean;
+  };
+  groupMessages: IGroupMessages,
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -50,6 +57,28 @@ export const InitialMileStoneState: IMilestoneState = {
     isRunning: false,
   },
   conversations: {
+    Count: 0,
+    Items: [],
+  },
+  currentGroup: {
+    id: {
+      S: '',
+    },
+    name: {
+      S: '',
+    },
+    createdAt: {
+      S: '',
+    },
+    createdBy: {
+      S: ' ',
+    },
+  },
+  groupUpdateMessagesTimer: {
+    currentTime: 60,
+    isRunning: false,
+  },
+  groupMessages: {
     Count: 0,
     Items: [],
   },

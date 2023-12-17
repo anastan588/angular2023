@@ -1,1 +1,27 @@
-<p>group works!</p>
+<div class="group_container">
+  <div class="group_nav_block">
+    <a mat-flat-button (click)="redirectToMain()">Main page</a>
+    <button
+      *ngIf="isCurrentUserGroup === true"
+      mat-icon-button
+      color="warn"
+      aria-label="delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <mat-card class="group_content">
+    <mat-card-header
+      >Welcome to "{{ currentGroup.name.S }}" group
+      conversation</mat-card-header
+    >
+    <mat-card-actions></mat-card-actions>
+    <mat-card-content class="messages_block">
+      <div
+        class="message_item"
+        *ngFor="let message of sortedGroupMessages | async">
+        <app-group-message [message]="message" [userMessageName]="userMessageName" #groupMessage></app-group-message>
+      </div>
+    </mat-card-content>
+    <mat-card-content></mat-card-content>
+  </mat-card>
+</div>
