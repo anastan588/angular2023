@@ -41,7 +41,10 @@ mat-card-header {
   padding: 10px 10px 10px 30px;
   max-width: 50%;
 }
-
+.position {
+ align-self: flex-end;
+ min-width: 50%;
+}
 .message_date {
   margin-bottom: 0px;
 }
@@ -52,3 +55,18 @@ mat-card-header {
 .message_text {
   margin-bottom: 0px;
 }
+
+
+.message_input_block {
+  padding: 10px 10px 10px 100px;
+  display: flex;
+  gap: 30px;
+  width: 100%;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 70%;
+  height: 200px;
+}
+

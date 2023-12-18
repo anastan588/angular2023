@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { IGroupMessage } from 'src/app/core/models/groupMessages';
 import { IPerson } from 'src/app/core/models/peoples';
+import { GroupDialogService } from 'src/app/core/services/group-dialog/group-dialog.service';
+import { selectPeoples } from 'src/app/core/store/milestone/milestone.selectors';
 
 @Component({
   selector: 'app-group-message',
@@ -10,11 +13,22 @@ import { IPerson } from 'src/app/core/models/peoples';
 })
 export class GroupMessageComponent implements OnInit {
   @Input() message!: IGroupMessage;
-  @Input() userMessageName!: string;
-  
-  constructor(private store: Store) {}
-  ngOnInit(): void {
-    console.log(this.userMessageName);
+  userMessageName!: string;
+  listUsers!: IPerson[];
+  listUsersObservable!: Observable<IPerson[]>
+  constructor(
+    private store: Store,
+    private groupDialogService: GroupDialogService
+  ) {}
+  ngOnInit() {
+    this.store.select(selectPeoples).subscribe((items) => {
+      items.forEach((item) => {
+        if (item.uid.S === this.message.authorID.S) {
+          this.userMessageName = item.name.S;
+          console.log(this.userMessageName);
+        }
+      });
+    });
     
   }
 }

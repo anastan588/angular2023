@@ -13,6 +13,7 @@ import {
   loadMilestoneGroupMessagesSuccess,
   loadMilestoneGroups,
   loadMilestoneGroupsSuccess,
+  startCurrentGroupConversationTimer,
 } from './milestone.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IServerResponseSignUp } from '../../models/serverresponse';
@@ -20,6 +21,7 @@ import { of } from 'rxjs';
 import { ToastMessageService } from '../../services/toast-message.service';
 import { GroupsService } from '../../services/groups/groups.service';
 import { GroupDialogService } from '../../services/group-dialog/group-dialog.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class MileStoneGroupMessagesEffects {
@@ -44,10 +46,19 @@ export class MileStoneGroupMessagesEffects {
           }),
           catchError((error: HttpErrorResponse) => {
             const serverResponse: IServerResponseSignUp = error.error;
-            this.toastMessageService.showToastMessage(
+            if (serverResponse.type === 'InvalidIDException') {
+              this.toastMessageService.showToastMessage(
+                `Group with this id ${this.groupDialogService.currentGroup.id.S} does not exist or was removed before.` + serverResponse.message,
+                'close'
+              );
+              this.router.navigate(['/']);
+            } else {
+               this.toastMessageService.showToastMessage(
               'Loading group messages data failed: ' + serverResponse.message,
               'close'
             );
+            }
+           
             return of({
               type: serverResponse.type,
               message: serverResponse.message,
@@ -63,6 +74,7 @@ export class MileStoneGroupMessagesEffects {
     private actions$: Actions,
     private groupDialogService: GroupDialogService,
     private store: Store,
-    private toastMessageService: ToastMessageService
+    private toastMessageService: ToastMessageService,
+    private router: Router
   ) {}
 }

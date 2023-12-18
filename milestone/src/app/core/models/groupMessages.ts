@@ -18,5 +18,10 @@ export interface IGroupMessages {
 
   export interface IGroupMessagesRequest {
     groupID: string;
-    sinc?: number;
+    since?: number;
+  }
+
+  export interface IGroupNewMessagesRequest {
+    groupID: string;
+    message: string;
   }

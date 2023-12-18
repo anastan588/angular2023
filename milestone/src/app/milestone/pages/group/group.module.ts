@@ -4,6 +4,8 @@ import { GroupComponent } from './group.component';
 import { GroupRoutingModule } from './group-routing.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { GroupMessageComponent } from './group-message/group-message.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonComponent } from 'src/app/shared';
 
 
 
@@ -16,6 +18,8 @@ import { GroupMessageComponent } from './group-message/group-message.component';
     CommonModule,
     GroupRoutingModule,
     MaterialModule,
+    ReactiveFormsModule,
+    ButtonComponent
   ],
   exports:[GroupComponent],
 })

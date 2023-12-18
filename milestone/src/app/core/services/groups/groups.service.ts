@@ -23,6 +23,7 @@ import {
 } from '../../store/milestone/milestone.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { selectGroups } from '../../store/milestone/milestone.selectors';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +49,8 @@ export class GroupsService {
     public http: HttpClient,
     private store: Store,
     private toastmessageservice: ToastMessageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
     this.urlgroupsList = 'groups/list';
     this.urlgroupsCreate = 'groups/create';
@@ -160,6 +162,11 @@ export class GroupsService {
           this.store.dispatch(
             removeUserGroup({ id: this.requestDelete.groupID })
           );
+          const currenUrl = this.router.url;
+          if (currenUrl !=='/') {
+            this.router.navigate(['/']);
+          }
+          console.log(currenUrl);
           setTimeout(() => {
             this.dialog.closeAll();
           }, 1000);

@@ -2,23 +2,23 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
-import { IGroupMessage } from 'src/app/core/models/groupMessages';
+import { IGroupMessage, IGroupNewMessagesRequest } from 'src/app/core/models/groupMessages';
 import { IGroup } from 'src/app/core/models/groups';
-import { IPerson } from 'src/app/core/models/peoples';
 import { IServerResponseSignIn } from 'src/app/core/models/serverresponse';
-import { IUser } from 'src/app/core/models/user';
 import { GroupDialogService } from 'src/app/core/services/group-dialog/group-dialog.service';
 import {
-  loadMilestoneCurrentGroupForConversationSuccess,
-  loadMilestoneGroupMessages,
+  loadMilestoneConversations,
+  loadMilestoneGroupMessages, startCurrentGroupConversationTimer,
 } from 'src/app/core/store/milestone/milestone.actions';
 import {
   selectCurrentGroupForConversation,
+  selectGroupConversationMessagesUpdateTime,
   selectGroupMessages,
-  selectPeoples,
-  selectUser,
 } from 'src/app/core/store/milestone/milestone.selectors';
-import { GroupMessageComponent } from './group-message/group-message.component';
+import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { IGroupDeleteRequest } from 'src/app/core/models/groupsUpdate';
+import { DialogDeleteGroupComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-group',
@@ -26,20 +26,39 @@ import { GroupMessageComponent } from './group-message/group-message.component';
   styleUrls: ['./group.component.scss'],
 })
 export class GroupComponent implements OnInit {
-  @ViewChild('groupMessage', { static: false }) groupMessage!: GroupMessageComponent;
   messageItem!: IGroupMessage;
   currentGroup!: IGroup;
   currentUser!: IServerResponseSignIn;
-  listUsers!: IPerson[];
   userMessageName!: string;
   isCurrentUserGroup!: boolean;
   groupMessages$!: Observable<IGroupMessage[]>;
   sortedGroupMessages!: Observable<IGroupMessage[]>;
+  newMessageObject!: IGroupNewMessagesRequest;
+  timeUpdateGroupConversationTimer!: number;
+  clickOnUpdateButtonGroups!:boolean;
+  newMessageForm = this.fb.group({
+    message: [
+      '',
+      {
+        validators: [
+          Validators.required,
+         Validators.maxLength(250),
+        ],
+      },
+    ],
+  });
   constructor(
     private groupDialogService: GroupDialogService,
     private store: Store,
-    private router: Router
-  ) {this.listUsers=[]}
+    private router: Router,
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+  ) {
+    this.newMessageObject = {
+      groupID: '',
+      message: '',
+    }
+  }
 
   ngOnInit(): void {
     this.store.dispatch(loadMilestoneGroupMessages());
@@ -54,20 +73,8 @@ export class GroupComponent implements OnInit {
       this.isCurrentUserGroup = true;
       console.log(this.isCurrentUserGroup);
     }
-    this.store
-      .select(selectPeoples)
-      .subscribe(value => (this.listUsers = value));
-  
-      
-    this.messageItem = this.groupMessage.message;
-    console.log(this.messageItem);
     
-    for (let key of this.listUsers) {
-      console.log(this.messageItem.authorID.S);
-      if (key.uid.S === this.messageItem.authorID.S) {
-        this.userMessageName = key.name.S;
-      }
-    }
+  
     this.groupMessages$ = this.store.select(selectGroupMessages);
     this.sortedGroupMessages = this.groupMessages$.pipe(
       map(groupMessages =>
@@ -78,10 +85,56 @@ export class GroupComponent implements OnInit {
         })
       )
     );
-    console.log(this.sortedGroupMessages);
+
+    this.store
+      .select(selectGroupConversationMessagesUpdateTime)
+      .subscribe(value => (this.timeUpdateGroupConversationTimer = value));
   }
 
   redirectToMain() {
     this.router.navigate(['/']);
+  }
+
+  sentNewMessage() {
+  this.newMessageObject.groupID = this.currentGroup.id.S;
+  this.newMessageObject.message = this.newMessageForm.value.message ?? '';
+  this.groupDialogService.newMessageRequestObject$.next(this.newMessageObject);
+  this.groupDialogService.sendNewMessageToGroup();
+  }
+
+  openDeleteForm(event: Event) {
+    event.stopPropagation();
+    const button = event.currentTarget as HTMLButtonElement;
+    console.log(button);
+    button.blur();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.minWidth = '50vw';
+    const data: IGroupDeleteRequest = {
+      groupID: this.currentGroup.id.S,
+      since: Number(this.currentGroup.createdAt.S),
+    };
+    console.log(this.currentGroup.id.S);
+    const dialogRef = this.dialog.open(DialogDeleteGroupComponent, {
+      ...dialogConfig,
+      data: { groupID: data.groupID, since: data.since } as IGroupDeleteRequest,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog delete was closed');
+    });
+  }
+
+  startTimerAndUpdateGroupMessages() {
+    this.clickOnUpdateButtonGroups = true;
+    // this.timeUpdateGroupConversationTimer = 59;
+    this.store.dispatch(startCurrentGroupConversationTimer());
+    this.groupDialogService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonGroups
+    );
+    this.store.dispatch(loadMilestoneGroupMessages());
+    this.clickOnUpdateButtonGroups = false;
+    this.groupDialogService.clickOnUpdateButtonObject$.next(
+      this.clickOnUpdateButtonGroups
+    );
   }
 }
