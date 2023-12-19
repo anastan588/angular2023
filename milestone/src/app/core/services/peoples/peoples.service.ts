@@ -28,8 +28,13 @@ import {
   ICreatePersonalConversationResponse,
 } from '../../models/conversations';
 import { ToastMessageService } from '../toast-message.service';
-import { addNewConversation } from '../../store/milestone/milestone.actions';
+import {
+  addNewConversation,
+  loadMilestoneConversationsSuccess,
+  loadMilestoneCurrentPersonalConversationSuccess,
+} from '../../store/milestone/milestone.actions';
 import { Router } from '@angular/router';
+import { ICurrentPersonalConversation } from '../../models/visitedPersonalConversations';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +55,8 @@ export class PeoplesService {
   newCompanionConversation$!: Observable<ICompanion>;
   newCompanion!: ICompanion;
 
+  currentConversation!: ICurrentPersonalConversation;
+
   constructor(
     public http: HttpClient,
     private store: Store,
@@ -65,6 +72,10 @@ export class PeoplesService {
     this.newCompanionConversation$.subscribe(value => {
       this.newCompanion = value;
     });
+    this.currentConversation = {
+      conversationID: '',
+      companionID: '',
+    };
   }
 
   joinRequests(requests: Observable<any>[]): Observable<any[]> {
@@ -133,7 +144,19 @@ export class PeoplesService {
           this.store.dispatch(
             addNewConversation({ conversation: this.newConversationItem })
           );
+          this.currentConversation.companionID =
+            this.newConversationItem.companionID.S;
+          this.currentConversation.conversationID =
+            this.newConversationItem.id.S;
+          console.log(this.newConversationItem);
+          console.log(this.currentConversation);
+          this.store.dispatch(
+            loadMilestoneCurrentPersonalConversationSuccess({
+              currentPersonalConversation: this.currentConversation,
+            })
+          );
           this.router.navigate(['conversation', response.conversationID]);
+
           return response;
         }),
         catchError((error: HttpErrorResponse) => {

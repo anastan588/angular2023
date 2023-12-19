@@ -179,7 +179,7 @@ export class GroupsService {
           console.log(serverResponse.message);
           console.log(serverResponse.type);
           this.toastmessageservice.showToastMessage(
-            'Updating user name failed: ' + serverResponse.message,
+            'Deleting group failed: ' + serverResponse.message,
             'close'
           );
           return of({

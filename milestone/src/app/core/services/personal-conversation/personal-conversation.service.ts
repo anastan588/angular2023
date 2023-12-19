@@ -13,7 +13,14 @@ import {
   IServerResponseSignUp,
 } from '../../models/serverresponse';
 import { selectPersonalConversationsMessages } from '../../store/milestone/milestone.selectors';
-import { loadMilestonePersonalConversationMessages } from '../../store/milestone/milestone.actions';
+import { loadMilestonePersonalConversationMessages, removeConversation } from '../../store/milestone/milestone.actions';
+import {
+  ICurrentPersonalConversation,
+  IPersonalCoversationNewMessagesRequest,
+} from '../../models/visitedPersonalConversations';
+import { ICreatePersonalConversationResponse } from '../../models/conversations';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -21,28 +28,33 @@ import { loadMilestonePersonalConversationMessages } from '../../store/milestone
 export class PersonalConversationService {
   urlReceiveMessagesConversation: string;
   urlSendNewMessageConversation: string;
-  currentPersonalConversationObject$ = new Subject<IGroup>();
-  currentPersonalConversation$: Observable<IGroup>;
-  currentPersonalConversation!: IGroup;
+  urlDeletePersonalConversation!: string;
+  currentPersonalConversationObject$ =
+    new Subject<ICurrentPersonalConversation>();
+  currentPersonalConversation$: Observable<ICurrentPersonalConversation>;
+  currentPersonalConversation!: ICurrentPersonalConversation;
   httpHeaders!: HttpHeaders;
   catchedPersonalMessagesMessages!: Observable<IPersonMessage[]>;
   clickOnUpdateButtonObject$ = new Subject<boolean>();
   clickOnUpdateButton$!: Observable<boolean>;
-  personalCOnversationMessagesRequest!: IGroupMessagesRequest;
+  personalConversationMessagesRequest!: ICreatePersonalConversationResponse;
   since!: number | undefined;
-  newMessageRequestObject$ = new Subject<IGroupNewMessagesRequest>();
-  newMessageRequest$!: Observable<IGroupNewMessagesRequest>;
-  requestBodyNewMessage!: IGroupNewMessagesRequest;
+  newMessageRequestObject$ =
+    new Subject<IPersonalCoversationNewMessagesRequest>();
+  newMessageRequest$!: Observable<IPersonalCoversationNewMessagesRequest>;
+  requestBodyNewMessage!: IPersonalCoversationNewMessagesRequest;
   newMessageObject!: IPersonMessage;
 
   constructor(
     private store: Store,
     public http: HttpClient,
-    private toastmessagesService: ToastMessageService
+    private toastmessagesService: ToastMessageService,
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.urlReceiveMessagesConversation =
-      'conversations/read?groupID={:conversationID}&since={:since}';
-    this.urlSendNewMessageGroup = 'groups/append';
+      'conversations/read?conversationID={:conversationID}&since={:since}';
+    this.urlSendNewMessageConversation = 'conversations/append';
     this.currentPersonalConversation$ =
       this.currentPersonalConversationObject$.asObservable();
     this.currentPersonalConversation$.subscribe(value => {
@@ -50,7 +62,7 @@ export class PersonalConversationService {
       console.log(this.currentPersonalConversation);
     });
     this.clickOnUpdateButton$ = this.clickOnUpdateButtonObject$.asObservable();
-    this.personalCOnversationMessagesRequest = {
+    this.personalConversationMessagesRequest = {
       conversationID: '',
     };
     this.newMessageRequest$ = this.newMessageRequestObject$.asObservable();
@@ -81,26 +93,27 @@ export class PersonalConversationService {
       const currentPersonalConversation = localStorage.getItem(
         'currentPersonalConversation'
       );
-      const currentPersonalConversationRequestBody: IGroup =
+      const currentPersonalConversationRequestBody: ICurrentPersonalConversation =
         currentPersonalConversation
           ? JSON.parse(currentPersonalConversation)
           : null;
-      this.personalCOnversationMessagesRequest.groupID =
-        currentGruopRequestBody.id.S;
+      this.personalConversationMessagesRequest.conversationID =
+        currentPersonalConversationRequestBody.conversationID;
       if (this.since === undefined) {
-        this.urlReceiveMessagesConversation = `groups/read?groupID=${currentGruopRequestBody.id.S}`;
+        this.urlReceiveMessagesConversation = `conversations/read?conversationID=${currentPersonalConversationRequestBody.conversationID}`;
       } else {
-        this.urlReceiveMessagesConversation = `groups/read?groupID=${currentGruopRequestBody.id.S}&since=${this.since}`;
+        this.urlReceiveMessagesConversation = `conversations/read?conversationID=${currentPersonalConversationRequestBody.conversationID}&since=${this.since}`;
       }
     } else {
-      this.groupMessagesRequest.groupID = this.currentGroup.id.S;
+      this.personalConversationMessagesRequest.conversationID =
+        this.currentPersonalConversation.conversationID;
       if (this.since === undefined) {
-        this.urlReceiveMessagesConversation = `groups/read?groupID=${this.currentGroup.id.S}`;
+        this.urlReceiveMessagesConversation = `conversations/read?conversationID=${this.currentPersonalConversation.conversationID}`;
       } else {
-        this.urlReceiveMessagesConversation = `groups/read?groupID=${this.currentGroup.id.S}&since=${this.since}`;
+        this.urlReceiveMessagesConversation = `conversations/read?conversationID=${this.currentPersonalConversation.conversationID}&since=${this.since}`;
       }
     }
-    console.log(this.groupMessagesRequest);
+    console.log(this.personalConversationMessagesRequest);
     console.log(this.currentPersonalConversation);
     return this.http.get<IPersonMessages>(this.urlReceiveMessagesConversation, {
       headers: this.httpHeaders,
@@ -155,6 +168,51 @@ export class PersonalConversationService {
           console.log(serverResponse.type);
           this.toastmessagesService.showToastMessage(
             'Creating new personal message failed: ' + serverResponse.message,
+            'close'
+          );
+          return of({
+            type: serverResponse.type,
+            message: serverResponse.message,
+          });
+        })
+      )
+      .subscribe(value => {
+        return value;
+      });
+  }
+
+  sentDeletePersonalCoversationData() {
+    this.urlDeletePersonalConversation = `conversations/delete?conversationID=${this.currentPersonalConversation.conversationID}`;
+    return this.http
+      .delete(this.urlDeletePersonalConversation, {
+        headers: this.httpHeaders,
+      })
+      .pipe(
+        map(response => {
+          this.toastmessagesService.showToastMessage(
+            'Deletion of personal conversatioon succeed',
+            'close'
+          );
+
+          this.store.dispatch(
+            removeConversation({ id: this.currentPersonalConversation.conversationID })
+          );
+          const currenUrl = this.router.url;
+          if (currenUrl !== '/') {
+            this.router.navigate(['/']);
+          }
+          console.log(currenUrl);
+          setTimeout(() => {
+            this.dialog.closeAll();
+          }, 1000);
+          return response;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          const serverResponse: IServerResponseSignUp = error.error;
+          console.log(serverResponse.message);
+          console.log(serverResponse.type);
+          this.toastmessagesService.showToastMessage(
+            'Deleting personal conversation failed: ' + serverResponse.message,
             'close'
           );
           return of({

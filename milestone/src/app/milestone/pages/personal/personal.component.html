@@ -2,7 +2,6 @@
     <div class="personal_nav_block">
       <a mat-flat-button (click)="redirectToMain()">Main page</a>
       <button
-        *ngIf="isCurrentUserGroup === true"
         mat-icon-button
         color="warn"
         aria-label="delete"
@@ -12,32 +11,32 @@
     </div>
     <mat-card class="personal_content">
       <mat-card-header
-        >Welcome to "{{ currentGroup.name.S }}" group
-        conversation</mat-card-header
+        >Welcome to personal conversation with "{{currentConversaionCompanion}}"
+       </mat-card-header
       >
       <mat-card-actions
         ><app-button
-          *ngIf="timeUpdateGroupConversationTimer! === 60"
-          (click)="startTimerAndUpdateGroupMessages()"
+          *ngIf="timeUpdatePersonalConversationTimer! === 60"
+          (click)="startTimerAndUpdatePersonalMessages()"
           >Update conversation</app-button
         >
         <app-button
           *ngIf="
-            timeUpdateGroupConversationTimer! < 60 &&
-            timeUpdateGroupConversationTimer! > 9
+            timeUpdatePersonalConversationTimer! < 60 &&
+            timeUpdatePersonalConversationTimer! > 9
           "
-          (click)="startTimerAndUpdateGroupMessages()"
-          [disabled]="timeUpdateGroupConversationTimer! !== 60"
+          (click)="startTimerAndUpdatePersonalMessages()"
+          [disabled]="timeUpdatePersonalConversationTimer! !== 60"
           >Time to next update: 00:{{
-            timeUpdateGroupConversationTimer!
+            timeUpdatePersonalConversationTimer!
           }}</app-button
         >
         <app-button
-          *ngIf="timeUpdateGroupConversationTimer! <= 9"
-          (click)="startTimerAndUpdateGroupMessages()"
-          [disabled]="timeUpdateGroupConversationTimer! !== 60"
+          *ngIf="timeUpdatePersonalConversationTimer! <= 9"
+          (click)="startTimerAndUpdatePersonalMessages()"
+          [disabled]="timeUpdatePersonalConversationTimer! !== 60"
           >Time to next update: 00:0{{
-            timeUpdateGroupConversationTimer!
+           timeUpdatePersonalConversationTimer!
           }}</app-button
         ></mat-card-actions
       >

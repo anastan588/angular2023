@@ -4,7 +4,7 @@ import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
 import { IPersonMessages } from '../../models/personMessages';
 import { IUser } from '../../models/user';
-import { IVisitedPesrsonalConversations } from '../../models/visitedPersonalConversations';
+import { ICurrentPersonalConversation, IVisitedPesrsonalConversations } from '../../models/visitedPersonalConversations';
 import { IVisitedGroups } from '../../models/visitedgroups';
 
 export interface IMilestoneState {
@@ -29,7 +29,7 @@ export interface IMilestoneState {
   groupMessages: IGroupMessages;
   visitedGroupMessagesArchive: IVisitedGroups;
 
-  currentPersonalConversation: ICreatePersonalConversationResponse;
+  currentPersonalConversation: ICurrentPersonalConversation;
   personalConversationUpdateMessagesTimer: {
     currentTime: number;
     isRunning: boolean;
@@ -101,6 +101,7 @@ export const InitialMileStoneState: IMilestoneState = {
 
   currentPersonalConversation: {
     conversationID:  '',
+    companionID: ''
   },
 
   personalConversationUpdateMessagesTimer: {

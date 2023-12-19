@@ -1,8 +1,8 @@
-import { IGroupMessage } from "./groupMessages";
-import { IPersonMessage } from "./personMessages";
+import { IGroupMessage } from './groupMessages';
+import { IPersonMessage } from './personMessages';
 
 export interface IVisitedPesrsonalConversations {
-    visitedPersonalConversations: ArchivedPersonalConversation[];
+  visitedPersonalConversations: ArchivedPersonalConversation[];
 }
 
 export interface ArchivedPersonalConversation {
@@ -13,4 +13,9 @@ export interface ArchivedPersonalConversation {
 export interface IPersonalCoversationNewMessagesRequest {
   conversationID: string;
   message: string;
+}
+
+export interface ICurrentPersonalConversation {
+  conversationID: string;
+  companionID: string;
 }

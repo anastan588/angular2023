@@ -197,6 +197,8 @@ export const MilestoneReducer = createReducer(
       visitedGroupMessagesArchive: {
         visitedGroups: state.visitedGroupMessagesArchive.visitedGroups.map(
           group => {
+            console.log(group.groupID);
+            console.log(visitedGroup.groupID);
             if (group.groupID === visitedGroup.groupID) {
               return visitedGroup;
             }

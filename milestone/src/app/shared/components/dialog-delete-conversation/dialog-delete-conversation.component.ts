@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ICreatePersonalConversationResponse } from 'src/app/core/models/conversations';
 import { PersonalConversationService } from 'src/app/core/services/personal-conversation/personal-conversation.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { PersonalConversationService } from 'src/app/core/services/personal-conv
 export class DialogDeleteConversationComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogDeleteConversationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: IGroupDeleteRequest,
+    @Inject(MAT_DIALOG_DATA) public data: ICreatePersonalConversationResponse,
     private personalService: PersonalConversationService
   ) {}
   onCancel() {
@@ -19,7 +20,6 @@ export class DialogDeleteConversationComponent {
 
   deleteCurrentCoversation() {
     console.log(this.data);
-    this.groupService.requestBodyForServiceDelete$.next(this.data);
-    this.groupService.sentDeleteGroupData();
+    this.personalService.sentDeletePersonalCoversationData();
   }
 }

@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 import { PersonalConversationService } from '../../services/personal-conversation/personal-conversation.service';
 
 @Injectable()
-export class MileStoneGroupMessagesEffects {
+export class MileStonePersonalMessagesEffects {
   loadPersonalMessages$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMilestonePersonalConversationMessages),
@@ -63,7 +63,7 @@ export class MileStoneGroupMessagesEffects {
             if (serverResponse !== undefined) {
               if (serverResponse.type === 'InvalidIDException') {
                 this.toastMessageService.showToastMessage(
-                  `Personal conversation with this id ${this.personalService.currentGroup.id.S} does not exist or was removed before.` +
+                  `Personal conversation with this id ${this.personalService.currentPersonalConversation.conversationID} does not exist or was removed before.` +
                     serverResponse.message,
                   'close'
                 );

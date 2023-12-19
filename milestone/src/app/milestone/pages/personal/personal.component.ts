@@ -13,10 +13,33 @@ import {
   IPersonMessages,
 } from 'src/app/core/models/personMessages';
 import { IServerResponseSignIn } from 'src/app/core/models/serverresponse';
-import { ArchivedPersonalConversation, IPersonalCoversationNewMessagesRequest } from 'src/app/core/models/visitedPersonalConversations';
+import {
+  ArchivedPersonalConversation,
+  ICurrentPersonalConversation,
+  IPersonalCoversationNewMessagesRequest,
+} from 'src/app/core/models/visitedPersonalConversations';
 import { PersonalConversationService } from 'src/app/core/services/personal-conversation/personal-conversation.service';
-import { addVisitedPersonalConversationToArchive, changeMessagesInArchivesPersonalConversation, loadMilestoneCurrentPersonalConversationSuccess, loadMilestonePersonalConversationMessages, loadMilestonePersonalConversationMessagesSuccess, loadMilestoneUsers, resetPersonalConversationMessages, startCurrentGroupConversationTimer, stopCurrentGroupConversationTimerImmediately, stopCurrentPersonalConversationTimer, stopCurrentPersonalConversationTimerImmediately, updateCurrentPersonalConversationTimer } from 'src/app/core/store/milestone/milestone.actions';
-import { selectArchiveDPersonalConversationMessages, selectCurrentPersonalConversationForConversation, selectPersonalConversationMessagesUpdateTime, selectPersonalConversationsMessages } from 'src/app/core/store/milestone/milestone.selectors';
+import {
+  addVisitedPersonalConversationToArchive,
+  changeMessagesInArchivesPersonalConversation,
+  loadMilestonePersonalConversationMessages,
+  loadMilestonePersonalConversationMessagesSuccess,
+  loadMilestoneUsers,
+  resetPersonalConversationMessages,
+  startCurrentGroupConversationTimer,
+  startCurrentPersonalConversationTimer,
+  stopCurrentPersonalConversationTimer,
+  stopCurrentPersonalConversationTimerImmediately,
+  updateCurrentPersonalConversationTimer,
+} from 'src/app/core/store/milestone/milestone.actions';
+import {
+  selectArchiveDPersonalConversationMessages,
+  selectCurrentPersonalConversationForConversation,
+  selectPeoples,
+  selectPersonalConversationMessagesUpdateTime,
+  selectPersonalConversationsMessages,
+} from 'src/app/core/store/milestone/milestone.selectors';
+import { DialogDeleteConversationComponent } from 'src/app/shared/components/dialog-delete-conversation/dialog-delete-conversation.component';
 
 @Component({
   selector: 'app-personal',
@@ -25,9 +48,10 @@ import { selectArchiveDPersonalConversationMessages, selectCurrentPersonalConver
 })
 export class PersonalComponent implements OnInit {
   messageItem!: IPersonMessage;
-  currentPersonalConversation!: ICreatePersonalConversationResponse;
+  currentPersonalConversation!: ICurrentPersonalConversation;
   currentUser!: IServerResponseSignIn;
   userMessageName!: string;
+  currentConversaionCompanion!: string;
   isCurrentPersonalCoversationGroup!: boolean;
   personalMessages$!: Observable<IPersonMessage[]>;
   sortedPersonalMessages!: Observable<IPersonMessage[]>;
@@ -83,17 +107,22 @@ export class PersonalComponent implements OnInit {
         messages: value,
       };
     });
-    this.store.select(selectArchiveDPersonalConversationMessages).subscribe(value => {
-      console.log(value);
-      value.forEach(item => {
-        console.log(item.conversationID);
-        if (item.conversationID=== this.currentPersonalConversation.conversationID) {
-          this.isInArchiveToDownLoad = true;
-        } else {
-          this.isInArchiveToDownLoad = false;
-        }
+    this.store
+      .select(selectArchiveDPersonalConversationMessages)
+      .subscribe(value => {
+        console.log(value);
+        value.forEach(item => {
+          console.log(item.conversationID);
+          if (
+            item.conversationID ===
+            this.currentPersonalConversation.conversationID
+          ) {
+            this.isInArchiveToDownLoad = true;
+          } else {
+            this.isInArchiveToDownLoad = false;
+          }
+        });
       });
-    });
 
     if (this._Subscription) {
       this._Subscription.unsubscribe();
@@ -101,11 +130,15 @@ export class PersonalComponent implements OnInit {
     console.log(this.isInArchiveToDownLoad);
     if (this.isInArchiveToDownLoad === false) {
       this.store.dispatch(
-        addVisitedPersonalConversationToArchive({ visitedPersonalConversation: this.visitedPersonalConversation })
+        addVisitedPersonalConversationToArchive({
+          visitedPersonalConversation: this.visitedPersonalConversation,
+        })
       );
     } else {
       this.store.dispatch(
-        changeMessagesInArchivesPersonalConversation({ visitedPerSonConversation: this.visitedPersonalConversation})
+        changeMessagesInArchivesPersonalConversation({
+          visitedPerSonConversation: this.visitedPersonalConversation,
+        })
       );
     }
     this.store.dispatch(
@@ -126,8 +159,19 @@ export class PersonalComponent implements OnInit {
     console.log(this.currentPersonalConversation);
 
     // this.store.dispatch(loadMilestoneGroupMessages());
-    this.store.select(selectCurrentPersonalConversationForConversation).subscribe(value => {
-      this.currentPersonalConversation = value;
+    this.store
+      .select(selectCurrentPersonalConversationForConversation)
+      .subscribe(value => {
+        this.currentPersonalConversation = value;
+      });
+    // this.currentConversaionCompanion =
+    //   this.currentPersonalConversation.companionID;
+    this.store.select(selectPeoples).subscribe(items => {
+      items.forEach(item => {
+        if (item.uid.S === this.currentPersonalConversation.companionID) {
+          this.currentConversaionCompanion = item.name.S;
+        }
+      });
     });
     this._Subscription = this.store
       .select(selectArchiveDPersonalConversationMessages)
@@ -136,7 +180,10 @@ export class PersonalComponent implements OnInit {
 
         value.forEach(item => {
           console.log(item);
-          if (item.conversationID === this.currentPersonalConversation.conversationID) {
+          if (
+            item.conversationID ===
+            this.currentPersonalConversation.conversationID
+          ) {
             this.isInArchiveToExtract = true;
             this.messageFromArchive.Items = item.messages;
             this.messageFromArchive.Count = item.messages.length;
@@ -173,12 +220,16 @@ export class PersonalComponent implements OnInit {
     this.currentUser = user ? JSON.parse(user) : null;
     console.log(this.currentUser);
     console.log(this.currentPersonalConversation.conversationID);
-    if (this.currentPersonalConversation.conversationID === this.currentUser.uid) {
+    if (
+      this.currentPersonalConversation.conversationID === this.currentUser.uid
+    ) {
       this.isCurrentPersonalCoversationGroup = true;
       console.log(this.isCurrentPersonalCoversationGroup);
     }
 
-    this.personalMessages$ = this.store.select(selectPersonalConversationsMessages);
+    this.personalMessages$ = this.store.select(
+      selectPersonalConversationsMessages
+    );
     this.sortedPersonalMessages = this.personalMessages$.pipe(
       map(personalMessages =>
         personalMessages.slice().sort((a, b) => {
@@ -194,14 +245,20 @@ export class PersonalComponent implements OnInit {
       .subscribe(value => (this.timeUpdatePersonalConversationTimer = value));
     if (this.currentPersonalConversation.conversationID !== '') {
       console.log(this.currentPersonalConversation.conversationID);
-      localStorage.setItem('currentPersonalConversation', JSON.stringify(this.currentPersonalConversation));
+      localStorage.setItem(
+        'currentPersonalConversation',
+        JSON.stringify(this.currentPersonalConversation)
+      );
     }
     console.log(this.currentPersonalConversation.conversationID);
     if (this.currentPersonalConversation.conversationID === '') {
-      const currentPersonalCoversation = localStorage.getItem('currentGroup');
-      const currentCoversationBody: ICreatePersonalConversationResponse = currentPersonalCoversation
-        ? JSON.parse(currentPersonalCoversation)
-        : null;
+      const currentPersonalCoversation = localStorage.getItem(
+        'currentPersonalConversation'
+      );
+      const currentCoversationBody: ICurrentPersonalConversation =
+        currentPersonalCoversation
+          ? JSON.parse(currentPersonalCoversation)
+          : null;
       this.currentPersonalConversation = currentCoversationBody;
       this.store.dispatch(loadMilestoneUsers());
     }
@@ -212,7 +269,8 @@ export class PersonalComponent implements OnInit {
   }
 
   sentNewMessage() {
-    this.newMessageObject.conversationID = this.currentPersonalConversation.conversationID;
+    this.newMessageObject.conversationID =
+      this.currentPersonalConversation.conversationID;
     this.newMessageObject.message = this.newMessageForm.value.message ?? '';
     this.personalCoversationService.newMessageRequestObject$.next(
       this.newMessageObject
@@ -228,14 +286,15 @@ export class PersonalComponent implements OnInit {
     button.blur();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.minWidth = '50vw';
-    const data: IGroupDeleteRequest = {
-      groupID: this.currentGroup.id.S,
-      since: Number(this.currentGroup.createdAt.S),
+    const data: ICreatePersonalConversationResponse = {
+      conversationID: this.currentPersonalConversation.conversationID,
     };
-    console.log(this.currentGroup.id.S);
-    const dialogRef = this.dialog.open(DialogDeleteGroupComponent, {
+    console.log(this.currentPersonalConversation.conversationID);
+    const dialogRef = this.dialog.open(DialogDeleteConversationComponent, {
       ...dialogConfig,
-      data: { groupID: data.groupID, since: data.since } as IGroupDeleteRequest,
+      data: {
+        conversationID: data.conversationID,
+      } as ICreatePersonalConversationResponse,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -243,10 +302,10 @@ export class PersonalComponent implements OnInit {
     });
   }
 
-  startTimerAndUpdateGroupMessages() {
+  startTimerAndUpdatePersonalMessages() {
     this.clickOnUpdateButtonGroups = true;
     this.timeUpdatePersonalConversationTimer = 59;
-    this.store.dispatch(startCurrentGroupConversationTimer());
+    this.store.dispatch(startCurrentPersonalConversationTimer());
     this.personalCoversationService.clickOnUpdateButtonObject$.next(
       this.clickOnUpdateButtonGroups
     );
