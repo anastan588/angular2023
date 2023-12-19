@@ -2,9 +2,11 @@ import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user';
 import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples, IPerson } from '../../models/peoples';
-import { IConversation, IConversations } from '../../models/conversations';
+import { IConversation, IConversations, ICreatePersonalConversationResponse } from '../../models/conversations';
 import { IGroupMessage, IGroupMessages } from '../../models/groupMessages';
 import { ArchivedGroup, IVisitedGroups } from '../../models/visitedgroups';
+import { IPersonMessages } from '../../models/personMessages';
+import { ArchivedPersonalConversation } from '../../models/visitedPersonalConversations';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
 
@@ -115,6 +117,48 @@ export const addVisitedGroupToArchive = createAction(
 
 export const changeMessagesInArchivesGroup = createAction(
   '[MILESTONE] Change Messages In Archived Group',
+  props<{ visitedGroup: ArchivedGroup }>()
+);
+
+
+
+export const loadMilestoneCurrentPersonalConversationSuccess = createAction(
+  '[MILESTONE] Load Current Personal Conversation (Success)',
+  props<{ currentPersonalConversation: ICreatePersonalConversationResponse }>()
+);
+
+export const startCurrentPersonalConversationTimer = createAction('[MILESTONE] Current Personal Conversation Timer Start');
+export const stopCurrentPersonalConversationTimer = createAction('[MILESTONE] Current Personal Conversation Timer Stop');
+export const resetCurrentPersonalConversationTimer = createAction('[MILESTONE] Current Personal  Conversation Timer Reset');
+export const updateCurrentPersonalConversationTimer = createAction(
+  '[MILESTONE] Current Personal  Conversation Timer Update',
+  props<{ currenttime: number }>()
+);
+export const stopCurrentPersonalConversationTimerImmediately = createAction('[Timer] Stop Personal  Conversation  Timer Immediately');
+
+export const loadMilestonePersonalConversationMessages = createAction('[MILESTONE] Load Personal  Conversation Messages');
+
+export const loadMilestonePersonalConversationMessagesSuccess = createAction(
+  '[MILESTONE] Load Personal  Conversation Messages (Success)',
+  props<{ personalMessages: IPersonMessages }>()
+);
+
+export const addNewPersonalConversationMessage = createAction(
+  '[MILESTONE] Add new Personal Conversation Message',
+  props<{ groupMessage: IGroupMessage[] }>()
+);
+
+export const resetPersonalConversationMessages = createAction(
+  '[MILESTONE] reset  Personal Conversation Messages Store',
+);
+
+export const addVisitedPersonalConversationToArchive = createAction(
+  '[MILESTONE] Add Personal Conversation Messages to  Archive',
+  props<{ visitedPersonalConversation: ArchivedPersonalConversation }>()
+);
+
+export const changeMessagesInArchivesPersonalConversation = createAction(
+  '[MILESTONE] Change Messages In Archived Personal Conversation',
   props<{ visitedGroup: ArchivedGroup }>()
 );
 
