@@ -110,9 +110,7 @@ export class PersonalComponent implements OnInit {
     this.store
       .select(selectArchiveDPersonalConversationMessages)
       .subscribe(value => {
-        console.log(value);
         value.forEach(item => {
-          console.log(item.conversationID);
           if (
             item.conversationID ===
             this.currentPersonalConversation.conversationID
@@ -157,13 +155,14 @@ export class PersonalComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.currentPersonalConversation);
-
+    
     // this.store.dispatch(loadMilestoneGroupMessages());
     this.store
       .select(selectCurrentPersonalConversationForConversation)
       .subscribe(value => {
         this.currentPersonalConversation = value;
       });
+      this.personalCoversationService.currentPersonalConversationObject$.next( this.currentPersonalConversation);
     // this.currentConversaionCompanion =
     //   this.currentPersonalConversation.companionID;
     this.store.select(selectPeoples).subscribe(items => {
@@ -244,13 +243,11 @@ export class PersonalComponent implements OnInit {
       .select(selectPersonalConversationMessagesUpdateTime)
       .subscribe(value => (this.timeUpdatePersonalConversationTimer = value));
     if (this.currentPersonalConversation.conversationID !== '') {
-      console.log(this.currentPersonalConversation.conversationID);
       localStorage.setItem(
         'currentPersonalConversation',
         JSON.stringify(this.currentPersonalConversation)
       );
     }
-    console.log(this.currentPersonalConversation.conversationID);
     if (this.currentPersonalConversation.conversationID === '') {
       const currentPersonalCoversation = localStorage.getItem(
         'currentPersonalConversation'
@@ -282,7 +279,6 @@ export class PersonalComponent implements OnInit {
   openDeleteForm(event: Event) {
     event.stopPropagation();
     const button = event.currentTarget as HTMLButtonElement;
-    console.log(button);
     button.blur();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.minWidth = '50vw';

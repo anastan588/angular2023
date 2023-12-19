@@ -114,7 +114,7 @@ export class GroupsService {
               S: JSON.parse(JSON.stringify(this.httpHeaders.get('rs-uid'))),
             },
           };
-          console.log(this.newGroupItem);
+
           
           this.store.dispatch(addNewGroup({ IGroupItem: this.newGroupItem }));
           setTimeout(() => {
@@ -124,8 +124,6 @@ export class GroupsService {
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
           this.toastmessageservice.showToastMessage(
             'Creating new group failed: ' + serverResponse.message,
             'close'
@@ -143,12 +141,10 @@ export class GroupsService {
 
   getGroupsFromStore() {
     this.catchedGroups = this.store.select(selectGroups);
-    console.log(this.catchedGroups);
     return this.catchedGroups;
   }
 
   sentDeleteGroupData() {
-    console.log(this.requestDelete);
     this.urlgroupsDelete = `groups/delete?groupID=${this.requestDelete.groupID}`;
     return this.http
       .delete(this.urlgroupsDelete, {
@@ -176,8 +172,6 @@ export class GroupsService {
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
           this.toastmessageservice.showToastMessage(
             'Deleting group failed: ' + serverResponse.message,
             'close'

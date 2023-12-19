@@ -88,7 +88,6 @@ export class PersonalConversationService {
   getGroupMessagesData() {
     this.setHttpHeaders();
     console.log(this.currentPersonalConversation);
-    console.log(this.since);
     if (this.currentPersonalConversation === undefined) {
       const currentPersonalConversation = localStorage.getItem(
         'currentPersonalConversation'
@@ -113,7 +112,6 @@ export class PersonalConversationService {
         this.urlReceiveMessagesConversation = `conversations/read?conversationID=${this.currentPersonalConversation.conversationID}&since=${this.since}`;
       }
     }
-    console.log(this.personalConversationMessagesRequest);
     console.log(this.currentPersonalConversation);
     return this.http.get<IPersonMessages>(this.urlReceiveMessagesConversation, {
       headers: this.httpHeaders,
@@ -124,12 +122,10 @@ export class PersonalConversationService {
     this.catchedPersonalMessagesMessages = this.store.select(
       selectPersonalConversationsMessages
     );
-    console.log(this.catchedPersonalMessagesMessages);
     return this.catchedPersonalMessagesMessages;
   }
 
   sendNewMessageToGroup() {
-    console.log(this.requestBodyNewMessage);
     this.setHttpHeaders();
     const createdAt = new Date();
     return this.http
@@ -164,8 +160,6 @@ export class PersonalConversationService {
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
           this.toastmessagesService.showToastMessage(
             'Creating new personal message failed: ' + serverResponse.message,
             'close'
@@ -182,6 +176,7 @@ export class PersonalConversationService {
   }
 
   sentDeletePersonalCoversationData() {
+    console.log(this.currentPersonalConversation);
     this.urlDeletePersonalConversation = `conversations/delete?conversationID=${this.currentPersonalConversation.conversationID}`;
     return this.http
       .delete(this.urlDeletePersonalConversation, {
@@ -209,8 +204,6 @@ export class PersonalConversationService {
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
           this.toastmessagesService.showToastMessage(
             'Deleting personal conversation failed: ' + serverResponse.message,
             'close'
