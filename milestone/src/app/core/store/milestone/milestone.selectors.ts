@@ -56,3 +56,7 @@ export const selectGroupConversationMessagesUpdateTime = createSelector(
 export const selectGroupMessages = createSelector(MilestoneSelector, state => {
   return state.groupMessages.Items;
 });
+
+export const selectArchiveMessages = createSelector(MilestoneSelector, state => {
+  return state.visitedGroupMessagesArchive.visitedGroups;
+});

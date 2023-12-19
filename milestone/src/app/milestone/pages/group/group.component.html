@@ -57,7 +57,7 @@
           placeholder="Please enter a message"
           formControlName="message"
           maxlength="250"
-          required />
+          required [(ngModel)]="myInputValue"/>
         <mat-error *ngIf="newMessageForm.get('message')!.hasError('required')">
           Please enter a message
         </mat-error>

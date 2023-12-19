@@ -1,16 +1,26 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
-import { IGroupMessage, IGroupNewMessagesRequest } from 'src/app/core/models/groupMessages';
+import { Observable, Subscription, count, map } from 'rxjs';
+import {
+  IGroupMessage,
+  IGroupMessages,
+  IGroupNewMessagesRequest,
+} from 'src/app/core/models/groupMessages';
 import { IGroup } from 'src/app/core/models/groups';
 import { IServerResponseSignIn } from 'src/app/core/models/serverresponse';
 import { GroupDialogService } from 'src/app/core/services/group-dialog/group-dialog.service';
 import {
-  loadMilestoneConversations,
-  loadMilestoneGroupMessages, startCurrentGroupConversationTimer,
+  addVisitedGroupToArchive,
+  changeMessagesInArchivesGroup,
+  loadMilestoneGroupMessages,
+  loadMilestoneGroupMessagesSuccess,
+  loadMilestoneUsers,
+  resetGroupMessages,
+  startCurrentGroupConversationTimer,
 } from 'src/app/core/store/milestone/milestone.actions';
 import {
+  selectArchiveMessages,
   selectCurrentGroupForConversation,
   selectGroupConversationMessagesUpdateTime,
   selectGroupMessages,
@@ -19,6 +29,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { IGroupDeleteRequest } from 'src/app/core/models/groupsUpdate';
 import { DialogDeleteGroupComponent } from 'src/app/shared';
+import { ArchivedGroup } from 'src/app/core/models/visitedgroups';
 
 @Component({
   selector: 'app-group',
@@ -35,36 +46,137 @@ export class GroupComponent implements OnInit {
   sortedGroupMessages!: Observable<IGroupMessage[]>;
   newMessageObject!: IGroupNewMessagesRequest;
   timeUpdateGroupConversationTimer!: number;
-  clickOnUpdateButtonGroups!:boolean;
+  clickOnUpdateButtonGroups!: boolean;
+  myInputValue!: string;
+  isInArchiveToDownLoad!: boolean;
+  isInArchiveToExtract!: boolean | undefined;
+  messageFromArchive!: IGroupMessages;
   newMessageForm = this.fb.group({
     message: [
       '',
       {
-        validators: [
-          Validators.required,
-         Validators.maxLength(250),
-        ],
+        validators: [Validators.required, Validators.maxLength(250)],
       },
     ],
   });
+
+  visitedGroup!: ArchivedGroup;
+  private _Subscription!: Subscription;
   constructor(
     private groupDialogService: GroupDialogService,
     private store: Store,
     private router: Router,
     private fb: FormBuilder,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.newMessageObject = {
       groupID: '',
       message: '',
+    };
+    this.visitedGroup = {
+      groupID: '',
+      messages: [],
+    };
+    this.messageFromArchive = {
+      Count: 0,
+      Items: [],
+    };
+    this.isInArchiveToDownLoad = false;
+    this.isInArchiveToExtract = false;
+  }
+
+  ngOnDestroy(): void {
+    this.groupMessages$.subscribe(value => {
+      this.visitedGroup = {
+        ...this.visitedGroup,
+        groupID: this.currentGroup.id.S,
+      };
+      this.visitedGroup = {
+        ...this.visitedGroup,
+        messages: value,
+      };
+    });
+    this.store.select(selectArchiveMessages).subscribe(value => {
+      console.log(value);
+      value.forEach(item => {
+        console.log(item.groupID);
+        if (item.groupID === this.currentGroup.id.S) {
+          this.isInArchiveToDownLoad = true;
+        } else {
+          this.isInArchiveToDownLoad = false;
+        }
+      });
+    });
+
+    if (this._Subscription) {
+      this._Subscription.unsubscribe();
     }
+    console.log(this.isInArchiveToDownLoad);
+    if (this.isInArchiveToDownLoad === false) {
+      this.store.dispatch(
+        addVisitedGroupToArchive({ visitedGroup: this.visitedGroup })
+      );
+    } else {
+      this.store.dispatch(
+        changeMessagesInArchivesGroup({ visitedGroup: this.visitedGroup })
+      );
+    }
+    this.store.dispatch(
+      loadMilestoneGroupMessagesSuccess({
+        groupMessages: this.messageFromArchive,
+      })
+    );
+    this.store.dispatch(resetGroupMessages());
+    this.groupDialogService.since = undefined;
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadMilestoneGroupMessages());
+    console.log(this.currentGroup);
+
+    // this.store.dispatch(loadMilestoneGroupMessages());
     this.store.select(selectCurrentGroupForConversation).subscribe(value => {
       this.currentGroup = value;
     });
+    this._Subscription = this.store
+      .select(selectArchiveMessages)
+      .subscribe(value => {
+        console.log(value);
+
+        value.forEach(item => {
+          console.log(item);
+          if (item.groupID === this.currentGroup.id.S) {
+            this.isInArchiveToExtract = true;
+            this.messageFromArchive.Items = item.messages;
+            this.messageFromArchive.Count = item.messages.length;
+          } 
+          // else {
+          //   this.isInArchiveToExtract = false;
+          // }
+          console.log(this.isInArchiveToExtract);
+        });
+      });
+    if (this.isInArchiveToExtract === false) {
+      console.log(this.isInArchiveToExtract);
+      console.log(this._Subscription);
+      this.store.dispatch(loadMilestoneGroupMessages());
+    } else if (this.isInArchiveToExtract === true) {
+      console.log(this.messageFromArchive);
+      if (this.messageFromArchive.Count !== 0) {
+        this.groupDialogService.since = Number(
+          this.messageFromArchive.Items[
+            this.messageFromArchive.Items.length - 1
+          ].createdAt.S
+        );
+      }
+      this.store.dispatch(
+        loadMilestoneGroupMessagesSuccess({
+          groupMessages: this.messageFromArchive,
+        })
+      );
+      this.store.dispatch(loadMilestoneGroupMessages());
+    }
+    // this.isInArchiveToExtract = undefined;
+
     const user = localStorage.getItem('user');
     this.currentUser = user ? JSON.parse(user) : null;
     console.log(this.currentUser);
@@ -73,8 +185,7 @@ export class GroupComponent implements OnInit {
       this.isCurrentUserGroup = true;
       console.log(this.isCurrentUserGroup);
     }
-    
-  
+
     this.groupMessages$ = this.store.select(selectGroupMessages);
     this.sortedGroupMessages = this.groupMessages$.pipe(
       map(groupMessages =>
@@ -89,6 +200,19 @@ export class GroupComponent implements OnInit {
     this.store
       .select(selectGroupConversationMessagesUpdateTime)
       .subscribe(value => (this.timeUpdateGroupConversationTimer = value));
+    if (this.currentGroup.id.S !== '') {
+      console.log(this.currentGroup.id.S);
+      localStorage.setItem('currentGroup', JSON.stringify(this.currentGroup));
+    }
+    console.log(this.currentGroup.id.S);
+    if (this.currentGroup.id.S === '') {
+      const currentGruop = localStorage.getItem('currentGroup');
+      const currentGruopBody: IGroup = currentGruop
+        ? JSON.parse(currentGruop)
+        : null;
+      this.currentGroup = currentGruopBody;
+      this.store.dispatch(loadMilestoneUsers());
+    }
   }
 
   redirectToMain() {
@@ -96,10 +220,13 @@ export class GroupComponent implements OnInit {
   }
 
   sentNewMessage() {
-  this.newMessageObject.groupID = this.currentGroup.id.S;
-  this.newMessageObject.message = this.newMessageForm.value.message ?? '';
-  this.groupDialogService.newMessageRequestObject$.next(this.newMessageObject);
-  this.groupDialogService.sendNewMessageToGroup();
+    this.newMessageObject.groupID = this.currentGroup.id.S;
+    this.newMessageObject.message = this.newMessageForm.value.message ?? '';
+    this.groupDialogService.newMessageRequestObject$.next(
+      this.newMessageObject
+    );
+    this.groupDialogService.sendNewMessageToGroup();
+    this.myInputValue = '';
   }
 
   openDeleteForm(event: Event) {
@@ -126,7 +253,7 @@ export class GroupComponent implements OnInit {
 
   startTimerAndUpdateGroupMessages() {
     this.clickOnUpdateButtonGroups = true;
-    // this.timeUpdateGroupConversationTimer = 59;
+    this.timeUpdateGroupConversationTimer = 59.9;
     this.store.dispatch(startCurrentGroupConversationTimer());
     this.groupDialogService.clickOnUpdateButtonObject$.next(
       this.clickOnUpdateButtonGroups

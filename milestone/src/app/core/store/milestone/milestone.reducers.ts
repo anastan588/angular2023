@@ -169,8 +169,41 @@ export const MilestoneReducer = createReducer(
     ...state,
     groupMessages: {
       ...state.groupMessages,
-      Items: [...state.groupMessages.Items, groupMessage],
+      Items: [...state.groupMessages.Items, ...groupMessage],
       Count: state.groupMessages.Items.length + 1,
     },
   })),
+  on(MilestoneActions.resetGroupMessages, state => ({
+    ...state,
+    groupMessages: {
+      ...state.groupMessages,
+      Items: [],
+      Count: 0,
+    },
+  })),
+  on(MilestoneActions.addVisitedGroupToArchive, (state, { visitedGroup }) => ({
+    ...state,
+    visitedGroupMessagesArchive: {
+      visitedGroups: [
+        ...state.visitedGroupMessagesArchive.visitedGroups,
+        visitedGroup,
+      ],
+    },
+  })),
+  on(
+    MilestoneActions.changeMessagesInArchivesGroup,
+    (state, { visitedGroup }) => ({
+      ...state,
+      visitedGroupMessagesArchive: {
+        visitedGroups: state.visitedGroupMessagesArchive.visitedGroups.map(
+          group => {
+            if (group.groupID === visitedGroup.groupID) {
+              return visitedGroup;
+            }
+            return group;
+          }
+        ),
+      },
+    })
+  )
 );

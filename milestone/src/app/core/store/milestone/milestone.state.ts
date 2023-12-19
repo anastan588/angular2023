@@ -3,6 +3,7 @@ import { IGroupMessages } from '../../models/groupMessages';
 import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
 import { IUser } from '../../models/user';
+import { IVisitedGroups } from '../../models/visitedgroups';
 
 export interface IMilestoneState {
   user: IUser;
@@ -22,7 +23,8 @@ export interface IMilestoneState {
     currentTime: number;
     isRunning: boolean;
   };
-  groupMessages: IGroupMessages,
+  groupMessages: IGroupMessages;
+  visitedGroupMessagesArchive: IVisitedGroups;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -81,5 +83,8 @@ export const InitialMileStoneState: IMilestoneState = {
   groupMessages: {
     Count: 0,
     Items: [],
+  },
+  visitedGroupMessagesArchive: {
+    visitedGroups: [],
   },
 };

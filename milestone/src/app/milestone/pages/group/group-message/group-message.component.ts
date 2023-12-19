@@ -25,7 +25,6 @@ export class GroupMessageComponent implements OnInit {
       items.forEach((item) => {
         if (item.uid.S === this.message.authorID.S) {
           this.userMessageName = item.name.S;
-          console.log(this.userMessageName);
         }
       });
     });

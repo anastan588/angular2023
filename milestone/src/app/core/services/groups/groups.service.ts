@@ -19,6 +19,7 @@ import {
 import { Observable, Subject, catchError, map, of } from 'rxjs';
 import {
   addNewGroup,
+  loadMilestoneGroupMessages,
   removeUserGroup,
 } from '../../store/milestone/milestone.actions';
 import { MatDialog } from '@angular/material/dialog';
@@ -107,13 +108,14 @@ export class GroupsService {
               S: this.requestCreate.name,
             },
             createdAt: {
-              S: createdAt.toString(),
+              S: createdAt.getTime().toString(),
             },
             createdBy: {
               S: JSON.parse(JSON.stringify(this.httpHeaders.get('rs-uid'))),
             },
           };
           console.log(this.newGroupItem);
+          
           this.store.dispatch(addNewGroup({ IGroupItem: this.newGroupItem }));
           setTimeout(() => {
             this.dialog.closeAll();

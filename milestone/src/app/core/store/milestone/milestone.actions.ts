@@ -4,6 +4,7 @@ import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples, IPerson } from '../../models/peoples';
 import { IConversation, IConversations } from '../../models/conversations';
 import { IGroupMessage, IGroupMessages } from '../../models/groupMessages';
+import { ArchivedGroup, IVisitedGroups } from '../../models/visitedgroups';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
 
@@ -99,5 +100,20 @@ export const loadMilestoneGroupMessagesSuccess = createAction(
 
 export const addNewGroupMessage = createAction(
   '[MILESTONE] Add new Group Message',
-  props<{ groupMessage: IGroupMessage }>()
+  props<{ groupMessage: IGroupMessage[] }>()
 );
+
+export const resetGroupMessages = createAction(
+  '[MILESTONE] reset Group Messages Store',
+);
+
+export const addVisitedGroupToArchive = createAction(
+  '[MILESTONE] Add Group Messages to  Archive',
+  props<{ visitedGroup: ArchivedGroup }>()
+);
+
+export const changeMessagesInArchivesGroup = createAction(
+  '[MILESTONE] Change Messages In Archived Group',
+  props<{ visitedGroup: ArchivedGroup }>()
+);
+
