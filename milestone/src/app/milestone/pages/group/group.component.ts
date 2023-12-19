@@ -18,6 +18,9 @@ import {
   loadMilestoneUsers,
   resetGroupMessages,
   startCurrentGroupConversationTimer,
+  stopCurrentGroupConversationTimer,
+  stopCurrentGroupConversationTimerImmediately,
+  updateCurrentGroupConversationTimer,
 } from 'src/app/core/store/milestone/milestone.actions';
 import {
   selectArchiveMessages,
@@ -128,6 +131,11 @@ export class GroupComponent implements OnInit {
     );
     this.store.dispatch(resetGroupMessages());
     this.groupDialogService.since = undefined;
+    this.store.dispatch(stopCurrentGroupConversationTimerImmediately());
+    this.store.dispatch(stopCurrentGroupConversationTimer());
+    this.store.dispatch(
+      updateCurrentGroupConversationTimer({ currenttime: 60 })
+    );
   }
 
   ngOnInit(): void {
@@ -148,7 +156,7 @@ export class GroupComponent implements OnInit {
             this.isInArchiveToExtract = true;
             this.messageFromArchive.Items = item.messages;
             this.messageFromArchive.Count = item.messages.length;
-          } 
+          }
           // else {
           //   this.isInArchiveToExtract = false;
           // }
@@ -253,7 +261,7 @@ export class GroupComponent implements OnInit {
 
   startTimerAndUpdateGroupMessages() {
     this.clickOnUpdateButtonGroups = true;
-    this.timeUpdateGroupConversationTimer = 59.9;
+    this.timeUpdateGroupConversationTimer = 59;
     this.store.dispatch(startCurrentGroupConversationTimer());
     this.groupDialogService.clickOnUpdateButtonObject$.next(
       this.clickOnUpdateButtonGroups

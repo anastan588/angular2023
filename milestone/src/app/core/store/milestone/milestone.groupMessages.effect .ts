@@ -41,9 +41,11 @@ export class MileStoneGroupMessagesEffects {
 
             if (this.groupDialogService.since === undefined) {
               console.log(this.groupDialogService.since);
-              this.groupDialogService.since = Number(
-                response.Items[response.Items.length - 1].createdAt.S
-              );
+              if (response.Items.length !== 0) {
+                this.groupDialogService.since = Number(
+                  response.Items[response.Items.length - 1].createdAt.S
+                );
+              }
               // console.log(this.groupDialogService.since);
               return loadMilestoneGroupMessagesSuccess({
                 groupMessages: response,

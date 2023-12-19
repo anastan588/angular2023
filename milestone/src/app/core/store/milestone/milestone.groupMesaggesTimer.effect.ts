@@ -4,13 +4,11 @@ import { map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { Action, State, Store } from '@ngrx/store';
 import {
   startCurrentGroupConversationTimer,
-  startGroupTimer,
   stopCurrentGroupConversationTimer,
-  stopGroupTimer,
+  stopCurrentGroupConversationTimerImmediately,
   updateCurrentGroupConversationTimer,
-  updateGroupTimer,
 } from './milestone.actions';
-import { Observable, interval, of } from 'rxjs';
+import { interval } from 'rxjs';
 
 @Injectable()
 export class MileStartGroupMessagesTimerEffects {
@@ -19,6 +17,7 @@ export class MileStartGroupMessagesTimerEffects {
       ofType(startCurrentGroupConversationTimer),
       switchMap(() =>
         interval(1000).pipe(
+          takeUntil(this.actions$.pipe(ofType(stopCurrentGroupConversationTimerImmediately))),
           take(60), 
           map(tick => 60 - tick - 1), 
           tap(currenttime => {

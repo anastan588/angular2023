@@ -90,6 +90,7 @@ export const updateCurrentGroupConversationTimer = createAction(
   '[MILESTONE] Current Group Conversation Timer Update',
   props<{ currenttime: number }>()
 );
+export const stopCurrentGroupConversationTimerImmediately = createAction('[Timer] Stop Group Timer Immediately');
 
 export const loadMilestoneGroupMessages = createAction('[MILESTONE] Load Group Messages');
 
