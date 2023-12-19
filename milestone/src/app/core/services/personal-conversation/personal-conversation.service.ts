@@ -1,69 +1,57 @@
-import { Injectable } from '@angular/core';
-import { IGroup } from '../../models/groups';
-import { Observable, Subject, catchError, map, of } from 'rxjs';
-import {
-  IServerResponseSignIn,
-  IServerResponseSignUp,
-} from '../../models/serverresponse';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import {
-  IGroupMessage,
-  IGroupMessages,
-  IGroupMessagesRequest,
-  IGroupNewMessagesRequest,
-} from '../../models/groupMessages';
+import { Injectable } from '@angular/core';
+import { Observable, Subject, catchError, map, of } from 'rxjs';
+import { IPersonMessage, IPersonMessages } from '../../models/personMessages';
 import { Store } from '@ngrx/store';
-import {
-  selectGroupMessages,
-  selectPeoples,
-} from '../../store/milestone/milestone.selectors';
-import { IPerson } from '../../models/peoples';
 import { ToastMessageService } from '../toast-message.service';
 import {
-  addNewGroupMessage,
-  loadMilestoneGroupMessages,
-} from '../../store/milestone/milestone.actions';
+  IServerResponseSignIn,
+  IServerResponseSignUp,
+} from '../../models/serverresponse';
+import { selectPersonalConversationsMessages } from '../../store/milestone/milestone.selectors';
+import { loadMilestonePersonalConversationMessages } from '../../store/milestone/milestone.actions';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GroupDialogService {
-  urlReceiveMessagesGroup: string;
-  urlSendNewMessageGroup: string;
-  currentGroupObject$ = new Subject<IGroup>();
-  currentGroup$: Observable<IGroup>;
-  currentGroup!: IGroup;
+export class PersonalConversationService {
+  urlReceiveMessagesConversation: string;
+  urlSendNewMessageConversation: string;
+  currentPersonalConversationObject$ = new Subject<IGroup>();
+  currentPersonalConversation$: Observable<IGroup>;
+  currentPersonalConversation!: IGroup;
   httpHeaders!: HttpHeaders;
-  catchedGroupMessages!: Observable<IGroupMessage[]>;
+  catchedPersonalMessagesMessages!: Observable<IPersonMessage[]>;
   clickOnUpdateButtonObject$ = new Subject<boolean>();
   clickOnUpdateButton$!: Observable<boolean>;
-  groupMessagesRequest!: IGroupMessagesRequest;
+  personalCOnversationMessagesRequest!: IGroupMessagesRequest;
   since!: number | undefined;
   newMessageRequestObject$ = new Subject<IGroupNewMessagesRequest>();
   newMessageRequest$!: Observable<IGroupNewMessagesRequest>;
   requestBodyNewMessage!: IGroupNewMessagesRequest;
-  newMessageObject!: IGroupMessage;
+  newMessageObject!: IPersonMessage;
 
   constructor(
     private store: Store,
     public http: HttpClient,
     private toastmessagesService: ToastMessageService
   ) {
-    this.urlReceiveMessagesGroup =
-      'groups/read?groupID={:groupID}&since={:since}';
+    this.urlReceiveMessagesConversation =
+      'conversations/read?groupID={:conversationID}&since={:since}';
     this.urlSendNewMessageGroup = 'groups/append';
-    this.currentGroup$ = this.currentGroupObject$.asObservable();
-    this.currentGroup$.subscribe(value => {
-      this.currentGroup = value;
-      console.log(this.currentGroup);
+    this.currentPersonalConversation$ =
+      this.currentPersonalConversationObject$.asObservable();
+    this.currentPersonalConversation$.subscribe(value => {
+      this.currentPersonalConversation = value;
+      console.log(this.currentPersonalConversation);
     });
     this.clickOnUpdateButton$ = this.clickOnUpdateButtonObject$.asObservable();
-    this.groupMessagesRequest = {
-      groupID: '',
+    this.personalCOnversationMessagesRequest = {
+      conversationID: '',
     };
     this.newMessageRequest$ = this.newMessageRequestObject$.asObservable();
     this.newMessageRequest$.subscribe(
@@ -87,38 +75,44 @@ export class GroupDialogService {
 
   getGroupMessagesData() {
     this.setHttpHeaders();
-    console.log(this.currentGroup);
+    console.log(this.currentPersonalConversation);
     console.log(this.since);
-    if (this.currentGroup === undefined) {
-      const currentGruop = localStorage.getItem('currentGroup');
-      const currentGruopRequestBody: IGroup = currentGruop
-        ? JSON.parse(currentGruop)
-        : null;
-      this.groupMessagesRequest.groupID = currentGruopRequestBody.id.S;
+    if (this.currentPersonalConversation === undefined) {
+      const currentPersonalConversation = localStorage.getItem(
+        'currentPersonalConversation'
+      );
+      const currentPersonalConversationRequestBody: IGroup =
+        currentPersonalConversation
+          ? JSON.parse(currentPersonalConversation)
+          : null;
+      this.personalCOnversationMessagesRequest.groupID =
+        currentGruopRequestBody.id.S;
       if (this.since === undefined) {
-        this.urlReceiveMessagesGroup = `groups/read?groupID=${currentGruopRequestBody.id.S}`;
+        this.urlReceiveMessagesConversation = `groups/read?groupID=${currentGruopRequestBody.id.S}`;
       } else {
-        this.urlReceiveMessagesGroup = `groups/read?groupID=${currentGruopRequestBody.id.S}&since=${this.since}`;
+        this.urlReceiveMessagesConversation = `groups/read?groupID=${currentGruopRequestBody.id.S}&since=${this.since}`;
       }
     } else {
       this.groupMessagesRequest.groupID = this.currentGroup.id.S;
       if (this.since === undefined) {
-        this.urlReceiveMessagesGroup = `groups/read?groupID=${this.currentGroup.id.S}`;
+        this.urlReceiveMessagesConversation = `groups/read?groupID=${this.currentGroup.id.S}`;
       } else {
-        this.urlReceiveMessagesGroup = `groups/read?groupID=${this.currentGroup.id.S}&since=${this.since}`;
+        this.urlReceiveMessagesConversation = `groups/read?groupID=${this.currentGroup.id.S}&since=${this.since}`;
       }
     }
     console.log(this.groupMessagesRequest);
-    console.log(this.currentGroup);
-    return this.http.get<IGroupMessages>(this.urlReceiveMessagesGroup, {
+    console.log(this.currentPersonalConversation);
+    return this.http.get<IPersonMessages>(this.urlReceiveMessagesConversation, {
       headers: this.httpHeaders,
     });
   }
 
   getGroupMessagesFromStore() {
-    this.catchedGroupMessages = this.store.select(selectGroupMessages);
-    console.log(this.catchedGroupMessages);
-    return this.catchedGroupMessages;
+    this.catchedPersonalMessagesMessages = this.store.select(
+      selectPersonalConversationsMessages
+    );
+    console.log(this.catchedPersonalMessagesMessages);
+    return this.catchedPersonalMessagesMessages;
   }
 
   sendNewMessageToGroup() {
@@ -126,7 +120,7 @@ export class GroupDialogService {
     this.setHttpHeaders();
     const createdAt = new Date();
     return this.http
-      .post(this.urlSendNewMessageGroup, this.requestBodyNewMessage, {
+      .post(this.urlSendNewMessageConversation, this.requestBodyNewMessage, {
         headers: this.httpHeaders,
       })
       .pipe(
@@ -149,7 +143,7 @@ export class GroupDialogService {
           };
           console.log(this.newMessageObject);
           this.since = createdAt.getTime();
-          this.store.dispatch(loadMilestoneGroupMessages());
+          this.store.dispatch(loadMilestonePersonalConversationMessages());
           // this.store.dispatch(
           //   addNewGroupMessage({ groupMessage: [this.newMessageObject] })
           // );
@@ -160,7 +154,7 @@ export class GroupDialogService {
           console.log(serverResponse.message);
           console.log(serverResponse.type);
           this.toastmessagesService.showToastMessage(
-            'Creating new group message failed: ' + serverResponse.message,
+            'Creating new personal message failed: ' + serverResponse.message,
             'close'
           );
           return of({

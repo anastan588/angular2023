@@ -32,6 +32,7 @@ import { GroupsService } from './core/services/groups/groups.service';
 import { MileStoneGroupMessagesEffects } from './core/store/milestone/milestone.groupMessages.effect ';
 import { MileStartGroupMessagesTimerEffects } from './core/store/milestone/milestone.groupMesaggesTimer.effect';
 import { MileStartPersoanlConversationMessagesTimerEffects } from './core/store/milestone/milestone.PersonalConversationMesaggesTimer.effect';
+import { PersonalConversationService } from './core/services/personal-conversation/personal-conversation.service';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MileStartPersoanlConversationMessagesTimerEffects } from './core/store/
     PeoplesService,
     GroupsService,
     MatIconRegistry,
+    PersonalConversationService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

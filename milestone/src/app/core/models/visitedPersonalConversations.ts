@@ -9,3 +9,8 @@ export interface ArchivedPersonalConversation {
   conversationID: string;
   messages: IPersonMessage[];
 }
+
+export interface IPersonalCoversationNewMessagesRequest {
+  conversationID: string;
+  message: string;
+}

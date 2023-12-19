@@ -56,6 +56,7 @@ export class AuthService {
           this.userStatusObject$.next('Login');
           localStorage.removeItem('user');
           localStorage.removeItem('currentGroup');
+          localStorage.removeItem('currentPersonalConversation');
           this.store.dispatch(loadMilestoneUser());
           this.isButtonDisabledObject$.next(false);
           this.router.navigate(['signin']);
@@ -97,7 +98,7 @@ export class AuthService {
     }
     if (this.isLoggedIn) {
       return '/';
-    } 
+    }
     return '';
   }
 }
