@@ -148,6 +148,7 @@ export class GroupDialogService {
             },
           };
           console.log(this.newMessageObject);
+          this.since = createdAt.getTime();
           this.store.dispatch(loadMilestoneGroupMessages());
           // this.store.dispatch(
           //   addNewGroupMessage({ groupMessage: [this.newMessageObject] })
