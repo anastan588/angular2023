@@ -60,3 +60,25 @@ export const selectGroupMessages = createSelector(MilestoneSelector, state => {
 export const selectArchiveMessages = createSelector(MilestoneSelector, state => {
   return state.visitedGroupMessagesArchive.visitedGroups;
 });
+
+export const selectCurrentPersonalConversationForConversation = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.currentPersonalConversation;
+  }
+);
+
+export const selectPersonalConversationMessagesUpdateTime = createSelector(
+  MilestoneSelector,
+  state => {
+    return state.personalConversationUpdateMessagesTimer.currentTime;
+  }
+);
+
+export const selectPersonalConversationsMessages = createSelector(MilestoneSelector, state => {
+  return state.personalConversationMessages.Items;
+});
+
+export const selectArchiveDPersonalConversationMessages = createSelector(MilestoneSelector, state => {
+  return state.visitedPersonalConversationsMessagesArchive.visitedPersonalConversations;
+});
