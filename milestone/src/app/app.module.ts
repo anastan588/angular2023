@@ -31,6 +31,7 @@ import { PeoplesService } from './core/services/peoples/peoples.service';
 import { GroupsService } from './core/services/groups/groups.service';
 import { MileStoneGroupMessagesEffects } from './core/store/milestone/milestone.groupMessages.effect ';
 import { MileStartGroupMessagesTimerEffects } from './core/store/milestone/milestone.groupMesaggesTimer.effect';
+import { MileStartPersoanlConversationMessagesTimerEffects } from './core/store/milestone/milestone.PersonalConversationMesaggesTimer.effect';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { MileStartGroupMessagesTimerEffects } from './core/store/milestone/miles
       MileStartPeopleTimerEffects,
       MileStoneGroupMessagesEffects,
       MileStartGroupMessagesTimerEffects,
+      MileStartPersoanlConversationMessagesTimerEffects
     ]),
   ],
   exports: [GroupItemComponent, PersonItemComponent],

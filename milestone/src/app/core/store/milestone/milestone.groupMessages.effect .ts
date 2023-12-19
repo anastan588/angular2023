@@ -25,15 +25,6 @@ export class MileStoneGroupMessagesEffects {
   loadGroupMessages$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadMilestoneGroupMessages),
-      // withLatestFrom(this.groupDialogService.getGroupMessagesFromStore()),
-      // filter(([action, catchedGroupMessages]) => {
-      //   console.log(catchedGroupMessages[0]);
-      //   this.groupDialogService.clickOnUpdateButton$.subscribe(value => {
-      //     this.clickOnUpdateButton = value;
-      //     return this.clickOnUpdateButton;
-      //   });
-      //   return !catchedGroupMessages[0] || this.clickOnUpdateButton === true;
-      // }),
       mergeMap(() =>
         this.groupDialogService.getGroupMessagesData().pipe(
           map(response => {
