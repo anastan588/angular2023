@@ -1,7 +1,8 @@
-import { IConversations } from '../../models/conversations';
+import { IConversation, IConversations } from '../../models/conversations';
 import { IGroupMessages } from '../../models/groupMessages';
 import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
+import { IPersonMessages } from '../../models/personMessages';
 import { IUser } from '../../models/user';
 import { IVisitedGroups } from '../../models/visitedgroups';
 
@@ -25,6 +26,14 @@ export interface IMilestoneState {
   };
   groupMessages: IGroupMessages;
   visitedGroupMessagesArchive: IVisitedGroups;
+
+  currentPersonalConversation: IConversation;
+  personalConversationUpdateMessagesTimer: {
+    currentTime: number;
+    isRunning: boolean;
+  };
+  personalConversationMessages: IPersonMessages;
+  visitedPersonalConversationsMessagesArchive: IVisitedGroups;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -85,6 +94,25 @@ export const InitialMileStoneState: IMilestoneState = {
     Items: [],
   },
   visitedGroupMessagesArchive: {
+    visitedGroups: [],
+  },
+  currentPersonalConversation: {
+    id: {
+      S: '',
+    },
+    companionID: {
+      S: '',
+    },
+  },
+  personalConversationUpdateMessagesTimer: {
+    currentTime: 60,
+    isRunning: false,
+  },
+  personalConversationMessages: {
+    Count: 0,
+    Items: [],
+  },
+  visitedPersonalConversationsMessagesArchive: {
     visitedGroups: [],
   },
 };
