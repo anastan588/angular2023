@@ -205,5 +205,110 @@ export const MilestoneReducer = createReducer(
         ),
       },
     })
+  ),
+
+  on(
+    MilestoneActions.loadMilestoneCurrentPersonalConversationSuccess,
+    (state, { currentPersonalConversation }) => ({
+      ...state,
+      currentPersonalConversation: {
+        ...state.currentPersonalConversation,
+        ...currentPersonalConversation,
+      },
+    })
+  ),
+
+  on(MilestoneActions.startCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      currentTime: 0,
+    },
+  })),
+  on(
+    MilestoneActions.updateCurrentPersonalConversationTimer,
+    (state, { currenttime }) => ({
+      ...state,
+      personalConversationUpdateMessagesTimer: {
+        ...state.personalConversationUpdateMessagesTimer,
+        currentTime: currenttime,
+      },
+    })
+  ),
+
+  on(
+    MilestoneActions.loadMilestonePersonalConversationMessagesSuccess,
+    (state, { personalMessages }) => ({
+      ...state,
+      personalConversationMessages: {
+        ...state.personalConversationMessages,
+        ...personalMessages,
+      },
+    })
+  ),
+  on(
+    MilestoneActions.addNewPersonalConversationMessage,
+    (state, { personalMessage }) => ({
+      ...state,
+      personalConversationMessages: {
+        ...state.personalConversationMessages,
+        Items: [
+          ...state.personalConversationMessages.Items,
+          ...personalMessage,
+        ],
+        Count: state.personalConversationMessages.Items.length + 1,
+      },
+    })
+  ),
+  on(MilestoneActions.resetPersonalConversationMessages, state => ({
+    ...state,
+    personalConversationMessages: {
+      ...state.personalConversationMessages,
+      Items: [],
+      Count: 0,
+    },
+  })),
+  on(
+    MilestoneActions.addVisitedPersonalConversationToArchive,
+    (state, { visitedPersonalConversation }) => ({
+      ...state,
+      visitedPersonalConversationsMessagesArchive: {
+        visitedPersonalConversations: [
+          ...state.visitedPersonalConversationsMessagesArchive
+            .visitedPersonalConversations,
+          visitedPersonalConversation,
+        ],
+      },
+    })
+  ),
+  on(
+    MilestoneActions.changeMessagesInArchivesPersonalConversation,
+    (state, { visitedPerSonConversation }) => ({
+      ...state,
+      visitedPersonalConversationsMessagesArchive: {
+        visitedPersonalConversations: state.visitedPersonalConversationsMessagesArchive.visitedPersonalConversations.map(
+          conversation => {
+            if (conversation.conversationID === visitedPerSonConversation.conversationID) {
+              return visitedPerSonConversation;
+            }
+            return conversation;
+          }
+        ),
+      },
+    })
   )
 );

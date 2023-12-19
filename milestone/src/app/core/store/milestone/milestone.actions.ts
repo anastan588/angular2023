@@ -5,7 +5,7 @@ import { IPeoples, IPerson } from '../../models/peoples';
 import { IConversation, IConversations, ICreatePersonalConversationResponse } from '../../models/conversations';
 import { IGroupMessage, IGroupMessages } from '../../models/groupMessages';
 import { ArchivedGroup, IVisitedGroups } from '../../models/visitedgroups';
-import { IPersonMessages } from '../../models/personMessages';
+import { IPersonMessage, IPersonMessages } from '../../models/personMessages';
 import { ArchivedPersonalConversation } from '../../models/visitedPersonalConversations';
 
 export const loadMilestoneUser = createAction('[MILESTONE] Load User');
@@ -145,7 +145,7 @@ export const loadMilestonePersonalConversationMessagesSuccess = createAction(
 
 export const addNewPersonalConversationMessage = createAction(
   '[MILESTONE] Add new Personal Conversation Message',
-  props<{ groupMessage: IGroupMessage[] }>()
+  props<{ personalMessage: IPersonMessage[] }>()
 );
 
 export const resetPersonalConversationMessages = createAction(
@@ -159,6 +159,6 @@ export const addVisitedPersonalConversationToArchive = createAction(
 
 export const changeMessagesInArchivesPersonalConversation = createAction(
   '[MILESTONE] Change Messages In Archived Personal Conversation',
-  props<{ visitedGroup: ArchivedGroup }>()
+  props<{ visitedPerSonConversation: ArchivedPersonalConversation }>()
 );
 

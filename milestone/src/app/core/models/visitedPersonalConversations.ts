@@ -2,10 +2,10 @@ import { IGroupMessage } from "./groupMessages";
 import { IPersonMessage } from "./personMessages";
 
 export interface IVisitedPesrsonalConversations {
-    visitedGroups: ArchivedPersonalConversation[];
+    visitedPersonalConversations: ArchivedPersonalConversation[];
 }
 
 export interface ArchivedPersonalConversation {
-  groupID: string;
+  conversationID: string;
   messages: IPersonMessage[];
 }

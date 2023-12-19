@@ -4,6 +4,7 @@ import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
 import { IPersonMessages } from '../../models/personMessages';
 import { IUser } from '../../models/user';
+import { IVisitedPesrsonalConversations } from '../../models/visitedPersonalConversations';
 import { IVisitedGroups } from '../../models/visitedgroups';
 
 export interface IMilestoneState {
@@ -34,7 +35,7 @@ export interface IMilestoneState {
     isRunning: boolean;
   };
   personalConversationMessages: IPersonMessages;
-  visitedPersonalConversationsMessagesArchive: IVisitedGroups;
+  visitedPersonalConversationsMessagesArchive: IVisitedPesrsonalConversations;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -97,9 +98,10 @@ export const InitialMileStoneState: IMilestoneState = {
   visitedGroupMessagesArchive: {
     visitedGroups: [],
   },
+
   currentPersonalConversation: {
     conversationID:  '',
-    },
+  },
 
   personalConversationUpdateMessagesTimer: {
     currentTime: 60,
@@ -110,6 +112,6 @@ export const InitialMileStoneState: IMilestoneState = {
     Items: [],
   },
   visitedPersonalConversationsMessagesArchive: {
-    visitedGroups: [],
+    visitedPersonalConversations: [],
   },
 };
