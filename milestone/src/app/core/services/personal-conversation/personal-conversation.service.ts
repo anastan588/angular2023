@@ -13,7 +13,10 @@ import {
   IServerResponseSignUp,
 } from '../../models/serverresponse';
 import { selectPersonalConversationsMessages } from '../../store/milestone/milestone.selectors';
-import { loadMilestonePersonalConversationMessages, removeConversation } from '../../store/milestone/milestone.actions';
+import {
+  loadMilestonePersonalConversationMessages,
+  removeConversation,
+} from '../../store/milestone/milestone.actions';
 import {
   ICurrentPersonalConversation,
   IPersonalCoversationNewMessagesRequest,
@@ -87,8 +90,8 @@ export class PersonalConversationService {
 
   getGroupMessagesData() {
     this.setHttpHeaders();
-    console.log(this.currentPersonalConversation);
-    if (this.currentPersonalConversation === undefined) {
+    console.log(this.currentPersonalConversation === undefined);
+    if (this.currentPersonalConversation.companionID === '') {
       const currentPersonalConversation = localStorage.getItem(
         'currentPersonalConversation'
       );
@@ -98,6 +101,7 @@ export class PersonalConversationService {
           : null;
       this.personalConversationMessagesRequest.conversationID =
         currentPersonalConversationRequestBody.conversationID;
+        console.log(this.personalConversationMessagesRequest.conversationID);
       if (this.since === undefined) {
         this.urlReceiveMessagesConversation = `conversations/read?conversationID=${currentPersonalConversationRequestBody.conversationID}`;
       } else {
@@ -151,7 +155,18 @@ export class PersonalConversationService {
             },
           };
           console.log(this.newMessageObject);
-          this.since = createdAt.getTime();
+          this.store
+            .select(selectPersonalConversationsMessages)
+            .subscribe(value => {
+              if (value.length === 0) {
+                this.since = createdAt.getTime();
+                console.log(this.since);
+              } else {
+                this.since = createdAt.getTime();
+                console.log(this.since);
+              }
+            });
+
           this.store.dispatch(loadMilestonePersonalConversationMessages());
           // this.store.dispatch(
           //   addNewGroupMessage({ groupMessage: [this.newMessageObject] })
@@ -190,7 +205,9 @@ export class PersonalConversationService {
           );
 
           this.store.dispatch(
-            removeConversation({ id: this.currentPersonalConversation.conversationID })
+            removeConversation({
+              id: this.currentPersonalConversation.conversationID,
+            })
           );
           const currenUrl = this.router.url;
           if (currenUrl !== '/') {
