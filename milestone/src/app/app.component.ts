@@ -14,6 +14,7 @@ export class AppComponent {
   isButtonDisabled!: boolean;
   title = 'milestone';
   isLogged!: boolean;
+  isChecked: boolean = false;
 
   isDarkTheme: boolean = false;
   primaryColor: ThemePalette = 'primary';
@@ -24,6 +25,17 @@ export class AppComponent {
     private authService: AuthService
   ) {
     this.isButtonDisabled = false;
+    console.log(localStorage.getItem('theme') );
+    if (localStorage.getItem('theme') === 'dark') {
+      this.isDarkTheme = true;
+      this.primaryColor = 'warn';
+      this.isChecked = true;
+    } else if (localStorage.getItem('theme') === 'light') {
+      this.isDarkTheme = false;
+      this.primaryColor = 'primary';
+      this.isChecked = false;
+    }
+    console.log(this.isDarkTheme);
   }
 
   changeColorScheme() {
@@ -31,8 +43,12 @@ export class AppComponent {
     this.isDarkTheme = !this.isDarkTheme;
     if (this.isDarkTheme) {
       this.primaryColor = 'warn';
+      localStorage.setItem('theme', 'dark');
+      this.isChecked = true;
     } else {
       this.primaryColor = 'primary';
+      localStorage.setItem('theme', 'light');
+      this.isChecked = false;
     }
     console.log(this.primaryColor);
   }
