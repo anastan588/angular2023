@@ -4,6 +4,7 @@
       <app-button (click)="redirectToSignUp()">Sign Up</app-button>
       <app-button (click)="redirectToSignIn()">Sign In</app-button>
     </div>
+    <mat-slide-toggle (click)="changeColorScheme()">Dark Theme </mat-slide-toggle>
     <div class="login_block">
       <app-button (click)="redirectToProfile()">Profile</app-button>
       <app-button
@@ -14,6 +15,6 @@
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
-<div class="pages_content">
+<div class="pages_content" [ngClass]="{'custom-text-color': primaryColor === 'warn'}">
   <router-outlet></router-outlet>
 </div>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { SigninService } from './core/services/signin/signin.service';
 import { AuthService } from './core/services/auth/auth.service';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,10 @@ export class AppComponent {
   isButtonDisabled!: boolean;
   title = 'milestone';
   isLogged!: boolean;
+
+  isDarkTheme: boolean = false;
+  primaryColor: ThemePalette = 'primary';
+  accentColor: ThemePalette = 'accent';
   constructor(
     private router: Router,
     private signinService: SigninService,
@@ -20,6 +25,18 @@ export class AppComponent {
   ) {
     this.isButtonDisabled = false;
   }
+
+  changeColorScheme() {
+    console.log(this.isDarkTheme);
+    this.isDarkTheme = !this.isDarkTheme;
+    if (this.isDarkTheme) {
+      this.primaryColor = 'warn';
+    } else {
+      this.primaryColor = 'primary';
+    }
+    console.log(this.primaryColor);
+  }
+
   redirectToSignUp() {
     this.router.navigate(['signup']);
   }
