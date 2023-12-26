@@ -1,0 +1,9 @@
+<div mat-dialog-content class="dialog_window">
+    <h1 mat-dialog-title>Do you really want to delete this conversation?</h1>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onCancel()">Cancel</button>
+      <button mat-button cdkFocusInitial (click)="deleteCurrentCoversation()">
+        Yes
+      </button>
+    </div>
+  </div>

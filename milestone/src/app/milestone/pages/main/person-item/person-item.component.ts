@@ -1,10 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { ICompanion, IConversation } from 'src/app/core/models/conversations';
+import {
+  ICompanion,
+  IConversation,
+  ICreatePersonalConversationResponse,
+} from 'src/app/core/models/conversations';
 import { IPerson } from 'src/app/core/models/peoples';
+import { ICurrentPersonalConversation } from 'src/app/core/models/visitedPersonalConversations';
 import { PeoplesService } from 'src/app/core/services/peoples/peoples.service';
-import { selectConversations } from 'src/app/core/store/milestone/milestone.selectors';
+import { loadMilestoneCurrentPersonalConversationSuccess } from 'src/app/core/store/milestone/milestone.actions';
 
 @Component({
   selector: 'app-person-item',
@@ -14,6 +19,7 @@ import { selectConversations } from 'src/app/core/store/milestone/milestone.sele
 export class PersonItemComponent implements OnInit {
   @Input()
   currentPerson!: IPerson;
+  currentConversation!: ICurrentPersonalConversation;
   userID!: string;
   @Input() conversations!: IConversation[];
   isConversationExist!: boolean;
@@ -25,6 +31,10 @@ export class PersonItemComponent implements OnInit {
   ) {
     this.requestbodyForNewConversation = {
       companion: '',
+    };
+    this.currentConversation = {
+      conversationID: '',
+      companionID: '',
     };
   }
 
@@ -40,12 +50,21 @@ export class PersonItemComponent implements OnInit {
   }
   createConversationWithPerson() {
     this.requestbodyForNewConversation.companion = this.currentPerson.uid.S;
+    console.log(this.isConversationExist);
     if (this.isConversationExist) {
       for (let key of this.conversations) {
         if (key.companionID.S === this.currentPerson.uid.S) {
-          this.router.navigate(['conversation', key.id.S]);
+          this.router.navigate(['conversation', key.id.S]),
+            (this.currentConversation.companionID = key.companionID.S);
+          this.currentConversation.conversationID = key.id.S;
         }
       }
+      console.log(this.currentConversation);
+      this.store.dispatch(
+        loadMilestoneCurrentPersonalConversationSuccess({
+          currentPersonalConversation: this.currentConversation,
+        })
+      );
     } else {
       this.peopleService.newCompanionConversationObject$.next(
         this.requestbodyForNewConversation

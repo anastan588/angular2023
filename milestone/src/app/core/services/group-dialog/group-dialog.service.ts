@@ -160,7 +160,7 @@ export class GroupDialogService {
           console.log(serverResponse.message);
           console.log(serverResponse.type);
           this.toastmessagesService.showToastMessage(
-            'Creating new group failed: ' + serverResponse.message,
+            'Creating new group message failed: ' + serverResponse.message,
             'close'
           );
           return of({

@@ -43,6 +43,11 @@ mat-card-header {
   width: auto;
   padding: 10px 10px 10px 30px;
   max-width: 50%;
+ 
+}
+
+app-group-message {
+   word-wrap: break-word;
 }
 .position {
   align-self: flex-end;

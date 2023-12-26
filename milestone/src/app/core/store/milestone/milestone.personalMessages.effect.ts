@@ -9,48 +9,48 @@ import {
 } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import {
-  addNewGroupMessage,
-  loadMilestoneGroupMessages,
-  loadMilestoneGroupMessagesSuccess,
+  addNewPersonalConversationMessage,
+  loadMilestonePersonalConversationMessages,
+  loadMilestonePersonalConversationMessagesSuccess,
 } from './milestone.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IServerResponseSignUp } from '../../models/serverresponse';
 import { of } from 'rxjs';
 import { ToastMessageService } from '../../services/toast-message.service';
-import { GroupDialogService } from '../../services/group-dialog/group-dialog.service';
 import { Router } from '@angular/router';
+import { PersonalConversationService } from '../../services/personal-conversation/personal-conversation.service';
 
 @Injectable()
-export class MileStoneGroupMessagesEffects {
-  loadGroupMessages$ = createEffect(() =>
+export class MileStonePersonalMessagesEffects {
+  loadPersonalMessages$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadMilestoneGroupMessages),
+      ofType(loadMilestonePersonalConversationMessages),
       mergeMap(() =>
-        this.groupDialogService.getGroupMessagesData().pipe(
+        this.personalService.getGroupMessagesData().pipe(
           map(response => {
             console.log(response);
 
-            if (this.groupDialogService.since === undefined) {
-              console.log(this.groupDialogService.since);
+            if (this.personalService.since === undefined) {
+              console.log(this.personalService.since);
               if (response.Items.length !== 0) {
-                this.groupDialogService.since = Number(
+                this.personalService.since = Number(
                   response.Items[response.Items.length - 1].createdAt.S
                 );
               }
               // console.log(this.groupDialogService.since);
-              return loadMilestoneGroupMessagesSuccess({
-                groupMessages: response,
+              return loadMilestonePersonalConversationMessagesSuccess({
+               personalMessages: response,
               });
             } else {
-              console.log(this.groupDialogService.since);
+              console.log(this.personalService.since);
               if (response.Items.length !== 0) {
-                this.groupDialogService.since = Number(
+                this.personalService.since = Number(
                   response.Items[response.Items.length - 1].createdAt.S
                 );
               }
 
-              return addNewGroupMessage({
-                groupMessage: response.Items,
+              return addNewPersonalConversationMessage({
+                personalMessage: response.Items,
               });
             }
             // return loadMilestoneGroupMessagesSuccess({
@@ -63,7 +63,7 @@ export class MileStoneGroupMessagesEffects {
             if (serverResponse !== undefined) {
               if (serverResponse.type === 'InvalidIDException') {
                 this.toastMessageService.showToastMessage(
-                  `Group with this id ${this.groupDialogService.currentGroup.id.S} does not exist or was removed before.` +
+                  `Personal conversation with this id ${this.personalService.currentPersonalConversation.conversationID} does not exist or was removed before.` +
                     serverResponse.message,
                   'close'
                 );
@@ -90,7 +90,7 @@ export class MileStoneGroupMessagesEffects {
   clickOnUpdateButton!: boolean;
   constructor(
     private actions$: Actions,
-    private groupDialogService: GroupDialogService,
+    private personalService: PersonalConversationService,
     private store: Store,
     private toastMessageService: ToastMessageService,
     private router: Router

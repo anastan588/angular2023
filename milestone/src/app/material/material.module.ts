@@ -16,6 +16,7 @@ import {
   MatDialogModule,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [],
@@ -30,6 +31,7 @@ import {
     MatInputModule,
     MatGridListModule,
     MatDialogModule,
+    MatSlideToggleModule,
   ],
   exports: [
     MatButtonModule,
@@ -42,6 +44,8 @@ import {
     MatSnackBarModule,
     MatGridListModule,
     MatDialogModule,
+    MatSlideToggleModule
+  
   ],
   providers: [MatSnackBar],
 })
