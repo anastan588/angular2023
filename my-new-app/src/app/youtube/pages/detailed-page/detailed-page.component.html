@@ -1,0 +1,75 @@
+<div class="detailed-page">
+  <mat-card>
+    <div class="video-image">
+      <img
+      class="image"
+        mat-card-image
+        [src]="videoForShow.snippet.thumbnails.standard!.url" />
+    </div>
+    <div class="card-description">
+      <mat-card-header>
+        <p class="header-title">{{ videoForShow.snippet.title }}</p>
+        <p class="header-date">
+          {{ videoForShow.snippet.publishedAt | date: 'EEEE, MMMM d, y' }}
+        </p>
+      </mat-card-header>
+      <button
+        *ngIf="videoForShow.statistics !== undefined"
+        mat-icon-button
+        id="{{ videoForShow.id.videoId }}"
+        #favButtonNotSelected
+        color="warn"
+        aria-label="favorite"
+        (click)="toggleSelected()">
+        <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
+        <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
+      </button>
+      <mat-card-content>
+        <p class="description-title">Description</p>
+        <p class="description-text">{{ videoForShow.snippet.description }}</p>
+      </mat-card-content>
+      <div
+        class="video-statistics"
+        *ngIf="videoForShow.statistics !== undefined">
+        <div class="views">
+          <img
+            src="./../../../../../assets/icons/eye.png"
+            alt="views"
+            class="views-img" />
+          <p class="views-amount">{{ videoForShow.statistics.viewCount }}</p>
+        </div>
+        <div class="likes">
+          <img
+            src="./../../../../../assets/icons/like.png"
+            alt="likes"
+            class="views-img" />
+          <p class="likes-amount">{{ videoForShow.statistics.likeCount }}</p>
+        </div>
+        <div class="dislikes">
+          <img
+            src="./../../../../../assets/icons/dislike.png"
+            alt="dislikes"
+            class="views-img" />
+          <p class="dislikes-amount">
+            {{ videoForShow.statistics.dislikeCount }}
+          </p>
+        </div>
+        <div class="comments">
+          <img
+            src="./../../../../../assets/icons/comment.png"
+            alt="comments"
+            class="views-img" />
+          <p class="comments-amount">
+            {{ videoForShow.statistics.commentCount }}
+          </p>
+        </div>
+      </div>
+      <app-button
+        *ngIf="videoForShow.statistics === undefined"
+        (click)="deleteCustomCard()"
+        >Delete</app-button
+      >
+      <mat-card-footer appBordersItems [video]="videoForShow"></mat-card-footer>
+    </div>
+  </mat-card>
+</div>

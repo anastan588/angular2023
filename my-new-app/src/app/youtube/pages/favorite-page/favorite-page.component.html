@@ -1,0 +1,5 @@
+<div class="favourite_page">
+  <app-favorite-item
+  *ngFor="let video of (searchResults$ | async)!" [video]="video"></app-favorite-item>
+</div>
+

@@ -1,0 +1,11 @@
+<app-search-item
+  *ngFor="
+    let video of (searchResults$ | async)!
+      | sorting: isDateSort : isViewSort : initialArray
+      | filter: wordFilter
+  "
+  [video]="video"></app-search-item>
+<!-- [wordFilter] = "wordFilter"
+  [isDateSort] = "isDateSort"
+  [isViewSort] = "isViewSort"> -->
+<!-- </app-search-item> -->

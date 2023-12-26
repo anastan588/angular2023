@@ -1,0 +1,106 @@
+mat-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.video-image {
+  width: 100%;
+  height: auto;
+}
+
+.views-img {
+  max-height: 30px;
+}
+
+mat-card-content {
+  width: 80%;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-card-header {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+}
+
+mat-card-actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.main-video-image {
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+}
+
+.views {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.dislikes {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.comments {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  gap: 10px;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.views-amount {
+  margin-bottom: 0px;
+}
+.likes-amount {
+  margin-bottom: 0px;
+}
+.dislikes-amount {
+  margin-bottom: 0px;
+}
+
+.comments-amount {
+  margin-bottom: 0px;
+}
+
+mat-card-footer {
+  height: 10px;
+  width: 100%;
+}
+
+mat-icon-button {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+}

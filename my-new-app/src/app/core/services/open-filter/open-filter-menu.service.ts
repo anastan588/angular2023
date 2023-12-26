@@ -8,8 +8,10 @@ export class OpenFilterMenuService {
   public openFilterMenu: boolean = false;
   constructor() { }
   public setOpenFilterMenu(state:boolean){
-    this.openFilterMenu = state;
-    console.log(this.openFilterMenu)
-    return this.openFilterMenu;
+    if (localStorage.getItem('login')) {
+     this.openFilterMenu = state;
+    return this.openFilterMenu; 
+    }
+   return;
  }
 }
