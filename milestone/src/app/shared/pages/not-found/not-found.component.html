@@ -1,0 +1,12 @@
+<div class="notfound-page">
+  <div class="message_block">
+    <div class="smile-image">
+      <img mat-card-image src="./../../../../assets/icons/sadsmile.png" />
+    </div>
+    <h1 class="notfound-title">Sorry, something went wrong. Wrong URL "{{urlNotfoundPage}}"</h1>
+  </div>
+  <div class="links_block">
+    <a *ngIf="isLogged" mat-flat-button routerLink="/">Main page</a>
+    <a *ngIf="!isLogged" mat-flat-button routerLink="/signin">Sign in</a>
+  </div>
+</div>
