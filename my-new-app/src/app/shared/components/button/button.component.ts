@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class ButtonComponent {
   @Input() disabled!: boolean;
+  @Input() userName!: string;
   public proxyClick(event: MouseEvent): void {
     if (this.disabled) {
       event.stopImmediatePropagation();

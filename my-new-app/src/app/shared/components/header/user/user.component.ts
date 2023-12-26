@@ -1,6 +1,6 @@
 import { Component, DoCheck } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -27,9 +27,12 @@ export class UserComponent {
       this.router.navigate(['']);
     }
   }
-  ngDoCheck(): void {
+  ngOnInit(): void {
     // console.log('checkLogin');
-    this.userName = this.authService.loginName.valueOf();
+    this.authService.loginNameObject.subscribe(data => {
+      this.userName = data;
+    });
+    // this.userName = this.authService.loginName.valueOf();
     // console.log(this.userName);
   }
 }

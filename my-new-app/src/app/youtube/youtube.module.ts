@@ -7,6 +7,9 @@ import { YoutubeRoutingModule } from './youtube-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { HeaderModule } from '../shared/components/header.module';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { FilterPipe } from '../shared/pipes/filter.pipe';
+import { SortingPipe } from '../shared/pipes/sorting.pipe';
+import { FavoritePageComponent } from './pages/favorite-page/favorite-page.component';
 
 @NgModule({
   declarations: [YoutubeComponent],
@@ -18,7 +21,6 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
     YoutubeRoutingModule,
     FooterComponent,
     HeaderModule,
-    SharedModule
   ],
   exports: [RouterModule],
   providers: [],

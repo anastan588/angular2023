@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
+import { FiltersService } from './../../../../core/services/filters/filters.service';
 
 @Component({
   selector: 'app-sorting',
@@ -22,9 +22,9 @@ export class SortingComponent {
   }
   
   dateSort() {
-    this.isDateSort = this.filterService.setDateSort();
+    this.filterService.setDateSort();
   }
   viewSort() {
-    this.isViewSort = this.filterService.setViewSort();
+    this.filterService.setViewSort();
   }
 }

@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Renderer2, OnInit, Input } from '@angular/core';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 
 @Directive({
   selector: '[appBordersItems]',
@@ -15,16 +15,16 @@ export class BordersItemsDirective {
     green: '#2da44e',
     blue: '#218bff',
   };
-  
+
   constructor(
     private elementRef: ElementRef,
     private renderer: Renderer2
-  ) {
-    
-  }
+  ) {}
 
-  ngOnInit()  {
-    const backgroundColor = this.getBackroundColor(this.video.snippet!.publishedAt);
+  ngOnInit() {
+    const backgroundColor = this.getBackroundColor(
+      this.video.snippet!.publishedAt
+    );
     this.renderer.setStyle(
       this.elementRef.nativeElement,
       'background',

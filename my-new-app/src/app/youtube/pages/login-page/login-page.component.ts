@@ -1,12 +1,14 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from 'src/app/auth/auth.service';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AuthService } from './../../../auth/auth.service';
+import { IUser } from './../../../core/data/models/user';
+import { createPasswordValidator } from './../../../core/validators/password.validator';
+const mockUser = {
+ email: 'mail@mail.ru',
+ password: '123456Ui',
+};
 
 @Component({
   selector: 'app-login-page',
@@ -20,92 +22,31 @@ export class LoginPageComponent {
     password: [
       '',
       {
-        validators: [
-          Validators.required,
-          Validators.pattern(/\S$/),
-          Validators.pattern(/^\S/),
-          Validators.pattern(/.{8}/),
-          Validators.pattern(/[A-Z]/),
-          Validators.pattern(/[a-z]/),
-          Validators.pattern(/\d/),
-        ],
+        validators: [Validators.required, createPasswordValidator()],
       },
     ],
   });
+
+  user$: Observable<IUser>;
   constructor(
     private readonly authService: AuthService,
-    private fb: FormBuilder
-  ) {}
-  get _email() {
-    return this.loginForm.get('email');
+    private fb: FormBuilder,
+    private store: Store<{ user: IUser }>
+  ) {
+    this.user$ = store.select('user');
   }
 
-  get _password() {
-    return this.loginForm.get('password');
+  loginUser(): IUser {
+    const user: IUser = {
+      email: this.loginForm.value.email!,
+      password: this.loginForm.value.password!,
+    };
+    return user;
   }
 
   setLoginToken() {
-    const email = this.loginForm.get('email')!.value;
-    const password = this.loginForm.get('password')!.value;
-    this.authService.setLoginAndPassword(email!, password!);
-  }
-
-  getErrorMessageForEmail() {
-    if (this.loginForm.get('email')!.hasError('required')) {
-      return 'Please enter a login email';
-    }
-    return this.loginForm.get('email')!.hasError('email')
-      ? 'The login email is invalid'
-      : '';
-  }
-
-  getErrorMessageForPassword() {
-    if (this.loginForm.get('password')!.hasError('required')) {
-      return 'Please enter a password';
-    }
-
-    if (this.loginForm.get('password')!.getError('pattern')) {
-      console.log(
-        this.loginForm.get('password')!.getError('pattern').requiredPattern
-      );
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
-        '/S$/'
-      ) {
-        return `Password must not contain trailing whitespace`;
-      } 
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
-        '/^S/'
-      ) {
-        return `Password must not contain leading whitespace`;
-      } 
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
-        '/.{8}/'
-      ) {
-        return `Password must be at least 8 characters long`;
-      } 
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
-        '/[A-Z]/'
-      ) {
-        return `Password must contain at least one uppercase letter (A-Z)`;
-      } 
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern ==
-        '/[a-z]/'
-      ) {
-        return `Password must contain at least one lowercase letter (a-z)`;
-      } 
-      if (
-        this.loginForm.get('password')!.getError('pattern').requiredPattern
-          .value == '/d/'
-      ) {
-        return `Password must contain at least one digit (0-9)`;
-      }
-    }
-
-    return;
+    const user = this.loginUser();
+    console.log(user);
+    this.authService.setLoginAndPassword(user);
   }
 }
