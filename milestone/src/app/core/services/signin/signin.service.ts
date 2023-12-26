@@ -23,6 +23,7 @@ import { ToastMessageService } from '../toast-message.service';
 })
 export class SigninService {
   url: string;
+  userStatusObject$ = new BehaviorSubject<string>('Login');
   isDisabledButtonObject$ = new Subject<boolean>();
   isDisabledButton$!: Observable<boolean>;
   notFoundEmailObject$ = new BehaviorSubject<string>('');
@@ -40,6 +41,14 @@ export class SigninService {
     this.notFoundEmail$ = this.notFoundEmailObject$.asObservable();
   }
 
+  ngOnInit() {
+    if (!localStorage.getItem('user')) {
+      this.userStatusObject$.next('LogOut');
+      console.log('logout');
+    }
+  }
+
+
   setDataToLocalStorage(user: IServerResponseSignIn) {
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -52,9 +61,10 @@ export class SigninService {
       .pipe(
         map(response => {
           this.toastMessageService.showToastMessage('Singing in succeed', 'close');
-          this.router.navigate(['main']);
+          this.router.navigate(['/']);
           response.email = requestbody.email;
           this.setDataToLocalStorage(response);
+          this.userStatusObject$.next('Logout');
           return response;
         }),
         catchError((error: HttpErrorResponse) => {

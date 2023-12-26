@@ -37,13 +37,19 @@ export class ProfileService {
   request!: IUserName;
   constructor(
     public http: HttpClient,
-    private toastMessage: MatSnackBar,
     private router: Router,
     private store: Store,
     private toastmessageservice: ToastMessageService
   ) {
     this.url = 'profile';
     this.requestBody$ = this.requestBodyForService$.asObservable();
+
+    this.requestBodyForService$.subscribe(value => {
+      this.request = value;
+    });
+  }
+
+  getUsersData() {
     const user = localStorage.getItem('user');
     const userRequestBody: IServerResponseSignIn = user
       ? JSON.parse(user)
@@ -55,13 +61,6 @@ export class ProfileService {
         'rs-email': `${userRequestBody.email}`,
       });
     }
-
-    this.requestBodyForService$.subscribe(value => {
-      this.request = value;
-    });
-  }
-
-  getUsersData() {
     return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
   }
 

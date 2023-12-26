@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  Input,
   OnInit,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -17,6 +18,7 @@ import { createEmailValidator } from 'src/app/core/validators/email.validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
+  @Input() isDarkTheme: boolean = false;
   isButtonDisabled!: boolean;
   duplicateEmail!: string;
   hide = true;
@@ -83,8 +85,5 @@ export class SignupComponent implements OnInit {
     this.router.navigate(['signin']);
   }
 
-  ngOnDestroy() {
-    this.signupService.isDisabledButtonObject$.unsubscribe();
-    this.signupService.duplicateEmailObject$.unsubscribe();
-  }
+
 }
