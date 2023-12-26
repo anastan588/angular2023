@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
-import { InputComponent } from 'src/app/shared/components/input/input.component';
-import { FormControl, ValidationErrors, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/auth/auth.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AuthService } from './../../../auth/auth.service';
+import { IUser } from './../../../core/data/models/user';
+import { createPasswordValidator } from './../../../core/validators/password.validator';
+const mockUser = {
+ email: 'mail@mail.ru',
+ password: '123456Ui',
+};
 
 @Component({
   selector: 'app-login-page',
@@ -10,53 +17,36 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class LoginPageComponent {
   hide = true;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/\S$/),
-    Validators.pattern(/^\S/),
-    Validators.pattern(/.{8}/),
-    Validators.pattern(/[A-Z]/),
-    Validators.pattern(/[a-z]/),
-    Validators.pattern(/\d/),
-  ]);
-  constructor(private readonly authService: AuthService) {
+  loginForm = this.fb.group({
+    email: ['', { validators: [Validators.required, Validators.email] }],
+    password: [
+      '',
+      {
+        validators: [Validators.required, createPasswordValidator()],
+      },
+    ],
+  });
 
+  user$: Observable<IUser>;
+  constructor(
+    private readonly authService: AuthService,
+    private fb: FormBuilder,
+    private store: Store<{ user: IUser }>
+  ) {
+    this.user$ = store.select('user');
   }
+
+  loginUser(): IUser {
+    const user: IUser = {
+      email: this.loginForm.value.email!,
+      password: this.loginForm.value.password!,
+    };
+    return user;
+  }
+
   setLoginToken() {
-    console.log(this.password.value);
-    console.log(this.email.value);
-    this.authService.setLoginAndPassword(this.email.value as string, this.password.value as string);
-  }
-  getErrorMessageForEmail() {
-    if (this.email.hasError('required')) {
-      return 'Please enter a login email';
-    }
-
-    return this.email.hasError('email') ? 'The login email is invalid' : '';
-  }
-
-  getErrorMessageForPassword() {
-    const error = this.password.errors as ValidationErrors;
-    if (this.password.hasError('required')) {
-      return 'Please enter a password';
-    }
-    console.log(error['pattern']['requiredPattern']);
-    if (error['pattern']['requiredPattern'] === '/S$/') {
-      return `Password must not contain trailing whitespace`;
-    } else if (error['pattern']['requiredPattern'] === '/^S/') {
-      return `Password must not contain leading whitespace`;
-    } else if (error['pattern']['requiredPattern'] === '/.{8}/') {
-      return `Password must be at least 8 characters long`;
-    } else if (error['pattern']['requiredPattern'] === '/[A-Z]/') {
-      console.log('popke');
-      return `Password must contain at least one uppercase letter (A-Z)`;
-    } else if (error['pattern']['requiredPattern'] === '/[a-z]/') {
-      return `Password must contain at least one lowercase letter (a-z)`;
-    } else if (error['pattern']['requiredPattern'] === '/d/') {
-      console.log('popke');
-      return `Password must contain at least one digit (0-9)`;
-    }
-    return;
+    const user = this.loginUser();
+    console.log(user);
+    this.authService.setLoginAndPassword(user);
   }
 }

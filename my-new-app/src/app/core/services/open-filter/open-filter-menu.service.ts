@@ -10,7 +10,6 @@ export class OpenFilterMenuService {
   public setOpenFilterMenu(state:boolean){
     if (localStorage.getItem('login')) {
      this.openFilterMenu = state;
-    console.log(this.openFilterMenu)
     return this.openFilterMenu; 
     }
    return;

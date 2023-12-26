@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Renderer2, OnInit, Input } from '@angular/core';
 import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem } from 'src/app/core/store/models/video-item';
+import { IVideoItem } from 'src/app/core/data/models/video-item';
 
 @Directive({
   selector: '[appBordersItems]',
@@ -9,57 +9,43 @@ import { IVideoItem } from 'src/app/core/store/models/video-item';
 export class BordersItemsDirective {
   @Input()
   video!: IVideoItem;
-  dataPublication!: Date;
-  timePublication!: number;
-  todayDate: Date;
+  colors = {
+    red: '#cf222e',
+    yellow: '#d4a72c',
+    green: '#2da44e',
+    blue: '#218bff',
+  };
 
   constructor(
     private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private readonly filterService: FiltersService
-  ) {
-    this.dataPublication;
-    this.timePublication;
-    this.todayDate = new Date();
-    console.log(this.video);
-  }
+    private renderer: Renderer2
+  ) {}
 
-  ngOnInit(): void {
-    console.log(this.video);
-    console.log(this.video.snippet.publishedAt);
-    this.dataPublication = new Date(this.video.snippet.publishedAt);
-    this.timePublication =
-      this.todayDate.getTime() - this.dataPublication.getTime();
-    const days = this.timePublication / (1000 * 60 * 60 * 24);
-    if (days > 180) {
-      return this.renderer.setStyle(
-        this.elementRef.nativeElement,
-        'background',
-        '#cf222e'
-      );
-    } else if (days <= 180 && days > 30) {
-      return this.renderer.setStyle(
-        this.elementRef.nativeElement,
-        'background',
-        ' #d4a72c'
-      );
-    } else if (days <= 30 && days >= 7) {
-      return this.renderer.setStyle(
-        this.elementRef.nativeElement,
-        'background',
-        '#2da44e'
-      );
-    } else if (days <= 7 && days >= 0) {
-      return this.renderer.setStyle(
-        this.elementRef.nativeElement,
-        'background',
-        '#218bff'
-      );
-    }
-    return this.renderer.setStyle(
+  ngOnInit() {
+    const backgroundColor = this.getBackroundColor(
+      this.video.snippet!.publishedAt
+    );
+    this.renderer.setStyle(
       this.elementRef.nativeElement,
       'background',
-      '#cf222e'
+      backgroundColor
     );
+  }
+
+  private getBackroundColor(date: string): string {
+    const todayDate = new Date();
+    const dataPublication = new Date(date);
+    const timePublication = todayDate.getTime() - dataPublication.getTime();
+    const days = timePublication / (1000 * 60 * 60 * 24);
+    if (days > 180) {
+      return this.colors.red;
+    } else if (days <= 180 && days > 30) {
+      return this.colors.yellow;
+    } else if (days <= 30 && days >= 7) {
+      return this.colors.green;
+    } else if (days <= 7 && days >= 0) {
+      return this.colors.blue;
+    }
+    return this.colors.red;
   }
 }

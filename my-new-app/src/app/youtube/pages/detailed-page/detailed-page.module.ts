@@ -5,7 +5,9 @@ import { RouterModule } from '@angular/router';
 import { DetailedRoutingModule } from './detailed-page-routing.module';
 import { DetailedPageComponent } from './detailed-page.component';
 import { BordersItemsDirective } from 'src/app/shared/directives/borders-items.directive';
-import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
+import { ButtonModule } from 'src/app/shared/components/button/button.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [DetailedPageComponent],
@@ -15,6 +17,10 @@ import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
     DetailedRoutingModule,
     MatCardModule,
     BordersItemsDirective,
+    ButtonModule,
+    MatIconModule,
+    ButtonModule,
+    MatButtonModule
   ],
   exports: [DetailedPageComponent],
 })

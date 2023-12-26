@@ -1,3 +1,16 @@
-<app-search-results *ngIf="isShowMain">
-</app-search-results>
-
+<router-outlet></router-outlet>
+<div class="seach_block">
+  <div class="button_block">
+    <app-button (click)="previousPage()">Previuos page</app-button>
+    <app-button (click)="nextPage()">Next page</app-button>
+  </div>
+  <mat-paginator matInput
+    [pageIndex]="pageIndex"
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="setItemsOnPage($event)"
+    aria-label="Select page">
+  </mat-paginator>
+  <app-search-results></app-search-results>
+</div>

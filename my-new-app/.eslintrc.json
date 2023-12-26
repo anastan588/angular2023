@@ -1,13 +1,20 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
-  "plugins": ["unused-imports", "simple-import-sort"],
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "plugins": [
+    "unused-imports",
+    "simple-import-sort"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "extends": [
         "airbnb-base",
         "airbnb-typescript/base",
@@ -21,10 +28,12 @@
         "import/first": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
-        "max-len": ["error", 120],
+        "max-len": [
+          "error",
+          120
+        ],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
-        // eslint-plugin-unused-imports rules
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "warn",
@@ -35,11 +44,16 @@
             "argsIgnorePattern": "^_"
           }
         ],
-        // TypeScript Eslint rules
-        "@typescript-eslint/indent": ["error", 4],
+        "@typescript-eslint/indent": [
+          "error",
+          4
+        ],
         "@typescript-eslint/comma-dangle": "off",
         "@typescript-eslint/lines-between-class-members": "off",
-        "@typescript-eslint/quotes": ["error", "double"],
+        "@typescript-eslint/quotes": [
+          "error",
+          "double"
+        ],
         "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/no-explicit-any": "error",
         "@angular-eslint/directive-selector": [
@@ -61,7 +75,9 @@
       }
     },
     {
-      "files": ["*.html"],
+      "files": [
+        "*.html"
+      ],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
         "plugin:@angular-eslint/template/accessibility"
@@ -69,12 +85,31 @@
       "rules": {}
     },
     {
-      "files": ["*.html"],
-      "excludedFiles": ["*inline-template-*.component.html"],
-      "extends": ["plugin:prettier/recommended"],
+      "files": [
+        "*.html"
+      ],
+      "excludedFiles": [
+        "*inline-template-*.component.html"
+      ],
+      "extends": [
+        "plugin:prettier/recommended"
+      ],
       "rules": {
-        "prettier/prettier": ["error", { "parser": "angular" }]
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular"
+          }
+        ]
       }
+    },
+    {
+      "files": [
+        "*.ts"
+      ],
+      "extends": [
+        "plugin:@ngrx/strict-requiring-type-checking"
+      ]
     }
   ]
 }

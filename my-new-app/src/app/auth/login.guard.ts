@@ -3,9 +3,8 @@ import { CanActivateFn, CanDeactivateFn, Router, RouterOutlet } from '@angular/r
 
 export const loginGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  console.log(route.routeConfig?.path);
   if (!localStorage.getItem('login')) {
-    router.navigateByUrl('login');
+    router.navigate(['login']);
     return false;
   }
   return true;
