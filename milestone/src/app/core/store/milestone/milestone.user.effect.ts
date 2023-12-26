@@ -13,22 +13,14 @@ import {
   loadMilestoneUserSuccess,
 } from './milestone.actions';
 import { ProfileService } from '../../services/profile/profile.service';
-import { IUser } from '../../models/user';
 import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import {
-  HttpBackend,
   HttpErrorResponse,
-  HttpResponse,
 } from '@angular/common/http';
 import {
-  IServerResponseSignIn,
   IServerResponseSignUp,
 } from '../../models/serverresponse';
 import { Observable, of } from 'rxjs';
+import { ToastMessageService } from '../../services/toast-message.service';
 
 @Injectable()
 export class MileStoneUserEffects {
@@ -48,7 +40,7 @@ export class MileStoneUserEffects {
           }),
           catchError((error: HttpErrorResponse) => {
             const serverResponse: IServerResponseSignUp = error.error;
-            this.showToastMessage(
+            this.toastMessageService.showToastMessage(
               'Loading user data failed: ' + serverResponse.message,
               'close'
             );
@@ -66,22 +58,6 @@ export class MileStoneUserEffects {
     private actions$: Actions,
     private profileService: ProfileService,
     private store: Store,
-    private toastMessage: MatSnackBar
+    private toastMessageService: ToastMessageService
   ) {}
-
-  showToastMessage(
-    message: string,
-    action: string,
-    position: {
-      horizontal: MatSnackBarHorizontalPosition;
-      vertical: MatSnackBarVerticalPosition;
-    } = { horizontal: 'center', vertical: 'top' }
-  ) {
-    this.toastMessage.open(message, action, {
-      duration: 5000,
-      horizontalPosition: position.horizontal,
-      verticalPosition: position.vertical,
-      panelClass: 'snackbar',
-    });
-  }
 }

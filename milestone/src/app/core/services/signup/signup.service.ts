@@ -16,6 +16,7 @@ import {
 } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IServerResponseSignUp } from '../../models/serverresponse';
+import { ToastMessageService } from '../toast-message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class SignupService {
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private toastMessageService: ToastMessageService
   ) {
     this.url = 'registration';
     this.isDisabledButton$ = this.isDisabledButtonObject$.asObservable();
@@ -44,7 +46,10 @@ export class SignupService {
       .post<IServerResponseSignUp>(this.url, requestbody)
       .pipe(
         map(response => {
-          this.showToastMessage('Registration succeed', 'close');
+          this.toastMessageService.showToastMessage(
+            'Registration succeed',
+            'close'
+          );
           this.router.navigate(['signin']);
           return response;
         }),
@@ -56,31 +61,18 @@ export class SignupService {
             this.isDisabledButtonObject$.next(true);
             this.duplicateEmailObject$.next(requestbody.email);
           }
-          this.showToastMessage(
+          this.toastMessageService.showToastMessage(
             'Registration failed: ' + serverResponse.message,
             'close'
           );
-          return of({ type: serverResponse.type, message: serverResponse.message });
+          return of({
+            type: serverResponse.type,
+            message: serverResponse.message,
+          });
         })
       )
       .subscribe(value => {
         return value;
       });
-  }
-
-  showToastMessage(
-    message: string,
-    action: string,
-    position: {
-      horizontal: MatSnackBarHorizontalPosition;
-      vertical: MatSnackBarVerticalPosition;
-    } = { horizontal: 'center', vertical: 'top' }
-  ) {
-    this.toastMessage.open(message, action, {
-      duration: 5000,
-      horizontalPosition: position.horizontal,
-      verticalPosition: position.vertical,
-      panelClass: 'snackbar',
-    });
   }
 }

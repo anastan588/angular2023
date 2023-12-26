@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ResolveFn } from '@angular/router';
 
-import { profileResolver } from './profile.resolver';
+import { groupPageResolver } from './group-page.resolver';
 
-describe('profileResolver', () => {
+describe('groupPageResolver', () => {
   const executeResolver: ResolveFn<boolean> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => profileResolver(...resolverParameters));
+      TestBed.runInInjectionContext(() => groupPageResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

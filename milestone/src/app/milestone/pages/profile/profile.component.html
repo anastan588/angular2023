@@ -1,8 +1,45 @@
-<mat-card>
-  <mat-card-content
-    ><h1 class="user_name">User name: {{user.name.S}}</h1>
-    <p class="user_id">User id: {{user.uid.S}}</p>
-    <p class="user_email">User email:  {{user.email.S}}</p>
-    <p class="user_creation">User creation time: {{user.createdAt.S | date}}</p></mat-card-content
+<mat-card *ngIf="user.name.S">
+  <mat-card-header *ngIf="!isEdit"
+    ><h2 class="user_name">
+      <b>User name:</b>
+    </h2>
+    <h1 class="user_name_text">{{ user.name.S }}</h1>
+    <app-button (click)="makeEditMode()">Edit</app-button></mat-card-header
   >
+  <mat-card-content *ngIf="isEdit">
+    <p class="user_email"><b>User name:</b></p>
+    <form class="example-form" [formGroup]="nameForm">
+      <mat-form-field>
+        <mat-label>name</mat-label>
+        <input
+          matInput
+          [(ngModel)]="newName"
+          ngDefaultControl
+          formControlName="name"
+          placeholder="Enter new name"
+          value="{{ user.name.S }}"
+          (input)="onChange()" />
+        <mat-error *ngIf="nameForm.get('name')!.hasError('required')">
+          Please enter a name
+        </mat-error>
+      </mat-form-field>
+    </form>
+    <app-button (click)="saveChangesOfUserName()" [disabled]="isButtonDisabled"
+      >Save</app-button
+    >
+    <app-button (click)="cancelEditMode()">Cancel</app-button>
+  </mat-card-content>
+  <mat-card-content>
+    <p class="user_id"><b>User id:</b></p>
+    <p class="user_id_text">{{ user.uid.S }}</p>
+  </mat-card-content>
+  <mat-card-content>
+    <p class="user_email"><b>User email:</b></p>
+    <p class="user_email_text">{{ user.email.S }}</p>
+  </mat-card-content>
+
+  <mat-card-content>
+    <p class="user_creation"><b>User creation time:</b></p>
+    <p class="user_creation_text">{{ user.createdAt.S | date }}</p>
+  </mat-card-content>
 </mat-card>

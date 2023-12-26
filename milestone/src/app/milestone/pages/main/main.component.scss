@@ -1,0 +1,91 @@
+.main_container {
+  display: flex;
+  gap: 30px;
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-width: 30%;
+  max-height: 80vh;
+  overflow-y:scroll;
+}
+
+.peoples {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+  align-items: center;
+}
+mat-card-header {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+}
+
+mat-card-actions {
+  display: flex;
+  gap: 30px;
+}
+.group_block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.group_item {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+  background-color: #f0f0f0;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 10px;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.group_item:hover {
+  background-color: #c0c0c0;
+}
+
+app-group-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.people_item {
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  cursor: pointer;
+
+}
+app-person-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+
+.people_block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  
+}

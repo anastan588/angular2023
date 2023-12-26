@@ -16,12 +16,14 @@ import {
 } from 'rxjs';
 import { ISignIn } from '../../models/signin';
 import { IServerResponseSignIn } from '../../models/serverresponse';
+import { ToastMessageService } from '../toast-message.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SigninService {
   url: string;
+  userStatusObject$ = new BehaviorSubject<string>('Login');
   isDisabledButtonObject$ = new Subject<boolean>();
   isDisabledButton$!: Observable<boolean>;
   notFoundEmailObject$ = new BehaviorSubject<string>('');
@@ -30,13 +32,22 @@ export class SigninService {
   constructor(
     public http: HttpClient,
     private toastMessage: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private toastMessageService: ToastMessageService
   ) {
     this.url = 'login';
     this.isDisabledButton$ = this.isDisabledButtonObject$.asObservable();
     this.isDisabledButtonObject$.next(true);
     this.notFoundEmail$ = this.notFoundEmailObject$.asObservable();
   }
+
+  ngOnInit() {
+    if (!localStorage.getItem('user')) {
+      this.userStatusObject$.next('LogOut');
+      console.log('logout');
+    }
+  }
+
 
   setDataToLocalStorage(user: IServerResponseSignIn) {
     localStorage.setItem('user', JSON.stringify(user));
@@ -49,10 +60,11 @@ export class SigninService {
       .post<IServerResponseSignIn>(this.url, requestbody)
       .pipe(
         map(response => {
-          this.showToastMessage('Singing in succeed', 'close');
-          this.router.navigate(['main']);
+          this.toastMessageService.showToastMessage('Singing in succeed', 'close');
+          this.router.navigate(['/']);
           response.email = requestbody.email;
           this.setDataToLocalStorage(response);
+          this.userStatusObject$.next('Logout');
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
@@ -63,7 +75,7 @@ export class SigninService {
             this.isDisabledButtonObject$.next(true);
             this.notFoundEmailObject$.next(requestbody.email);
           }
-          this.showToastMessage(
+          this.toastMessageService.showToastMessage(
             'Signing in failed: ' + serverResponse.message,
             'close'
           );
@@ -78,19 +90,4 @@ export class SigninService {
       });
   }
 
-  showToastMessage(
-    message: string,
-    action: string,
-    position: {
-      horizontal: MatSnackBarHorizontalPosition;
-      vertical: MatSnackBarVerticalPosition;
-    } = { horizontal: 'center', vertical: 'top' }
-  ) {
-    this.toastMessage.open(message, action, {
-      duration: 5000,
-      horizontalPosition: position.horizontal,
-      verticalPosition: position.vertical,
-      panelClass: 'snackbar',
-    });
-  }
 }
