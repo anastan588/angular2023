@@ -25,10 +25,23 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { GroupItemComponent, PersonItemComponent } from './milestone';
 import { MileStartGroupTimerEffects } from './core/store/milestone/milestone.groupsTimer.effect';
 import { MilePoeplesEffects } from './core/store/milestone/milestone.peoples.effect';
-import { MileStartPeopleTimerEffects } from './core/store/milestone/milestone.peopleTimer.effect copy';
+import { MileStartPeopleTimerEffects } from './core/store/milestone/milestone.peopleTimer.effect';
+import { GroupDialogService } from './core/services/group-dialog/group-dialog.service';
+import { PeoplesService } from './core/services/peoples/peoples.service';
+import { GroupsService } from './core/services/groups/groups.service';
+import { MileStoneGroupMessagesEffects } from './core/store/milestone/milestone.groupMessages.effect ';
+import { MileStartGroupMessagesTimerEffects } from './core/store/milestone/milestone.groupMesaggesTimer.effect';
+import { MileStartPersoanlConversationMessagesTimerEffects } from './core/store/milestone/milestone.PersonalConversationMesaggesTimer.effect';
+import { PersonalConversationService } from './core/services/personal-conversation/personal-conversation.service';
+import { MileStonePersonalMessagesEffects } from './core/store/milestone/milestone.personalMessages.effect';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, GroupItemComponent, PersonItemComponent],
+  declarations: [
+    AppComponent,
+    MainComponent,
+    GroupItemComponent,
+    PersonItemComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -41,7 +54,17 @@ import { MileStartPeopleTimerEffects } from './core/store/milestone/milestone.pe
     ButtonComponent,
     HttpClientModule,
     CoreModule,
-    EffectsModule.forRoot([MileStoneUserEffects, MileStoneGroupsEffects, MileStartGroupTimerEffects, MilePoeplesEffects, MileStartPeopleTimerEffects]),
+    EffectsModule.forRoot([
+      MileStoneUserEffects,
+      MileStoneGroupsEffects,
+      MileStartGroupTimerEffects,
+      MilePoeplesEffects,
+      MileStartPeopleTimerEffects,
+      MileStoneGroupMessagesEffects,
+      MileStartGroupMessagesTimerEffects,
+      MileStartPersoanlConversationMessagesTimerEffects,
+      MileStonePersonalMessagesEffects
+    ]),
   ],
   exports: [GroupItemComponent, PersonItemComponent],
   providers: [
@@ -49,7 +72,11 @@ import { MileStartPeopleTimerEffects } from './core/store/milestone/milestone.pe
     SigninService,
     AuthService,
     ProfileService,
+    GroupDialogService,
+    PeoplesService,
+    GroupsService,
     MatIconRegistry,
+    PersonalConversationService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

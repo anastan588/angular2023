@@ -1,7 +1,11 @@
-import { IConversations } from '../../models/conversations';
-import { IGroups } from '../../models/groups';
+import { IConversation, IConversations, ICreatePersonalConversationResponse } from '../../models/conversations';
+import { IGroupMessages } from '../../models/groupMessages';
+import { IGroup, IGroups } from '../../models/groups';
 import { IPeoples } from '../../models/peoples';
+import { IPersonMessages } from '../../models/personMessages';
 import { IUser } from '../../models/user';
+import { ICurrentPersonalConversation, IVisitedPesrsonalConversations } from '../../models/visitedPersonalConversations';
+import { IVisitedGroups } from '../../models/visitedgroups';
 
 export interface IMilestoneState {
   user: IUser;
@@ -16,6 +20,22 @@ export interface IMilestoneState {
     isRunning: boolean;
   };
   conversations: IConversations;
+
+  currentGroup: IGroup;
+  groupUpdateMessagesTimer: {
+    currentTime: number;
+    isRunning: boolean;
+  };
+  groupMessages: IGroupMessages;
+  visitedGroupMessagesArchive: IVisitedGroups;
+
+  currentPersonalConversation: ICurrentPersonalConversation;
+  personalConversationUpdateMessagesTimer: {
+    currentTime: number;
+    isRunning: boolean;
+  };
+  personalConversationMessages: IPersonMessages;
+  visitedPersonalConversationsMessagesArchive: IVisitedPesrsonalConversations;
 }
 
 export const InitialMileStoneState: IMilestoneState = {
@@ -52,5 +72,47 @@ export const InitialMileStoneState: IMilestoneState = {
   conversations: {
     Count: 0,
     Items: [],
+  },
+  currentGroup: {
+    id: {
+      S: '',
+    },
+    name: {
+      S: '',
+    },
+    createdAt: {
+      S: '',
+    },
+    createdBy: {
+      S: ' ',
+    },
+  },
+  groupUpdateMessagesTimer: {
+    currentTime: 60,
+    isRunning: false,
+  },
+  groupMessages: {
+    Count: 0,
+    Items: [],
+  },
+  visitedGroupMessagesArchive: {
+    visitedGroups: [],
+  },
+
+  currentPersonalConversation: {
+    conversationID:  '',
+    companionID: ''
+  },
+
+  personalConversationUpdateMessagesTimer: {
+    currentTime: 60,
+    isRunning: false,
+  },
+  personalConversationMessages: {
+    Count: 0,
+    Items: [],
+  },
+  visitedPersonalConversationsMessagesArchive: {
+    visitedPersonalConversations: [],
   },
 };

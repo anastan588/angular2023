@@ -94,10 +94,13 @@ export const MilestoneReducer = createReducer(
       currentTime: currenttime,
     },
   })),
-  on(MilestoneActions.loadMilestoneConversationsSuccess, (state, { conversations }) => ({
-    ...state,
-    conversations: { ...state.conversations, ...conversations },
-  })),
+  on(
+    MilestoneActions.loadMilestoneConversationsSuccess,
+    (state, { conversations }) => ({
+      ...state,
+      conversations: { ...state.conversations, ...conversations },
+    })
+  ),
   on(MilestoneActions.addNewConversation, (state, { conversation }) => ({
     ...state,
     conversations: {
@@ -116,4 +119,198 @@ export const MilestoneReducer = createReducer(
       Count: state.conversations.Items.length - 1,
     },
   })),
+  on(
+    MilestoneActions.loadMilestoneCurrentGroupForConversationSuccess,
+    (state, { currentGroup }) => ({
+      ...state,
+      currentGroup: { ...state.currentGroup, ...currentGroup },
+    })
+  ),
+
+  on(MilestoneActions.startCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetCurrentGroupConversationTimer, state => ({
+    ...state,
+    groupUpdateMessagesTimer: {
+      ...state.groupUpdateMessagesTimer,
+      currentTime: 0,
+    },
+  })),
+  on(
+    MilestoneActions.updateCurrentGroupConversationTimer,
+    (state, { currenttime }) => ({
+      ...state,
+      groupUpdateMessagesTimer: {
+        ...state.groupUpdateMessagesTimer,
+        currentTime: currenttime,
+      },
+    })
+  ),
+  on(
+    MilestoneActions.loadMilestoneGroupMessagesSuccess,
+    (state, { groupMessages }) => ({
+      ...state,
+      groupMessages: { ...state.groupMessages, ...groupMessages },
+    })
+  ),
+  on(MilestoneActions.addNewGroupMessage, (state, { groupMessage }) => ({
+    ...state,
+    groupMessages: {
+      ...state.groupMessages,
+      Items: [...state.groupMessages.Items, ...groupMessage],
+      Count: state.groupMessages.Items.length + 1,
+    },
+  })),
+  on(MilestoneActions.resetGroupMessages, state => ({
+    ...state,
+    groupMessages: {
+      ...state.groupMessages,
+      Items: [],
+      Count: 0,
+    },
+  })),
+  on(MilestoneActions.addVisitedGroupToArchive, (state, { visitedGroup }) => ({
+    ...state,
+    visitedGroupMessagesArchive: {
+      visitedGroups: [
+        ...state.visitedGroupMessagesArchive.visitedGroups,
+        visitedGroup,
+      ],
+    },
+  })),
+  on(
+    MilestoneActions.changeMessagesInArchivesGroup,
+    (state, { visitedGroup }) => ({
+      ...state,
+      visitedGroupMessagesArchive: {
+        visitedGroups: state.visitedGroupMessagesArchive.visitedGroups.map(
+          group => {
+            console.log(group.groupID);
+            console.log(visitedGroup.groupID);
+            if (group.groupID === visitedGroup.groupID) {
+              return visitedGroup;
+            }
+            return group;
+          }
+        ),
+      },
+    })
+  ),
+
+  on(
+    MilestoneActions.loadMilestoneCurrentPersonalConversationSuccess,
+    (state, { currentPersonalConversation }) => ({
+      ...state,
+      currentPersonalConversation: {
+        ...state.currentPersonalConversation,
+        ...currentPersonalConversation,
+      },
+    })
+  ),
+
+  on(MilestoneActions.startCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      isRunning: true,
+    },
+  })),
+  on(MilestoneActions.stopCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      isRunning: false,
+    },
+  })),
+  on(MilestoneActions.resetCurrentPersonalConversationTimer, state => ({
+    ...state,
+    personalConversationUpdateMessagesTimer: {
+      ...state.personalConversationUpdateMessagesTimer,
+      currentTime: 0,
+    },
+  })),
+  on(
+    MilestoneActions.updateCurrentPersonalConversationTimer,
+    (state, { currenttime }) => ({
+      ...state,
+      personalConversationUpdateMessagesTimer: {
+        ...state.personalConversationUpdateMessagesTimer,
+        currentTime: currenttime,
+      },
+    })
+  ),
+
+  on(
+    MilestoneActions.loadMilestonePersonalConversationMessagesSuccess,
+    (state, { personalMessages }) => ({
+      ...state,
+      personalConversationMessages: {
+        ...state.personalConversationMessages,
+        ...personalMessages,
+      },
+    })
+  ),
+  on(
+    MilestoneActions.addNewPersonalConversationMessage,
+    (state, { personalMessage }) => ({
+      ...state,
+      personalConversationMessages: {
+        ...state.personalConversationMessages,
+        Items: [
+          ...state.personalConversationMessages.Items,
+          ...personalMessage,
+        ],
+        Count: state.personalConversationMessages.Items.length + 1,
+      },
+    })
+  ),
+  on(MilestoneActions.resetPersonalConversationMessages, state => ({
+    ...state,
+    personalConversationMessages: {
+      ...state.personalConversationMessages,
+      Items: [],
+      Count: 0,
+    },
+  })),
+  on(
+    MilestoneActions.addVisitedPersonalConversationToArchive,
+    (state, { visitedPersonalConversation }) => ({
+      ...state,
+      visitedPersonalConversationsMessagesArchive: {
+        visitedPersonalConversations: [
+          ...state.visitedPersonalConversationsMessagesArchive
+            .visitedPersonalConversations,
+          visitedPersonalConversation,
+        ],
+      },
+    })
+  ),
+  on(
+    MilestoneActions.changeMessagesInArchivesPersonalConversation,
+    (state, { visitedPerSonConversation }) => ({
+      ...state,
+      visitedPersonalConversationsMessagesArchive: {
+        visitedPersonalConversations: state.visitedPersonalConversationsMessagesArchive.visitedPersonalConversations.map(
+          conversation => {
+            if (conversation.conversationID === visitedPerSonConversation.conversationID) {
+              return visitedPerSonConversation;
+            }
+            return conversation;
+          }
+        ),
+      },
+    })
+  )
 );

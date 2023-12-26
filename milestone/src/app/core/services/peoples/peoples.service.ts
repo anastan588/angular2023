@@ -28,8 +28,13 @@ import {
   ICreatePersonalConversationResponse,
 } from '../../models/conversations';
 import { ToastMessageService } from '../toast-message.service';
-import { addNewConversation } from '../../store/milestone/milestone.actions';
+import {
+  addNewConversation,
+  loadMilestoneConversationsSuccess,
+  loadMilestoneCurrentPersonalConversationSuccess,
+} from '../../store/milestone/milestone.actions';
 import { Router } from '@angular/router';
+import { ICurrentPersonalConversation } from '../../models/visitedPersonalConversations';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +55,8 @@ export class PeoplesService {
   newCompanionConversation$!: Observable<ICompanion>;
   newCompanion!: ICompanion;
 
+  currentConversation!: ICurrentPersonalConversation;
+
   constructor(
     public http: HttpClient,
     private store: Store,
@@ -65,6 +72,10 @@ export class PeoplesService {
     this.newCompanionConversation$.subscribe(value => {
       this.newCompanion = value;
     });
+    this.currentConversation = {
+      conversationID: '',
+      companionID: '',
+    };
   }
 
   joinRequests(requests: Observable<any>[]): Observable<any[]> {
@@ -120,7 +131,7 @@ export class PeoplesService {
             `Creation new conversation with ${this.newCompanion.companion} user succeed`,
             'close'
           );
-
+         
           this.newConversationItem = {
             id: {
               S: response.conversationID,
@@ -130,16 +141,30 @@ export class PeoplesService {
             },
           };
           console.log(this.newConversationItem);
+          console.log(this.currentConversation);
+          const CurrentConverSatiopObJect: ICurrentPersonalConversation = {
+            companionID: this.newConversationItem.companionID.S,
+            conversationID:  this.newConversationItem.id.S
+          }
           this.store.dispatch(
             addNewConversation({ conversation: this.newConversationItem })
+          );
+          this.currentConversation = CurrentConverSatiopObJect;
+          console.log(this.newConversationItem);
+          console.log(this.currentConversation);
+          this.store.dispatch(
+            loadMilestoneCurrentPersonalConversationSuccess({
+              currentPersonalConversation: this.currentConversation,
+            })
           );
           this.router.navigate(['conversation', response.conversationID]);
           return response;
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
+          console.log(serverResponse);
+          // console.log(serverResponse.message);
+          // console.log(serverResponse.type);
           this.toastmessageService.showToastMessage(
             'Cretting new personal conversation failed: ' +
               serverResponse.message,

@@ -1,1 +1,72 @@
-<p>personal works!</p>
+<div class="personal_container">
+    <div class="personal_nav_block">
+      <a mat-flat-button (click)="redirectToMain()">Main page</a>
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="delete"
+        (click)="openDeleteForm($event)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <mat-card class="personal_content">
+      <mat-card-header
+        >Welcome to personal conversation with "{{currentConversaionCompanion}}"
+       </mat-card-header
+      >
+      <mat-card-actions
+        ><app-button
+          *ngIf="timeUpdatePersonalConversationTimer! === 60"
+          (click)="startTimerAndUpdatePersonalMessages()"
+          >Update conversation</app-button
+        >
+        <app-button
+          *ngIf="
+            timeUpdatePersonalConversationTimer! < 60 &&
+            timeUpdatePersonalConversationTimer! > 9
+          "
+          (click)="startTimerAndUpdatePersonalMessages()"
+          [disabled]="timeUpdatePersonalConversationTimer! !== 60"
+          >Time to next update: 00:{{
+            timeUpdatePersonalConversationTimer!
+          }}</app-button
+        >
+        <app-button
+          *ngIf="timeUpdatePersonalConversationTimer! <= 9"
+          (click)="startTimerAndUpdatePersonalMessages()"
+          [disabled]="timeUpdatePersonalConversationTimer! !== 60"
+          >Time to next update: 00:0{{
+           timeUpdatePersonalConversationTimer!
+          }}</app-button
+        ></mat-card-actions
+      >
+      <mat-card-content class="messages_block">
+        <div
+          class="message_item"
+          *ngFor="let message of sortedPersonalMessages | async"
+          [ngClass]="{ position: message.authorID.S === currentUser.uid }">
+          <app-personal-message [message]="message"></app-personal-message>
+        </div>
+      </mat-card-content>
+      <mat-card-content class="message_input_block">
+        <mat-form-field validate [formGroup]="newMessageForm">
+          <mat-label>Enter new message</mat-label>
+          <input
+            matInput
+            placeholder="Please enter a message"
+            formControlName="message"
+            maxlength="250"
+            required [(ngModel)]="myInputValue"/>
+          <mat-error *ngIf="newMessageForm.get('message')!.hasError('required')">
+            Please enter a message
+          </mat-error>
+          <mat-hint align="end"
+            >{{ newMessageForm.get('message')!.value?.length }}/250</mat-hint
+          >
+        </mat-form-field>
+        <app-button [disabled]="newMessageForm.invalid" (click)="sentNewMessage()"
+          >Send message</app-button
+        >
+      </mat-card-content>
+    </mat-card>
+  </div>
