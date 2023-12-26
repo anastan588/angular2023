@@ -1,0 +1,51 @@
+.signup-page {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+mat-card {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  padding: 15px;
+}
+
+mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+mat-form-field {
+  width: 450px;
+}
+
+mat-card-header {
+  font-size: 150%;
+  font-weight: bold;
+  text-align: center;
+}
+mat-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.signin-redirection {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.redirection_text {
+  margin-bottom: 0px;
+}
+
+mat-flat-button {
+  display: block;
+}
