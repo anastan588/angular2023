@@ -1,11 +1,14 @@
-import { Component} from '@angular/core';
-import {
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
-import { AuthService } from 'src/app/auth/auth.service';
-import { IUser } from 'src/app/core/store/models/user';
-import { createPasswordValidator } from 'src/app/core/validators/password.validator';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AuthService } from './../../../auth/auth.service';
+import { IUser } from './../../../core/data/models/user';
+import { createPasswordValidator } from './../../../core/validators/password.validator';
+const mockUser = {
+ email: 'mail@mail.ru',
+ password: '123456Ui',
+};
 
 @Component({
   selector: 'app-login-page',
@@ -19,17 +22,19 @@ export class LoginPageComponent {
     password: [
       '',
       {
-        validators: [
-          Validators.required,
-          createPasswordValidator()
-        ],
+        validators: [Validators.required, createPasswordValidator()],
       },
     ],
   });
+
+  user$: Observable<IUser>;
   constructor(
     private readonly authService: AuthService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private store: Store<{ user: IUser }>
+  ) {
+    this.user$ = store.select('user');
+  }
 
   loginUser(): IUser {
     const user: IUser = {
@@ -41,7 +46,7 @@ export class LoginPageComponent {
 
   setLoginToken() {
     const user = this.loginUser();
+    console.log(user);
     this.authService.setLoginAndPassword(user);
   }
-
 }

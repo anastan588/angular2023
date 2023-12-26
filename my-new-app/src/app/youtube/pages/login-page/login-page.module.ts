@@ -26,10 +26,8 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     LoginRoutingModule,
     RouterModule,
-    
   ],
 })
 export class LoginPageModule {
-  constructor() {
-  }
+  constructor() {}
 }

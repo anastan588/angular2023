@@ -5,8 +5,10 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-import { AuthService } from 'src/app/auth/auth.service';
-import { IAdmin } from 'src/app/core/store/models/admin';
+import { Store } from '@ngrx/store';
+import { AuthService } from './../../../auth/auth.service';
+import { IVideoItem } from './../../../core/data/models/video-item';
+import { addCustomVideo } from './../../../core/store/youtube/youtube.actions';
 
 @Component({
   selector: 'app-admin-page',
@@ -51,20 +53,33 @@ export class AdminPageComponent {
 
   constructor(
     private readonly authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private store: Store
   ) {
     const currentDate = new Date();
     this.minDate = new Date(1923, 0, 1, 0, 0, 0, 0);
     this.maxDate = new Date(currentDate);
   }
 
-  admin(): IAdmin {
-    const admin: IAdmin = {
-      title: this.adminForm.value.title!,
-      description: this.adminForm.value.description!,
-      link: this.adminForm.value.link!,
-      date: this.adminForm.value.date!,
-      tags: this.adminForm.value.tags!,
+  admin(): IVideoItem {
+    const admin: IVideoItem = {
+      id: {
+        videoId: String(Math.floor(Math.random() * 10)),
+      },
+      snippet: {
+        publishedAt: this.adminForm.value.date!,
+        title: this.adminForm.value.title!,
+        description: this.adminForm.value.description!,
+        tags: this.adminForm.value.tags as string[],
+        thumbnails: {
+          high: {
+            url: this.adminForm.value.link!,
+          },
+          standard: {
+            url: this.adminForm.value.link!,
+          },
+        },
+      },
     };
     console.log(admin);
     return admin;
@@ -72,7 +87,9 @@ export class AdminPageComponent {
 
   setAdminNewVideoToken() {
     const admin = this.admin();
+    this.store.dispatch(addCustomVideo({ video: admin }));
     this.authService.setAdminToken(admin);
+    this.resetAdminForm();
   }
 
   addTagField() {

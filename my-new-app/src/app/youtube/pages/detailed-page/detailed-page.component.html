@@ -2,8 +2,9 @@
   <mat-card>
     <div class="video-image">
       <img
+      class="image"
         mat-card-image
-        [src]="videoForShow.snippet.thumbnails.standard.url" />
+        [src]="videoForShow.snippet.thumbnails.standard!.url" />
     </div>
     <div class="card-description">
       <mat-card-header>
@@ -12,11 +13,24 @@
           {{ videoForShow.snippet.publishedAt | date: 'EEEE, MMMM d, y' }}
         </p>
       </mat-card-header>
+      <button
+        *ngIf="videoForShow.statistics !== undefined"
+        mat-icon-button
+        id="{{ videoForShow.id.videoId }}"
+        #favButtonNotSelected
+        color="warn"
+        aria-label="favorite"
+        (click)="toggleSelected()">
+        <mat-icon *ngIf="!selected" color="basic">favorite_border</mat-icon>
+        <mat-icon *ngIf="selected" color="warn">favorite</mat-icon>
+      </button>
       <mat-card-content>
         <p class="description-title">Description</p>
         <p class="description-text">{{ videoForShow.snippet.description }}</p>
       </mat-card-content>
-      <div class="video-statistics">
+      <div
+        class="video-statistics"
+        *ngIf="videoForShow.statistics !== undefined">
         <div class="views">
           <img
             src="./../../../../../assets/icons/eye.png"
@@ -50,6 +64,11 @@
           </p>
         </div>
       </div>
+      <app-button
+        *ngIf="videoForShow.statistics === undefined"
+        (click)="deleteCustomCard()"
+        >Delete</app-button
+      >
       <mat-card-footer appBordersItems [video]="videoForShow"></mat-card-footer>
     </div>
   </mat-card>

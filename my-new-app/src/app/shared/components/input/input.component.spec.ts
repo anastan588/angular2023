@@ -8,14 +8,13 @@ describe('InputComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [InputComponent]
+      imports: [InputComponent],
     });
-    fixture = TestBed.createComponent(InputComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture = TestBed.createComponent(InputComponent);
+    component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });

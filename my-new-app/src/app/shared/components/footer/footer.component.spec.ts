@@ -8,14 +8,13 @@ describe('FooterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FooterComponent]
+      imports: [FooterComponent],
     });
-    fixture = TestBed.createComponent(FooterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
+    const fixture = TestBed.createComponent(FooterComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
   });
 });

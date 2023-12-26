@@ -1,30 +1,30 @@
 export interface IVideoItem {
-  kind: string;
-  etag: string;
+  kind?: string;
+  etag?: string;
   id: IID;
   snippet: {
     publishedAt: string;
-    channelId: string;
+    channelId?: string;
     title: string;
     description: string;
     thumbnails: {
-      default: IVideoWindowSize;
-      medium: IVideoWindowSize;
-      high: IVideoWindowSize;
-      standard: IVideoWindowSize;
-      maxres: IVideoWindowSize;
+      default?: IVideoWindowSize;
+      medium?: IVideoWindowSize;
+      high?: IVideoWindowSize;
+      standard?: IVideoWindowSize;
+      maxres?: IVideoWindowSize;
     };
-    channelTitle: string;
-    tags?: string[];
+    channelTitle?: string;
+    tags: string[];
     categoryId?: string;
-    liveBroadcastContent: string;
+    liveBroadcastContent?: string;
     localized?: {
       title: string;
       description: string;
     };
     defaultAudioLanguage?: string;
   };
-  statistics: {
+  statistics?: {
     viewCount: string;
     likeCount: string;
     dislikeCount: string;
@@ -33,13 +33,14 @@ export interface IVideoItem {
   };
 }
 
+
 interface IVideoWindowSize {
   url: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 export interface IID {
-  kind: string;
+  kind?: string;
   videoId: string;
 }
