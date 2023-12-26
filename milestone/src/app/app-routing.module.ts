@@ -1,17 +1,29 @@
 import { NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { AuthService } from './core/services/auth.service';
-import { DefaultpageService } from './core/services/defaultpage.service';
+import { DefaultpageService } from './core/services/defaultpage/defaultpage.service';
 import { mainGuard } from './core/guards/main.guard';
+import { MainComponent } from './milestone';
 
 const routes: Routes = [
- 
   {
-    path: 'main',
+    path: '',
     canActivate: [mainGuard],
     loadChildren: () =>
       import('./milestone/pages/main/main.module').then(m => m.MainModule),
+  },
+
+  {
+    path: 'group/:id',
+    canActivate: [mainGuard],
+    loadChildren: () =>
+      import('./milestone/pages/group/group.module').then(m => m.GroupModule),
+  },
+  {
+    path: 'conversation/:id',
+    canActivate: [mainGuard],
+    loadChildren: () =>
+      import('./milestone/pages/personal/personal.module').then(m => m.PersonalModule),
   },
   {
     path: 'signup',
@@ -28,11 +40,21 @@ const routes: Routes = [
       import('./milestone/pages/signin/signin.module').then(
         m => m.SigninModule
       ),
-  }, 
+  },
   {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full',
+    path: 'profile',
+    canActivate: [mainGuard],
+    loadChildren: () =>
+      import('./milestone/pages/profile/profile.module').then(
+        m => m.ProfileModule
+      ),
+  },
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./shared/pages/not-found/not-found.module').then(
+        m => m.NotFoundModule
+      ),
   },
 ];
 
@@ -42,9 +64,9 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
   constructor(private defaultRouteService: DefaultpageService) {
-    const defaultRoute = this.defaultRouteService.getDefaultRoute();
-    console.log(defaultRoute);
-    routes[3].redirectTo = defaultRoute;
-    console.log(routes[3].redirectTo);
+    // const defaultRoute = this.defaultRouteService.getDefaultRoute();
+    // console.log(defaultRoute);
+    // routes[0].redirectTo = defaultRoute;
+    // console.log(routes[0].redirectTo);
   }
 }
