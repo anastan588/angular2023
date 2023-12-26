@@ -1,10 +1,13 @@
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { Observable } from 'rxjs';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
+import { IVideoItem } from './../../../../core/data/models/video-item';
+import { FiltersService } from './../../../../core/services/filters/filters.service';
+import { ApiService } from './../../../../../app/core/services/api/api.service';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { searchCollection } from 'src/app/core/store/youtube/youtube.selectors';
+import { PanginationService } from './../../../../core/services/pangination.service';
 
 @Component({
   selector: 'app-search-results',
@@ -12,23 +15,24 @@ import { searchCollection } from 'src/app/core/store/youtube/youtube.selectors';
   styleUrls: ['./search-results.component.scss'],
 })
 export class SearchResultsComponent implements OnInit {
-  // @Input() searchResults$: ReadonlyArray<IVideoItem> = [];
+  searchResultsObject$ = new BehaviorSubject<IVideoItem[]>([]);
   searchResults$!: Observable<IVideoItem[]>;
   initialArray!: IVideoItem[];
   isDateSort!: string;
   isViewSort!: string;
   wordFilter = '';
+  startPaginationPosition: number = 0;
+  endPaginationPosition: number = 20;
 
   constructor(
     public readonly filterService: FiltersService,
     public readonly api: ApiService,
+    public readonly pagination: PanginationService,
     private store: Store<{ videos: IVideoItem[] }>
   ) {}
   ngOnInit() {
-    this.searchResults$ = this.api.resultForCustomers$;
-    console.log(this.searchResults$);
-    //  this.store.dispatch({ type: '[Video API] Videos Loaded Success' });
-    // console.log(this.searchResults$);
+    this.searchResultsObject$.asObservable();
+    this.searchResults$ = this.searchResultsObject$;
     this.filterService.keyWord$.subscribe((word: string) => {
       this.wordFilter = word;
     });
@@ -38,8 +42,26 @@ export class SearchResultsComponent implements OnInit {
     this.filterService.viewSort$.subscribe((sort: string) => {
       this.isViewSort = sort;
     });
-    this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-      this.initialArray = JSON.parse(JSON.stringify(data));
+
+    this.pagination.startPositionObject$.subscribe(value => {
+      this.startPaginationPosition = value;
+    });
+    this.pagination.endPositionObject$.subscribe(value => {
+      this.endPaginationPosition = value;
+      this.api.resultForCustomers$
+        .pipe(
+          map(array => {
+            const arrayForShow = array.slice(
+              this.startPaginationPosition,
+              this.endPaginationPosition
+            );
+            return arrayForShow;
+          })
+        )
+        .subscribe(value => {
+          this.searchResultsObject$.next(value);
+          this.initialArray = JSON.parse(JSON.stringify(value));
+        });
     });
   }
 }

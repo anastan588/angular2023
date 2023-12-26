@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime, filter, map } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { OpenFilterMenuService } from 'src/app/core/services/open-filter/open-filter-menu.service';
-import { ShowResultsService } from 'src/app/core/services/show-results/show-results.service';
+import { ApiService } from './../../../../core/services/api/api.service';
+import { OpenFilterMenuService } from './../../../../core/services/open-filter/open-filter-menu.service';
+import { ShowResultsService } from './../../../../core/services/show-results/show-results.service';
 import {
-  loadvideos,
-} from 'src/app/core/store/youtube/youtube.actions';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
+  loadVideos,
+} from './../../../../core/store/youtube/youtube.actions';
+import { IVideoItem } from './../../../../core/data/models/video-item';
 
 @Component({
   selector: 'app-search-input',
@@ -55,7 +55,7 @@ export class SearchInputComponent {
   }
   showResults() {
     this.router.navigate(['main']);
-    this.store.dispatch(loadvideos());
+    this.store.dispatch(loadVideos());
     // this.apiService.getVideos();
   }
   changeSearchWord() {

@@ -14,12 +14,7 @@ import { ApiService } from './core/services/api/api.service';
 import { ApiInterceptor } from './core/interceptors/api.interceptor';
 import { StoreModule } from '@ngrx/store';
 import {
-  PageNextReducer,
-  PageNumberReducer,
-  PagePreviousReducer,
-  customVideosReducer,
-  favouriteVideosReducer,
-  tubeVideosReducer,
+  youTubeReducer,
 } from './core/store/youtube/youtube.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -27,6 +22,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { VideoEffects } from './core/store/youtube/youtube.effect';
 import { FilterPipe } from './shared/pipes/filter.pipe';
 import { SortingPipe } from './shared/pipes/sorting.pipe';
+import { FavoriteService } from './core/services/favorite/favorite.service';
+import { SlicePipe } from '@angular/common';
+import { PanginationService } from './core/services/pangination.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,14 +38,7 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
     AuthModule,
     HttpClientModule,
     StoreModule.forRoot({
-      videos: tubeVideosReducer,
-      favoiriteCollection: favouriteVideosReducer,
-      pageNext: PageNextReducer,
-      pagePrevious: PagePreviousReducer,
-      // detailedVideo: tubeVideosReducer,
-      custom: customVideosReducer,
-      pageItems: PageNumberReducer,
-
+      YOUTUBE: youTubeReducer,
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     EffectsModule.forRoot([VideoEffects]),
@@ -61,6 +52,8 @@ import { SortingPipe } from './shared/pipes/sorting.pipe';
     SortingPipe,
     MatIconRegistry,
     ApiService,
+    FavoriteService,
+    PanginationService,
     { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

@@ -1,75 +1,40 @@
-import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { createSelector, createFeatureSelector, State } from '@ngrx/store';
 import { IVideoItem } from '../../data/models/video-item';
+import { IVideosTubeState } from './youtube.state';
 
-export const searchVideos = createFeatureSelector<Array<IVideoItem>>('videos');
+export const youTubeSelector = createFeatureSelector<IVideosTubeState>('YOUTUBE');
 
-export const searchCollection = createSelector(searchVideos, videos => {
-  return videos;
+export const selectSearchVideos = createSelector(youTubeSelector, state => {
+  return state.tubeVideos;
+})
+
+export const selectCustomVideos = createSelector(youTubeSelector, state => {
+  return state.customVideos;
 });
 
-export const customVideos = createFeatureSelector<Array<IVideoItem>>('custom');
-
-export const customCollection = createSelector(customVideos, videos => {
-  return videos;
+export const selectFavouriteVideos = createSelector(youTubeSelector, state => {
+  return state.favouriteVideoItemsId;
 });
 
-export const selectDetailledVideoState =
-  createFeatureSelector<IVideoItem>('detailedVideo');
-
-export const selectCurrentVideo = createSelector(
-  searchVideos,
-  selectDetailledVideoState,
-  (videos, detailedVideo) => {
-    console.log(videos);
-    console.log(detailedVideo);
-    const det = videos.filter(video => {
-      const videoSelect = String(video.id);
-      console.log(detailedVideo);
-      const detailedSelect = String(detailedVideo.id);
-      console.log(videoSelect);
-      console.log(detailedSelect);
-      return videoSelect === detailedSelect;
-    });
-    console.log(det);
-    return det[0];
-  }
-);
-
-export const selectfavouriteCollectionState = createFeatureSelector<
-  ReadonlyArray<string>
->('favoiriteCollection');
-
-export const selectfavouriteCollection = createSelector(
-  searchVideos,
-  selectfavouriteCollectionState,
-  (videos, favoiriteCollection) => {
-    console.log(videos);
-    console.log(favoiriteCollection);
-    const fav = favoiriteCollection.map(
+export const selectfavouriteCollectionVideos = createSelector(
+  youTubeSelector,
+  (state) => {
+    const fav = state.favouriteVideoItemsId.map(
       id =>
-        videos.find(video => {
+        state.tubeVideos.find(video => {
           const videoSelect = video.id;
-          console.log(videoSelect);
           return videoSelect.toString() === id;
         })!
     );
-    console.log(fav);
     return fav;
   }
 );
 
-export const PageNumberNext = createFeatureSelector<String>('pageNext');
-export const PageNumberPrevious = createFeatureSelector<String>('pagePrevious');
-export const PageNumberNextCollection = createSelector(PageNumberNext, page => {
-  return page;
+export const selectPageNumberNext = createSelector(youTubeSelector, state => {
+  return state.nextPageNumber;
 });
-export const PageNumberPrevoiusCollection = createSelector(
-  PageNumberPrevious,
-  page => {
-    return page;
-  }
-);
-export const itemsForPage = createFeatureSelector<number>('pageItems');
-export const pageItemsNumber = createSelector(itemsForPage, number => {
-  return number;
+export const selectPageNumberPrevious = createSelector(youTubeSelector, state => {
+  return state.prevPageNumber;
 });
+
+

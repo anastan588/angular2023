@@ -1,18 +1,15 @@
 import {
   Component,
-  EventEmitter,
-  Input,
   OnInit,
-  Output,
   inject,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { FiltersService } from 'src/app/core/services/filters/filters.service';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
+import { Observable} from 'rxjs';
+import { ApiService } from './../../../core/services/api/api.service';
+import { FiltersService } from './../../../core/services/filters/filters.service';
+import { IVideoItem } from './../../../core/data/models/video-item';
+import { FavoriteService } from './../../../core/services/favorite/favorite.service';
 
 @Component({
   selector: 'app-favorite-page',
@@ -30,25 +27,16 @@ export class FavoritePageComponent implements OnInit {
     public readonly filterService: FiltersService,
     public readonly api: ApiService,
     private store: Store,
-    private _routes: ActivatedRoute
+    private _routes: ActivatedRoute,
+    public readonly favoriteService: FavoriteService,
   ) {
-    // this.results$ = this.searchResults$.asObservable();
-    // this.store.select(selectfavouriteCollection).subscribe(items => {
-    //   this.searchResults$.next(items);
-    // });
   }
 
   ngOnInit() {
-    // this.store.select(selectfavouriteCollection).subscribe(data => {
-    //   this.searchResults$.next(data);
-    // });
-
-    // this.results$ = this.searchResults$;
-    // console.log(this.results$);
     this.searchResults$ = this.api.videosFavourite$;
     console.log(this.searchResults$);
-    // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-    //   this.initialArray = JSON.parse(JSON.stringify(data));
-    // });
+    this.favoriteService.canRouteToFavoritePage$.subscribe((data)=>{
+      console.log(data)
+    });
   }
 }

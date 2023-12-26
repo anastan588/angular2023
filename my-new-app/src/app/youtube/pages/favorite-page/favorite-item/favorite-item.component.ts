@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api/api.service';
-import { FavouriteVideosActions } from 'src/app/core/store/youtube/youtube.actions';
-import { IVideoItem } from 'src/app/core/data/models/video-item';
-import { selectfavouriteCollection } from 'src/app/core/store/youtube/youtube.selectors';
-import { FilterPipe } from 'src/app/shared/pipes/filter.pipe';
+import { ApiService } from './../../../../core/services/api/api.service';
+import { addFavoriteVideo, removeFavoriteVideo } from './../../../../core/store/youtube/youtube.actions';
+import { IVideoItem } from './../../../../core/data/models/video-item';
+import { FilterPipe } from './../../../../shared/pipes/filter.pipe';
+
 
 @Component({
   selector: 'app-favorite-item',
@@ -43,17 +42,15 @@ export class FavoriteItemComponent {
 
   public toggleSelected() {
     this.selected = !this.selected;
-    console.log(this.selected);
     this.selectedChange.emit(this.selected);
-    console.log(this.video.id);
     const ID = this.video.id;
     if (this.selected === true) {
       this.store.dispatch(
-        FavouriteVideosActions.addFavourite({ videoId: `${ID}` })
+        addFavoriteVideo({ videoId: `${ID}` })
       );
     } else {
       this.store.dispatch(
-        FavouriteVideosActions.removeFavourite({
+        removeFavoriteVideo({
           videoId: `${ID}`,
         })
       );
@@ -61,10 +58,6 @@ export class FavoriteItemComponent {
   }
 
   ngOnInit() {
-    console.log(this.video);
-    // this.searchResults$ = this.api.resultForCustomers$;
-    // this.api.resultForCustomers$.subscribe((data: IVideoItem[]) => {
-    //   this.initialArray = JSON.parse(JSON.stringify(data));
-    // });
+  
   }
 }

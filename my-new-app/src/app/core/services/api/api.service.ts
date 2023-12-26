@@ -5,16 +5,17 @@ import { HttpClient } from '@angular/common/http';
 import { ISearchResponse } from '../../data/models/search-response';
 import { Store } from '@ngrx/store';
 import {
-  FavouriteVideosActions,
-  PageNumberActions,
+  resetFavoriteVideos,
+  setNextPage,
+  setNumberItemsOnPage,
+  setPreviousPage,
 } from '../../store/youtube/youtube.actions';
 import {
-  PageNumberNextCollection,
-  PageNumberPrevoiusCollection,
-  customCollection,
-  pageItemsNumber,
-  searchCollection,
-  selectfavouriteCollection,
+  selectCustomVideos,
+  selectPageNumberNext,
+  selectPageNumberPrevious,
+  selectSearchVideos,
+  selectfavouriteCollectionVideos,
 } from '../../store/youtube/youtube.selectors';
 
 @Injectable({
@@ -42,6 +43,8 @@ export class ApiService {
   nextOrPrevous: string = '';
   page!: string;
   itemsForRequest$ = 20;
+  itemsOnPageObject$ = new BehaviorSubject<number>(20);
+
 
   constructor(
     public http: HttpClient,
@@ -49,15 +52,9 @@ export class ApiService {
     private store: Store
   ) {
     this.resultForCustomers$ = this.myRequestResultObject.asObservable();
-    this.store.select(searchCollection).subscribe(videos => {
-      this.store.select(customCollection).subscribe(customs => {
+    this.store.select(selectSearchVideos).subscribe(videos => {
+      this.store.select(selectCustomVideos).subscribe(customs => {
         this.myRequestResultObject.next(customs.concat(videos));
-        this.itemsForRequest$ = 20 - customs.length;
-        this.store.dispatch(
-          PageNumberActions.numberItems({
-            pageItems: this.itemsForRequest$!,
-          })
-        );
       });
     });
     this.videoId = '';
@@ -69,18 +66,15 @@ export class ApiService {
     });
     this.videosFavourite$ = this.videosFavouriteSubject$.asObservable();
 
-    this.videos$ = storeVideos.select('videos');
-    store.select(selectfavouriteCollection).subscribe(fav => {
+    this.videos$ = storeVideos.select(selectSearchVideos);
+    store.select(selectfavouriteCollectionVideos).subscribe(fav => {
       this.videosFavouriteSubject$.next(fav);
     });
-    store.select(PageNumberNextCollection).subscribe(page => {
+    store.select(selectPageNumberNext).subscribe(page => {
       this.pageNumberNext$ = page.valueOf();
     });
-    store.select(PageNumberPrevoiusCollection).subscribe(page => {
+    store.select(selectPageNumberPrevious).subscribe(page => {
       this.pageNumberPrevious$ = page.valueOf();
-    });
-    store.select(pageItemsNumber).subscribe(numbeOfItems => {
-      this.itemsForRequest$ = numbeOfItems;
     });
     this.nextOrPreviosIndentifier.subscribe(
       identifier => (this.nextOrPrevous = identifier)
@@ -113,17 +107,17 @@ export class ApiService {
       switchMap((response: ISearchResponse) => {
         if (response.nextPageToken !== undefined) {
           this.store.dispatch(
-            PageNumberActions.nextPage({ pageToken: response.nextPageToken })
+            setNextPage({ pageToken: response.nextPageToken })
           );
         }
         if (response.prevPageToken !== undefined) {
           this.store.dispatch(
-            PageNumberActions.prevousPage({
+            setPreviousPage({
               pageToken: response.prevPageToken,
             })
           );
         }
-        this.store.dispatch(FavouriteVideosActions.resetFavourite());
+        this.store.dispatch(resetFavoriteVideos());
         this.videoId = response.items
           .map((item: IVideoItem) => {
             return item.id.videoId;
