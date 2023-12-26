@@ -61,7 +61,7 @@ export class SigninService {
       .pipe(
         map(response => {
           this.toastMessageService.showToastMessage('Singing in succeed', 'close');
-          this.router.navigate(['main']);
+          this.router.navigate(['/']);
           response.email = requestbody.email;
           this.setDataToLocalStorage(response);
           this.userStatusObject$.next('Logout');

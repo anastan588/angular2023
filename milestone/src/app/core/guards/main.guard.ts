@@ -14,6 +14,7 @@ export const mainGuard: CanActivateFn = (route, state) => {
   const canActivate = authService.getLocalStorageData();
   console.log(canActivate);
   if (canActivate === false) {
+    router.navigate(['signin']);
     return false;
   }
   return true;

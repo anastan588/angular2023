@@ -37,7 +37,6 @@ export class ProfileService {
   request!: IUserName;
   constructor(
     public http: HttpClient,
-    private toastMessage: MatSnackBar,
     private router: Router,
     private store: Store,
     private toastmessageservice: ToastMessageService
@@ -62,7 +61,6 @@ export class ProfileService {
         'rs-email': `${userRequestBody.email}`,
       });
     }
-
     return this.http.get<IUser>(this.url, { headers: this.httpHeaders });
   }
 

@@ -40,17 +40,12 @@ export class AuthService {
     const userRequestBody: IServerResponseSignIn = user
       ? JSON.parse(user)
       : null;
-    console.log(userRequestBody);
-    console.log(userRequestBody !== null);
-   
-      this.httpHeaders = new HttpHeaders({
-        Authorization: `Bearer ${userRequestBody.token}`,
-        'rs-uid': `${userRequestBody.uid}`,
-        'rs-email': `${userRequestBody.email}`,
-      });
-      console.log(userRequestBody.token);
 
-    console.log(this.httpHeaders);
+    this.httpHeaders = new HttpHeaders({
+      Authorization: `Bearer ${userRequestBody.token}`,
+      'rs-uid': `${userRequestBody.uid}`,
+      'rs-email': `${userRequestBody.email}`,
+    });
     return this.http
       .delete<IServerResponseSignUp>(this.url, {
         headers: this.httpHeaders,
@@ -60,6 +55,8 @@ export class AuthService {
           this.toastMessageService.showToastMessage('Logout succeed', 'close');
           this.userStatusObject$.next('Login');
           localStorage.removeItem('user');
+          localStorage.removeItem('currentGroup');
+          localStorage.removeItem('currentPersonalConversation');
           this.store.dispatch(loadMilestoneUser());
           this.isButtonDisabledObject$.next(false);
           this.router.navigate(['signin']);
@@ -67,8 +64,6 @@ export class AuthService {
         }),
         catchError((error: HttpErrorResponse) => {
           const serverResponse: IServerResponseSignUp = error.error;
-          console.log(serverResponse.message);
-          console.log(serverResponse.type);
           this.toastMessageService.showToastMessage(
             'Logout failed: ' + serverResponse.message,
             'close'
@@ -87,8 +82,6 @@ export class AuthService {
 
   getLocalStorageData(): boolean {
     const user = localStorage.getItem('user');
-    console.log(user);
-    console.log(user !== null);
     if (user !== null) {
       this.isLoggedIn = true;
     }
@@ -101,8 +94,11 @@ export class AuthService {
     if (this.isLoggedIn === false) {
       this.router.navigate(['signin']);
     } else if (this.isLoggedIn === true) {
-      this.router.navigate(['main']);
+      this.router.navigate(['/']);
     }
-    return this.isLoggedIn ? 'main' : 'signin';
+    if (this.isLoggedIn) {
+      return '/';
+    }
+    return '';
   }
 }
