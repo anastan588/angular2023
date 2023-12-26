@@ -1,0 +1,106 @@
+<div class="admin-page">
+  <mat-card>
+    <mat-card-header>Create new card</mat-card-header>
+    <mat-card-content [formGroup]="adminForm" validate>
+      <mat-form-field>
+        <mat-label>Title</mat-label>
+        <input
+          matInput
+          placeholder="Please enter a title"
+          formControlName="title"
+          maxlength="20"
+          required />
+        <mat-error *ngIf="adminForm.get('title')!.hasError('minlength')">
+          The title length must be at least 3 characters
+        </mat-error>
+        <mat-error
+          *ngIf="
+            adminForm.get('title')!.hasError('maxlength') &&
+            !adminForm.get('title')!.hasError('required')
+          ">
+          The title length must be max 20 characters
+        </mat-error>
+        <mat-error *ngIf="adminForm.get('title')!.hasError('required')">
+          Please enter a title
+        </mat-error>
+        <mat-hint align="end"
+          >{{ adminForm.get('title')!.value?.length }}/20</mat-hint
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          placeholder="Please enter a description"
+          formControlName="description"
+          maxlength="255"></textarea>
+        <mat-error
+          *ngIf="
+            adminForm.get('description')!.hasError('maxlength') &&
+            !adminForm.get('description')!.hasError('required')
+          ">
+          The description length must be max 255 characters
+        </mat-error>
+        <mat-hint align="end"
+          >{{ adminForm.get('description')!.value?.length }}/255</mat-hint
+        >
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Link to the image cover</mat-label>
+        <input
+          matInput
+          placeholder="Please enter a link to the image"
+          formControlName="link"
+          required />
+        <mat-error *ngIf="adminForm.get('link')!.hasError('required')">
+          Please enter a link to the image
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Сreation date</mat-label>
+        <input
+          matInput
+          placeholder="Please enter a creation date"
+          formControlName="date"
+          [matDatepicker]="date"
+          [min]="minDate"
+          [max]="maxDate"
+          required />
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+        <mat-error *ngIf="adminForm.get('date')!.hasError('required')">
+          Please enter a creation date
+        </mat-error>
+      </mat-form-field>
+      <div class="tags" formArrayName="tags">
+        <mat-card-header>Tags</mat-card-header>
+        <div *ngFor="let tag of getFormsTags()['controls']; let i = index">
+          <mat-form-field>
+            <mat-label>Tag</mat-label>
+            <input
+              matInput
+              placeholder="Please enter a tag"
+              formControlName="{{ i }}"
+              required />
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              adminForm.controls['tags'].controls[i].hasError('required') &&
+              adminForm.controls['tags'].controls[i].touched
+            ">
+            Please enter a tag
+          </mat-error>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <app-button (click)="addTagField()">Add tag</app-button>
+      <app-button (click)="resetAdminForm()">Reset</app-button>
+      <app-button
+        (click)="setAdminNewVideoToken()"
+        [disabled]="adminForm.invalid"
+        >Create card</app-button
+      >
+    </mat-card-actions>
+  </mat-card>
+</div>
